@@ -1,9 +1,3 @@
-//
-//  HabyApp.swift
-//  Haby
-//
-//  Created by Jaroslav Korčák on 21.05.2025.
-//
 
 import SwiftUI
 
