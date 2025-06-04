@@ -42,11 +42,9 @@ final class DIContainer {
 
 extension DIContainer {
     func registerDependencies() {
-//        Usage:
-//
-//        register(Class.self, cached: true) {
-//            Class()
-//        }
+        register(DataManaging.self, cached: true) {
+            CoreDataManager()
+        }
     }
 }
 
