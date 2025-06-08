@@ -5,13 +5,25 @@ struct AddEditHabitView: View {
     @Binding var isViewPresented: Bool
     @State var viewModel: HabitManagementViewModel
     
-    var testType = ["apple", "banana", "orange"]
+    var habitType = ["deadline", "ontime", "amount"]
+    var repetitionType = ["daily", "weekly"]
+    var amountType = ["Km", "l"]
     @State private var habitName: String = ""
-    @State private var habitType: String = "banana"
-    @State private var repetition: String = ""
+    @State private var selectedType: String = "deadline"
+    @State private var selectedRepetition: String = "daily"
+    @State private var selectedTime = Date()
+    @State private var goalAmount: String = "0"
+    @State private var selectedAmountType: String = "Km"
+    @State private var healthData = true
     @State private var notificationsOn = true
     @State private var icon: String = ""
     @State private var habitActive = true
+    
+    let formatter: NumberFormatter = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            return formatter
+        }()
     
     var body: some View {
         Form {
@@ -21,14 +33,57 @@ struct AddEditHabitView: View {
                 text: $habitName
             )
             
-            Picker("Habit type", selection: $habitType) {
-                ForEach(testType, id: \.self) { test in
+            Picker("Habit type", selection: $selectedType) {
+                ForEach(habitType, id: \.self) { test in
                     Text(test)
                 }
             }
+            .pickerStyle(.menu)
             
+            if selectedType == "amount" {
+                HStack {
+                    TextField(
+                        "Goal Amount",
+                        value: $goalAmount,
+                        formatter: formatter
+                    )
+                }
+                Picker("Habit type", selection: $selectedAmountType) {
+                    ForEach(amountType, id: \.self) { test in
+                        Text(test)
+                    }
+                }
+                .pickerStyle(.menu)
+                Toggle("Use Health Data", isOn: $notificationsOn)
+
+            } else {
+                DatePicker(
+                    "chce to string",
+                    selection: $selectedTime,
+                    displayedComponents: [.hourAndMinute]
+                )
+            }
+            
+            switch selectedType {
+            case "deadline":
+                Text("deadline")
+            case "ontime":
+                Text("ontime")
+            case "amount":
+                Text("amount")
+            default:
+                Text("deadline")
+            }
+            
+            
+            Picker("Repetition", selection: $selectedRepetition) {
+                ForEach(repetitionType, id: \.self) { test in
+                    Text(test)
+                }
+            }
             .pickerStyle(.menu)
             Toggle("Turn on notifications", isOn: $notificationsOn)
+            //icon picker
             Toggle("Turn off habit", isOn: $habitActive)
             
             Button("Save"){
@@ -62,6 +117,6 @@ struct AddEditHabitView: View {
 }
 
 #Preview {
-    AddEditHabitView(isViewPresented: .constant(true),
-                     viewModel: HabitManagementViewModel())
+//    AddEditHabitView(isViewPresented: .constant(true),
+//                     viewModel: HabitManagementViewModel())
 }
