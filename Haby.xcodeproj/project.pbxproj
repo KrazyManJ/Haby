@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = Haby;
 			packageProductDependencies = (
+				A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */,
 			);
 			productName = Haby;
 			productReference = 44B063E82DDDC4D000252D85 /* Haby.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 44B063DF2DDDC4D000252D85;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A003D61E2DFAE65400A5B0C0 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 44B063E92DDDC4D000252D85 /* Products */;
 			projectDirPath = "";
@@ -322,6 +331,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A003D61E2DFAE65400A5B0C0 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alessiorubicini/SFSymbolsPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.7;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A003D61E2DFAE65400A5B0C0 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */;
+			productName = SFSymbolsPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 44B063E02DDDC4D000252D85 /* Project object */;
 }
