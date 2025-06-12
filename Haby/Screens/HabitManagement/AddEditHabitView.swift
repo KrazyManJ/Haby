@@ -7,12 +7,12 @@ struct AddEditHabitView: View {
     
     var habitType = ["deadline", "ontime", "amount"]
     var repetitionType = ["daily", "weekly"]
-    var amountType = ["Km", "l"]
+    var amountType = ["Km", "Litres"]
     @State private var habitName: String = ""
-    @State private var selectedType: String = "deadline"
+    @State private var selectedHabitType: HabitType = .Deadline
     @State private var selectedRepetition: String = "daily"
     @State private var selectedTime = Date()
-    @State private var goalAmount: String = "0"
+    @State private var goalAmount: Float = 0.0
     @State private var selectedAmountType: String = "Km"
     @State private var healthData = true
     @State private var notificationsOn = true
@@ -33,28 +33,31 @@ struct AddEditHabitView: View {
                 text: $habitName
             )
             
-            Picker("Habit type", selection: $selectedType) {
-                ForEach(habitType, id: \.self) { test in
-                    Text(test)
+            Picker("Habit type", selection: $selectedHabitType) {
+                ForEach(HabitType.allCases){ option in
+                    Text(option.name)
                 }
             }
             .pickerStyle(.menu)
             
-            if selectedType == "amount" {
+            if selectedHabitType == .Amount {
                 HStack {
+                    // todo check km/litr int/float
                     TextField(
                         "Goal Amount",
                         value: $goalAmount,
-                        formatter: formatter
+                        format: .number
                     )
-                }
-                Picker("Habit type", selection: $selectedAmountType) {
+                    .keyboardType(.numberPad)
+                Picker("Amount type", selection: $selectedAmountType) {
                     ForEach(amountType, id: \.self) { test in
                         Text(test)
                     }
                 }
+                .labelsHidden()
                 .pickerStyle(.menu)
-                Toggle("Use Health Data", isOn: $notificationsOn)
+                }
+                Toggle("Use Health Data", isOn: $healthData)
 
             } else {
                 DatePicker(
@@ -62,19 +65,8 @@ struct AddEditHabitView: View {
                     selection: $selectedTime,
                     displayedComponents: [.hourAndMinute]
                 )
+                .datePickerStyle(WheelDatePickerStyle())
             }
-            
-            switch selectedType {
-            case "deadline":
-                Text("deadline")
-            case "ontime":
-                Text("ontime")
-            case "amount":
-                Text("amount")
-            default:
-                Text("deadline")
-            }
-            
             
             Picker("Repetition", selection: $selectedRepetition) {
                 ForEach(repetitionType, id: \.self) { test in
@@ -91,7 +83,8 @@ struct AddEditHabitView: View {
                 isViewPresented.toggle()
             }
         }
-        .navigationTitle("New Habit")
+        // todo zmenit nadpis na edit kdyz habit id == null
+        .navigationTitle("Add Habit")
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading){
                 Button("Close") {
@@ -113,6 +106,7 @@ struct AddEditHabitView: View {
 //        )
 //        
 //        viewModel.addNewHabit(habit: newHabit)
+//        viewModel.fetchHabits()
 //    }
 }
 
