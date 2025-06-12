@@ -1,6 +1,6 @@
 import UIKit
 
-struct HabitDef {
+struct HabitDefinition {
     var id: UUID
     var name: String
     
@@ -11,4 +11,5 @@ struct HabitDef {
     var targetValue: Float?
     
     var isActive: Bool = false
+    var isUsingHealthData: Bool = false
 }

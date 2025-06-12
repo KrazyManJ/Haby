@@ -14,6 +14,28 @@ final class CoreDataManager: DataManaging {
             }
         }
     }
+    
+    func insert(entity: HabitDefinitionEntity) {
+        save()
+    }
+    
+    func delete(entity: HabitDefinitionEntity) {
+        context.delete(entity)
+        save()
+    }
+    
+    func fetch<T: NSManagedObject>() -> [T] {
+        let request = NSFetchRequest<T>(entityName: String(describing: T.self))
+        var lines: [T] = []
+        
+        do {
+            lines = try context.fetch(request)
+        } catch {
+            print("Cannot fetch data: \(error.localizedDescription)")
+        }
+        
+        return lines
+    }
 }
 
 private extension CoreDataManager {
@@ -26,4 +48,5 @@ private extension CoreDataManager {
             }
         }
     }
+
 }
