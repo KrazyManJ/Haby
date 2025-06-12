@@ -12,6 +12,17 @@ struct HabitManagementView: View {
     
     var body: some View {
         NavigationStack{
+//            List {
+//                ForEach(viewModel.state.habits) { habit in
+//                    Text("habit")
+//                }
+//            }
+//            .onAppear() {
+//                viewModel.fetchHabits()
+//                if viewModel.state.habits.isEmpty {
+//                    viewModel.fetchSampleData()
+//                }
+//            }
             VStack{
                 List {
                     Text("habit")
