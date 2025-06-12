@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="HabitDefinition" representedClassName="HabitDefinition" syncable="YES" codeGenerationType="class">
+    <entity name="HabitDefinitionEntity" representedClassName="HabitDefinitionEntity" syncable="YES" codeGenerationType="class">
         <attribute name="frequency" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isUsingHealthData" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="targetTimestamp" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetValue" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
