@@ -4,7 +4,7 @@ import SFSymbolsPicker
 
 struct AddEditHabitView: View {
     @Binding var isViewPresented: Bool
-    @State var viewModel: HabitManagementViewModel
+    @State var viewModel: AddEditHabitViewModel = AddEditHabitViewModel()
     
     @State private var icon = "star.fill"
     @State private var isIconPickerPresented = false
@@ -92,7 +92,7 @@ struct AddEditHabitView: View {
             Toggle("Turn off habit", isOn: $habitActive)
             
             Button("Save"){
-                //                saveHabit()
+                saveHabit()
                 isViewPresented.toggle()
             }
         }
@@ -107,22 +107,21 @@ struct AddEditHabitView: View {
         }
     }
     
-    //    private func saveHabit() {
-    //        let newHabit = Habit(
-    //            id: UUID(),
-    //            name: habitName,
-    //            type: habitType,
-    //            repetition: repetition,
-    //            notificationsOn: notificationsOn,
-    //            icon: icon,
-    //            habitActive: habitActive
-    //        )
-    //        
-    //        viewModel.addNewHabit(habit: newHabit)
-    //        viewModel.fetchHabits()
-    //    }
+        private func saveHabit() {
+            let newHabit = HabitDefinition(
+                id: UUID(),
+                name: habitName,
+                type: selectedHabitType,
+                frequency: selectedFrequency,
+               // notificationsOn: notificationsOn,
+               // icon: icon,
+                isActive: habitActive
+            )
+            
+            viewModel.addNewHabit(habit: newHabit)
+        }
+    
 }
-
 #Preview {
 //    AddEditHabitView(isViewPresented: .constant(true),
 //                     viewModel: HabitManagementViewModel())

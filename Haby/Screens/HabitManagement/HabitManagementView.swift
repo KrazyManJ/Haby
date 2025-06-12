@@ -25,10 +25,13 @@ struct HabitManagementView: View {
 //            }
             VStack{
                 List {
-                    Text("habit")
-                    Text("habit")
-                    Text("habit")
+                    ForEach(viewModel.state.habits) { habit in
+                        Text(habit.name)
+                    }
                 }
+            }
+            .onAppear{
+                viewModel.fetchHabits()
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Habits Management")
@@ -42,11 +45,10 @@ struct HabitManagementView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isAddEditHabitViewPresented) {
+            .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: {viewModel.fetchHabits()}) {
                 NavigationStack {
                     AddEditHabitView(
-                        isViewPresented: $isAddEditHabitViewPresented,
-                        viewModel: viewModel
+                        isViewPresented: $isAddEditHabitViewPresented
                     )
                 }
             }

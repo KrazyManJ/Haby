@@ -8,8 +8,8 @@ extension HabitDefinition : EntityConverting {
         entity.name = name
         entity.type = type.rawValue
         entity.frequency = frequency.rawValue
-        entity.targetValue = targetValue!
-        entity.targetTimestamp = Int16(targetTimestamp!)
+        entity.targetValue = targetValue ?? 0.0
+        entity.targetTimestamp = Int16(targetTimestamp ?? 0)
         entity.isActive = isActive
         entity.isUsingHealthData = isUsingHealthData
         
