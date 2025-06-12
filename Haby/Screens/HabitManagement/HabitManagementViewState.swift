@@ -12,8 +12,8 @@ import SwiftUI
 @Observable
 final class HabitManagementViewState {
     // todo habitdefinition
-    var habits: [HabitDef] = []
+    var habits: [HabitDefinition] = []
     
-    var selectedPlace: HabitDef?
+    var selectedPlace: HabitDefinition?
     
 }
