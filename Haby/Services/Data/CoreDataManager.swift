@@ -19,6 +19,10 @@ final class CoreDataManager: DataManaging {
         save()
     }
     
+    func update(entity: HabitDefinitionEntity) {
+        save()
+    }
+    
     func delete(entity: HabitDefinitionEntity) {
         context.delete(entity)
         save()
