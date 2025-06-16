@@ -15,7 +15,12 @@ struct HabitManagementView: View {
             VStack{
                 List {
                     ForEach(viewModel.state.habits) { habit in
-                        Text(habit.name)
+                        HabitRow(
+                            icon: "star.fill",
+                            name: habit.name,
+                            type: habit.type.name,
+                            frequency: habit.frequency.name,
+                            time: "cas")
                     }
                 }
             }
