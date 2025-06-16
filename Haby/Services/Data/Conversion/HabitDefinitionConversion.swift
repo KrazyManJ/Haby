@@ -29,7 +29,7 @@ extension HabitDefinitionEntity : ModelConverting {
             frequency: HabitFrequency(rawValue: frequency)!,
             targetTimestamp: Int(targetTimestamp),
             targetValue: Float(targetValue),
-            targetValueUnit: targetValueUnit!,
+            targetValueUnit: targetValueUnit,
             isActive: isActive,
             isUsingHealthData: isUsingHealthData
         )
