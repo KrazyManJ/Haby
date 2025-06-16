@@ -12,8 +12,8 @@ struct DailyView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                Text(String(describing: viewModel.state.todayMoodData.mood))
                 List {
+                    
                 }
                 Picker("Track today's mood", selection: Binding(
                     get: {
@@ -25,9 +25,8 @@ struct DailyView: View {
                     }
                 )) {
                     ForEach(Mood.allCases, id: \.self) { value in
-                        Text(value.emoji)
-                            .tag(value)
-                        }
+                        Text(value.emoji).tag(value)
+                    }
                 }
                 .pickerStyle(.segmented)
                 .padding()
@@ -42,6 +41,8 @@ struct DailyView: View {
                         Text("Streak")
                     }
                 }
+            }.onAppear {
+                viewModel.updateMood(mood: .Neutral)
             }
         }
     }

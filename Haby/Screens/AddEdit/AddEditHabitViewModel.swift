@@ -13,6 +13,6 @@ class AddEditHabitViewModel: ObservableObject {
 
 extension AddEditHabitViewModel {
     func addNewHabit(habit: HabitDefinition) {
-        dataManager.upsert(entity: habit.toEntity())
+        dataManager.upsert(model: habit)
     }
 }
