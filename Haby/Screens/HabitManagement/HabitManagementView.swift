@@ -3,11 +3,13 @@
 import SwiftUI
 
 struct HabitManagementView: View {
-    @State private var viewModel: HabitManagementViewModel
+    @StateObject private var viewModel: HabitManagementViewModel
     @State var isAddEditHabitViewPresented = false
+    @State var showAlert = false
+    @State private var habitToDelete: HabitDefinition? = nil
     
     init(viewModel: HabitManagementViewModel) {
-        self.viewModel = viewModel
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -16,13 +18,24 @@ struct HabitManagementView: View {
                 List {
                     ForEach(viewModel.state.habits) { habit in
                         HabitRow(
-                            icon: "star.fill",
+                            icon: habit.icon,
                             name: habit.name,
                             type: habit.type.name,
                             frequency: habit.frequency.name,
-                            time: "cas")
+                            time: "cas"
+                        )
+                        .swipeActions {
+                            Button() {
+                                  habitToDelete = habit
+                                  showAlert = true
+                              } label: {
+                                  Label("Delete", systemImage: "trash")
+                              }
+                        }
                     }
                 }
+                .listRowBackground(Color.clear)
+                .scrollContentBackground(.hidden)
             }
             .onAppear{
                 viewModel.fetchHabits()
@@ -40,12 +53,26 @@ struct HabitManagementView: View {
                 }
             }
             .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: {viewModel.fetchHabits()}) {
-                NavigationStack {
-                    AddEditHabitView(
-                        isViewPresented: $isAddEditHabitViewPresented
-                    )
-                }
+
+                    NavigationStack {
+                        AddEditHabitView(
+                            isViewPresented: $isAddEditHabitViewPresented
+                        )
+                    }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Delete this habit?"),
+                    message: Text("You will not be able to recover this habit's data after deletion."),
+                    primaryButton: .cancel(Text("Cancel")),
+                    secondaryButton: .destructive(Text("Delete")) {
+                        if let habit = habitToDelete {
+                            viewModel.removeHabit(habit: habit)
+                        }
+                    }
+                )
+            }
+            .background(Color.Background)
         }
     }
 }

@@ -42,6 +42,7 @@ struct AddEditHabitView: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .accentColor(Color.Primary)
                 
                 if selectedHabitType == .Amount {
                     HStack {
@@ -87,10 +88,7 @@ struct AddEditHabitView: View {
                     } label: {
                         HStack{
                             Image(systemName: selectedIcon)
-                                .foregroundColor(.black)
-                                //.padding()
-                            //.background(Color.accentColor)
-                            //.cornerRadius(15)
+                                .foregroundColor(.Primary)
                             Image(systemName: "chevron.up.chevron.down")
                         }
                     }
@@ -126,11 +124,10 @@ struct AddEditHabitView: View {
             isViewPresented.toggle()
         } label: {
             Text("Save Habit")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 30)
         }
+        .buttonStyle(PrimaryButtonStyle())
         .padding(15)
-        .buttonStyle(.borderedProminent)
+        
     }
     
         private func saveHabit() {
