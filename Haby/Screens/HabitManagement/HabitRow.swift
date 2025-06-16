@@ -14,12 +14,13 @@ struct HabitRow: View {
     var frequency: String
     var time: String
     
-    var circle: String = "circle.fill"
-    
     var body: some View {
         NavigationLink(destination: OverviewView()){
             VStack(alignment: .leading){
-                Label(name, systemImage: icon).imageScale(.small)
+                HStack{
+                    Image(systemName: icon)
+                    Text(name)
+                }
                 Text("\(type) • \(frequency) • \(time)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
