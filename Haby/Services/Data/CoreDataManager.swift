@@ -54,6 +54,7 @@ final class CoreDataManager: DataManaging {
             }
         }
         else {
+            // To create model
             _ = model.toEntity()
         }
         save()
@@ -63,15 +64,9 @@ final class CoreDataManager: DataManaging {
         context.delete(entity)
         save()
     }
-    
-    func getMoodRecordByDate(date: Date) -> MoodRecordEntity? {
-        return fetchOne(
-            predicate: NSPredicate(format: "date = %@",date as NSDate)
-        )
-    }
 }
 
-private extension CoreDataManager {
+internal extension CoreDataManager {
     private func save() {
         if context.hasChanges {
             do {
@@ -100,9 +95,10 @@ private extension CoreDataManager {
         return lines
     }
     
-    private func fetchOne<T: NSManagedObject>(
+    func fetchOne<T: NSManagedObject>(
         predicate: NSPredicate? = nil
     ) -> T? {
+        let clsName = String(describing: T.self)
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         if predicate != nil {
             request.predicate = predicate
