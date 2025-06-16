@@ -16,9 +16,7 @@ struct DailyView: View {
         NavigationStack{
             VStack{
                 List {
-                    ForEach(viewModel.state.habits) { habit in
-                        Text(habit.name)
-                    }
+                    
                 }
                 Picker("Track today's mood", selection: $selectedMood) {
                     Text("😁").tag(0)
@@ -30,9 +28,6 @@ struct DailyView: View {
                 .pickerStyle(.segmented)
 
             Text("Value: \(selectedMood)")
-        }
-        .onAppear {
-            viewModel.fetchHabits()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Daily Habits")
