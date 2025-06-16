@@ -12,6 +12,8 @@ extension HabitDefinition : EntityConverting {
         entity.targetTimestamp = Int16(targetTimestamp ?? 0)
         entity.isActive = isActive
         entity.isUsingHealthData = isUsingHealthData
+        entity.icon = icon
+        entity.targetValueUnit = targetValueUnit
         
         return entity
     }
@@ -22,10 +24,12 @@ extension HabitDefinitionEntity : ModelConverting {
         return HabitDefinition(
             id: id!,
             name: name!,
+            icon: icon ?? "",
             type: HabitType(rawValue: type)!,
             frequency: HabitFrequency(rawValue: frequency)!,
             targetTimestamp: Int(targetTimestamp),
             targetValue: Float(targetValue),
+            targetValueUnit: targetValueUnit!,
             isActive: isActive,
             isUsingHealthData: isUsingHealthData
         )

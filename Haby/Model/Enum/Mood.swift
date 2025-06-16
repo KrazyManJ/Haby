@@ -1,6 +1,10 @@
 
-enum Mood: CaseIterable {
-    case Joyous, Happy, Neutral, Sad, Angry
+enum Mood: Int16, CaseIterable {
+    case Joyous
+    case Happy
+    case Neutral
+    case Sad
+    case Angry
     
     var emoji: String {
         switch self {
