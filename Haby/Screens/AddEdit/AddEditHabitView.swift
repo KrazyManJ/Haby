@@ -128,9 +128,9 @@ struct AddEditHabitView: View {
             let newHabit = HabitDefinition(
                 id: UUID(),
                 name: habitName,
+                icon: selectedIcon,
                 type: selectedHabitType,
                 frequency: selectedFrequency,
-               // icon: icon,
                 isActive: habitActive
             )
             
