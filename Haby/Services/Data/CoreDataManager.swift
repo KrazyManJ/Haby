@@ -15,15 +15,15 @@ final class CoreDataManager: DataManaging {
         }
     }
     
-    func insert(entity: HabitDefinitionEntity) {
+    func insert<T: NSManagedObject>(entity: T) {
         save()
     }
     
-    func update(entity: HabitDefinitionEntity) {
+    func update<T: NSManagedObject>(entity: T) {
         save()
     }
     
-    func delete(entity: HabitDefinitionEntity) {
+    func delete<T: NSManagedObject>(entity: T) {
         context.delete(entity)
         save()
     }

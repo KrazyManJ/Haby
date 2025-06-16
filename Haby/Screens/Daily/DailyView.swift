@@ -26,16 +26,16 @@ struct DailyView: View {
                 .padding()
 
                 Text("Value: \(String(describing: mood))")
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Daily Habits")
-        .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing){
-                NavigationLink(destination: OverviewView()) {
-                    Text("Streak")
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Daily Habits")
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing){
+                    NavigationLink(destination: OverviewView()) {
+                        Text("Streak")
+                    }
                 }
             }
-        }
         }
     }
 }
