@@ -8,7 +8,8 @@ struct AddEditHabitView: View {
     
     @State private var isIconPickerPresented = false
     
-    var amountType = ["Km", "Litres"]
+    var amountTypes = ["Km", "Litres", "Steps"]
+    @State private var amountType: String = "Km"
     @State private var habitName: String = ""
     @State private var selectedHabitType: HabitType = .Deadline
     @State private var selectedFrequency: HabitFrequency = .Daily
@@ -52,7 +53,7 @@ struct AddEditHabitView: View {
                         )
                         .keyboardType(.numberPad)
                         Picker("Amount type", selection: $selectedAmountType) {
-                            ForEach(amountType, id: \.self) { test in
+                            ForEach(amountTypes, id: \.self) { test in
                                 Text(test)
                             }
                         }
@@ -81,25 +82,23 @@ struct AddEditHabitView: View {
                 HStack{
                     Text("Pick Icon")
                     Spacer()
-                    Button {
+                    Button{
                         isIconPickerPresented.toggle()
                     } label: {
-                        Image(systemName: selectedIcon)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.accentColor)
-                        .cornerRadius(15)
+                        HStack{
+                            Image(systemName: selectedIcon)
+                                .foregroundColor(.black)
+                                //.padding()
+                            //.background(Color.accentColor)
+                            //.cornerRadius(15)
+                            Image(systemName: "chevron.up.chevron.down")
+                        }
                     }
-                    .padding(.horizontal)
                 }
             
                 Toggle("Turn off habit", isOn: $habitActive)
-                
-                Button("Save"){
-                    saveHabit()
-                    isViewPresented.toggle()
-                }
             }
+            
         }
         // todo zmenit nadpis na edit kdyz habit id == null
         .navigationTitle("Add Habit")
@@ -122,6 +121,16 @@ struct AddEditHabitView: View {
                     .foregroundColor(.accentColor)
             }
         }
+        Button{
+            saveHabit()
+            isViewPresented.toggle()
+        } label: {
+            Text("Save Habit")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 30)
+        }
+        .padding(15)
+        .buttonStyle(.borderedProminent)
     }
     
         private func saveHabit() {
@@ -131,7 +140,10 @@ struct AddEditHabitView: View {
                 icon: selectedIcon,
                 type: selectedHabitType,
                 frequency: selectedFrequency,
-                isActive: habitActive
+                targetValue: goalAmount,
+                targetValueUnit: amountType,
+                isActive: habitActive,
+                isUsingHealthData: healthData
             )
             
             viewModel.addNewHabit(habit: newHabit)
