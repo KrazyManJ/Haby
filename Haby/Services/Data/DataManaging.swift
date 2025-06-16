@@ -6,7 +6,7 @@ protocol DataManaging {
     
     func fetch<T: NSManagedObject>() -> [T]
     
-    func insert(entity: HabitDefinitionEntity)
-    func update(entity: HabitDefinitionEntity)
-    func delete(entity: HabitDefinitionEntity)
+    func insert<T: NSManagedObject>(entity: T)
+    func update<T: NSManagedObject>(entity: T)
+    func delete<T: NSManagedObject>(entity: T)
 }
