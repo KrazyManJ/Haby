@@ -7,6 +7,6 @@ enum HabitType: Int16, CaseIterable, Identifiable  {
     case Amount = 3
     
     var name: String {
-            String(describing: self)
-        }
+        String(describing: self)
+    }
 }
