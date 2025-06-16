@@ -15,11 +15,26 @@ final class CoreDataManager: DataManaging {
         }
     }
     
-    func insert<T: NSManagedObject>(entity: T) {
-        save()
+    func fetch<T: NSManagedObject>() -> [T] {
+        return fetch(predicate: nil)
     }
     
-    func update<T: NSManagedObject>(entity: T) {
+    func upsert<T: NSManagedObject>(entity: T) where T:Identifiable  {
+        if let fromData: T = fetchOne(
+            predicate: NSPredicate(format: "id = %@", entity.id as! NSUUID)
+        ) {
+            let description = NSEntityDescription.entity(
+                forEntityName: .init(describing: T.self),
+                in: context
+            )
+            
+            let entityKeys: [String] = if let attributes = description?.attributesByName { Array(attributes.keys) } else { [] }
+            
+            for key in entityKeys {
+                fromData.setValue(entity.value(forKey: key), forKey: key)
+            }
+            context.delete(entity)
+        }
         save()
     }
     
@@ -28,17 +43,10 @@ final class CoreDataManager: DataManaging {
         save()
     }
     
-    func fetch<T: NSManagedObject>() -> [T] {
-        let request = NSFetchRequest<T>(entityName: String(describing: T.self))
-        var lines: [T] = []
-        
-        do {
-            lines = try context.fetch(request)
-        } catch {
-            print("Cannot fetch data: \(error.localizedDescription)")
-        }
-        
-        return lines
+    func getMoodRecordByDate(date: Date) -> MoodRecordEntity? {
+        return fetchOne(
+            predicate: NSPredicate(format: "date = %@",date as NSDate)
+        )
     }
 }
 
@@ -52,5 +60,38 @@ private extension CoreDataManager {
             }
         }
     }
-
+    
+    private func fetch<T: NSManagedObject>(
+        predicate: NSPredicate? = nil
+    ) -> [T] {
+        let request = NSFetchRequest<T>(entityName: String(describing: T.self))
+        if predicate != nil {
+            request.predicate = predicate
+        }
+        var lines: [T] = []
+        
+        do {
+            lines = try context.fetch(request)
+        } catch {
+            print("Cannot fetch data: \(error.localizedDescription)")
+        }
+        
+        return lines
+    }
+    
+    private func fetchOne<T: NSManagedObject>(
+        predicate: NSPredicate? = nil
+    ) -> T? {
+        let request = NSFetchRequest<T>(entityName: String(describing: T.self))
+        if predicate != nil {
+            request.predicate = predicate
+        }
+        request.fetchLimit = 1
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Cannot fetch data: \(error.localizedDescription)")
+        }
+        return nil
+    }
 }
