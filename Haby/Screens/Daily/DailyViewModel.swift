@@ -7,7 +7,7 @@ class DailyViewModel: ObservableObject {
     var dataManaging: Injected<DataManaging> = .init()
     
     func updateMood(mood: Mood) {
-        dataManaging.wrappedValue.upsert(entity: state.todayMoodData.toEntity())
+        dataManaging.wrappedValue.upsert(model: state.todayMoodData)
     }
     
     func getTodayMood() {
