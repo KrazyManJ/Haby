@@ -42,7 +42,10 @@ struct DailyView: View {
                     }
                 }
             }.onAppear {
-                viewModel.updateMood(mood: .Neutral)
+                if !viewModel.isTodayMoodSaved() {
+                    print("Not saved")
+                    viewModel.updateMood(mood: .Neutral)
+                }
             }
         }
     }

@@ -15,4 +15,9 @@ class DailyViewModel: ObservableObject {
             state.todayMoodData = todayMoodDataEntity.toModel()
         }
     }
+    
+    func isTodayMoodSaved() -> Bool {
+        let moodSavedFromDate = dataManaging.wrappedValue.getMoodRecordByDate(date: Date().onlyDate)
+        return moodSavedFromDate != nil
+    }
 }
