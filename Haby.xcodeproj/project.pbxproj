@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */; };
+		A00619BD2E0309880094684C /* LRStreakKit in Frameworks */ = {isa = PBXBuildFile; productRef = A00619BC2E0309880094684C /* LRStreakKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */,
+				A00619BD2E0309880094684C /* LRStreakKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = Haby;
 			packageProductDependencies = (
 				A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */,
+				A00619BC2E0309880094684C /* LRStreakKit */,
 			);
 			productName = Haby;
 			productReference = 44B063E82DDDC4D000252D85 /* Haby.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A003D61E2DFAE65400A5B0C0 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */,
+				A00619BB2E0309880094684C /* XCRemoteSwiftPackageReference "LRStreakKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 44B063E92DDDC4D000252D85 /* Products */;
@@ -341,6 +345,14 @@
 				minimumVersion = 1.0.7;
 			};
 		};
+		A00619BB2E0309880094684C /* XCRemoteSwiftPackageReference "LRStreakKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lukerobertsapps/LRStreakKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -348,6 +360,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A003D61E2DFAE65400A5B0C0 /* XCRemoteSwiftPackageReference "SFSymbolsPicker" */;
 			productName = SFSymbolsPicker;
+		};
+		A00619BC2E0309880094684C /* LRStreakKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A00619BB2E0309880094684C /* XCRemoteSwiftPackageReference "LRStreakKit" */;
+			productName = LRStreakKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

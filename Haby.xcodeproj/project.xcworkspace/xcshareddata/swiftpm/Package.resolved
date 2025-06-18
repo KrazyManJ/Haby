@@ -1,6 +1,15 @@
 {
-  "originHash" : "19df39f99b22f4ef95b73ed292ffb0c8d7694dd4c9db2b96ea73b091b7b1a026",
+  "originHash" : "a8affb8ca460c0dd0c6377a5336b645171be2374d355a6c64ca898b5fb8d12b7",
   "pins" : [
+    {
+      "identity" : "lrstreakkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lukerobertsapps/LRStreakKit.git",
+      "state" : {
+        "revision" : "e7a4e176932f1de1d0932a1ed2489862543cb401",
+        "version" : "1.1.0"
+      }
+    },
     {
       "identity" : "sfsymbolspicker",
       "kind" : "remoteSourceControl",
