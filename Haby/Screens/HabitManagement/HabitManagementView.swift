@@ -7,6 +7,7 @@ struct HabitManagementView: View {
     @State var isAddEditHabitViewPresented = false
     @State var showAlert = false
     @State private var habitToDelete: HabitDefinition? = nil
+    @State private var habitToEdit: HabitDefinition?
     
     init(viewModel: HabitManagementViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -18,21 +19,23 @@ struct HabitManagementView: View {
                 List {
                     ForEach(viewModel.state.habits) { habit in
                         HabitRow(
-                            icon: habit.icon,
-                            name: habit.name,
-                            type: habit.type.name,
-                            frequency: habit.frequency.name,
+                            habit: habit,
                             time: "cas"
                         )
+                        .onTapGesture {
+                            print("Editing habit:", habit)
+                            habitToEdit = habit
+                        }
                         .swipeActions {
                             Button() {
-                                  habitToDelete = habit
-                                  showAlert = true
-                              } label: {
-                                  Label("Delete", systemImage: "trash")
-                              }
+                                habitToDelete = habit
+                                showAlert = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
                     }
+                    
                 }
                 .listRowBackground(Color.clear)
                 .scrollContentBackground(.hidden)
@@ -45,21 +48,34 @@ struct HabitManagementView: View {
             .toolbar{
                 ToolbarItemGroup(placement: .topBarTrailing){
                     Button(action: {
-                        isAddEditHabitViewPresented.toggle()
+                        isAddEditHabitViewPresented = true
                     }) {
                         Label("New Habit", systemImage: "plus.circle")
                             .labelStyle(.iconOnly)
                     }
                 }
             }
-            .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: {viewModel.fetchHabits()}) {
-
-                    NavigationStack {
-                        AddEditHabitView(
-                            isViewPresented: $isAddEditHabitViewPresented
-                        )
-                    }
+            .sheet(item: $habitToEdit, onDismiss: {
+                viewModel.fetchHabits()
+            }) { habit in
+                NavigationStack {
+                    AddEditHabitView(
+                        isViewPresented: .constant(true),
+                        viewModel: AddEditHabitViewModel(habit: habit)
+                    )
+                }
             }
+            .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: {
+                viewModel.fetchHabits()
+            }) {
+                NavigationStack {
+                    AddEditHabitView(
+                        isViewPresented: .constant(true),
+                        viewModel: AddEditHabitViewModel()
+                    )
+                }
+            }
+
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Delete this habit?"),
@@ -80,3 +96,7 @@ struct HabitManagementView: View {
 #Preview {
     //HabitManagementView()
 }
+
+
+
+

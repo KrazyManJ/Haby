@@ -3,8 +3,9 @@ import SwiftUI
 import SFSymbolsPicker
 
 struct AddEditHabitView: View {
+    @Environment(\.dismiss) private var dismiss
     @Binding var isViewPresented: Bool
-    @State var viewModel: AddEditHabitViewModel = AddEditHabitViewModel()
+    @ObservedObject var viewModel: AddEditHabitViewModel
     
     @State private var isIconPickerPresented = false
     
@@ -13,6 +14,7 @@ struct AddEditHabitView: View {
     @State private var habitName: String = ""
     @State private var selectedHabitType: HabitType = .Deadline
     @State private var selectedFrequency: HabitFrequency = .Daily
+    @State private var selectedDay: WeekDay = .Monday
     // convert date to int64
     @State private var selectedTime = Date()
     @State private var goalAmount: Float = 0.0
@@ -20,6 +22,22 @@ struct AddEditHabitView: View {
     @State private var healthData = true
     @State private var selectedIcon: String = "star.fill"
     @State private var habitActive = true
+    
+    init(isViewPresented: Binding<Bool>, viewModel: AddEditHabitViewModel) {
+        self._isViewPresented = isViewPresented
+        self.viewModel = viewModel
+        
+        if let habit = viewModel.habitToEdit {
+            _habitName = State(initialValue: habit.name)
+            _selectedHabitType = State(initialValue: habit.type)
+            _selectedFrequency = State(initialValue: habit.frequency)
+            _goalAmount = State(initialValue: habit.targetValue ?? 0)
+            _selectedAmountType = State(initialValue: habit.targetValueUnit ?? "")
+            _healthData = State(initialValue: habit.isUsingHealthData)
+            _selectedIcon = State(initialValue: habit.icon)
+            _habitActive = State(initialValue: habit.isActive)
+        }
+    }
     
     let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -64,12 +82,28 @@ struct AddEditHabitView: View {
                     Toggle("Use Health Data", isOn: $healthData)
                     
                 } else {
-                    DatePicker(
-                        "chce to string",
-                        selection: $selectedTime,
-                        displayedComponents: [.hourAndMinute]
-                    )
-                    .datePickerStyle(WheelDatePickerStyle())
+                    switch selectedFrequency {
+                    case .Daily:
+                        DatePicker(
+                            "Daily Time",
+                            selection: $selectedTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .datePickerStyle(WheelDatePickerStyle())
+                    case .Weekly:
+                        DatePicker(
+                            "Weekly Time",
+                            selection: $selectedTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .datePickerStyle(WheelDatePickerStyle())
+                        Picker("Day of the Week", selection: $selectedDay){
+                            ForEach(WeekDay.allCases) { option in
+                                Text(option.name)
+                            }
+                            .pickerStyle(NavigationLinkPickerStyle())
+                        }
+                    }
                 }
                 
                 Picker("Repetition", selection: $selectedFrequency) {
@@ -93,58 +127,54 @@ struct AddEditHabitView: View {
                         }
                     }
                 }
-            
+                
                 Toggle("Turn off habit", isOn: $habitActive)
             }
-            
-        }
-        // todo zmenit nadpis na edit kdyz habit id == null
-        .navigationTitle("Add Habit")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .topBarLeading){
-                Button("Close") {
-                    isViewPresented.toggle()
+            .navigationTitle(viewModel.habitToEdit == nil ? "Add Habit" : "Edit Habit")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarLeading){
+                    Button("Close") {
+                        isViewPresented.toggle()
+                        dismiss()
+                    }
                 }
             }
-        }
-        .sheet(isPresented: $isIconPickerPresented) {
-            SymbolsPicker(
-                selection: $selectedIcon,
-                title: "Choose your symbol",
-                searchLabel: "Search symbols...",
-                autoDismiss: true
-            ) {
-                Image(systemName: "xmark.circle")
-                    .foregroundColor(.accentColor)
+            .sheet(isPresented: $isIconPickerPresented) {
+                SymbolsPicker(
+                    selection: $selectedIcon,
+                    title: "Choose your symbol",
+                    searchLabel: "Search symbols...",
+                    autoDismiss: true
+                ) {
+                    Image(systemName: "xmark.circle")
+                        .foregroundColor(.accentColor)
+                }
             }
         }
         Button{
             saveHabit()
-            isViewPresented.toggle()
+            dismiss()
         } label: {
             Text("Save Habit")
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding(15)
-        
     }
-    
-        private func saveHabit() {
+    private func saveHabit() {
             let newHabit = HabitDefinition(
-                id: UUID(),
+                id: viewModel.habitToEdit?.id ?? UUID(),
                 name: habitName,
                 icon: selectedIcon,
                 type: selectedHabitType,
                 frequency: selectedFrequency,
                 targetValue: goalAmount,
-                targetValueUnit: amountType,
+                targetValueUnit: selectedAmountType,
                 isActive: habitActive,
                 isUsingHealthData: healthData
             )
-            
-            viewModel.addNewHabit(habit: newHabit)
-        }
+        viewModel.addOrUpdateHabit(habit: newHabit)
+    }
     
 }
 #Preview {
