@@ -98,7 +98,6 @@ internal extension CoreDataManager {
     func fetchOne<T: NSManagedObject>(
         predicate: NSPredicate? = nil
     ) -> T? {
-        let clsName = String(describing: T.self)
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         if predicate != nil {
             request.predicate = predicate
