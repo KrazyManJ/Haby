@@ -10,7 +10,14 @@ protocol DataManaging {
     func fetchOneById<M:EntityConverting<E>, E: NSManagedObject>(id: UUID) -> M? where E:ModelConverting<M>
     
     func upsert<E: NSManagedObject ,M: EntityConverting<E>>(model: M) where M:Identifiable<UUID>
-    func delete<T: NSManagedObject>(entity: T)
+    func delete<E: NSManagedObject>(entity: E)
     
+    // HabitDefinitionDataManager
+    func getHabitsForToday() -> [HabitDefinition]
+    
+    // MoodDataManager
     func getMoodRecordByDate(date: Date) -> MoodRecordEntity?
+    
+    // HabitRecordDataManager
+    func getTodayRecords() -> [HabitRecord]
 }
