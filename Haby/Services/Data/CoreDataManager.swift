@@ -49,12 +49,18 @@ final class CoreDataManager: DataManaging {
                 fetchedEntity.setValue(entity.value(forKey: key), forKey: key)
             }
             
+            let relationshipKeys: [String] = if let relations = description?.relationshipsByName { Array(relations.keys) } else { [] }
+            
+            for key in relationshipKeys {
+                fetchedEntity.setValue(entity.value(forKey: key), forKey: key)
+            }
+            
             if (entity.objectID != fetchedEntity.objectID) {
                 context.delete(entity)
             }
         }
         else {
-            // To create model
+            // To create entity to be persisted
             _ = model.toEntity()
         }
         save()
@@ -67,7 +73,7 @@ final class CoreDataManager: DataManaging {
 }
 
 internal extension CoreDataManager {
-    private func save() {
+    func save() {
         if context.hasChanges {
             do {
                 try context.save()
@@ -77,7 +83,7 @@ internal extension CoreDataManager {
         }
     }
     
-    private func fetch<T: NSManagedObject>(
+    func fetch<T: NSManagedObject>(
         predicate: NSPredicate? = nil
     ) -> [T] {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
