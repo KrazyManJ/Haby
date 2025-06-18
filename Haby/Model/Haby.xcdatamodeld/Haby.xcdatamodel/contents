@@ -11,14 +11,12 @@
         <attribute name="targetValue" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="targetValueUnit" optional="YES" attributeType="String"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HabitRecordEntity" inverseName="definition" inverseEntity="HabitRecordEntity"/>
     </entity>
     <entity name="HabitRecordEntity" representedClassName="HabitRecordEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="habitId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="timestamp" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="definition" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HabitDefinitionEntity" inverseName="record" inverseEntity="HabitDefinitionEntity"/>
+        <relationship name="habitDefinition" maxCount="1" deletionRule="Nullify" destinationEntity="HabitDefinitionEntity"/>
     </entity>
     <entity name="MoodRecordEntity" representedClassName="MoodRecordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
