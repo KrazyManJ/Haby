@@ -1,7 +1,10 @@
 
 import Foundation
 
-enum WeekDay: Int16, CaseIterable, Identifiable {
+enum WeekDay: Int, CaseIterable, Identifiable {
+    
+    static let MINUTES_IN_DAY: Int = 1440;
+    
     var id: Self { self }
     
     case Monday = 1
@@ -14,5 +17,16 @@ enum WeekDay: Int16, CaseIterable, Identifiable {
     
     var name: String {
         String(describing: self)
+    }
+    
+    var toTimestamp: Int {
+        return self.rawValue*WeekDay.MINUTES_IN_DAY
+    }
+    
+    static func getTodayWeekDay() -> WeekDay {
+        return WeekDay(rawValue: Calendar.current.component(.weekday, from: Date()))!
+    }
+    static func getTomorrowWeekDay() -> WeekDay {
+        return WeekDay(rawValue: Calendar.current.component(.weekday, from: Date())+1)!
     }
 }
