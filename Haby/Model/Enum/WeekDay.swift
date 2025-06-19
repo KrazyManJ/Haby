@@ -24,9 +24,7 @@ enum WeekDay: Int, CaseIterable, Identifiable {
     }
     
     static func getTodayWeekDay() -> WeekDay {
-        let calendarWeekday = Calendar.current.component(.weekday, from: Date())
-        let mappedRawValue = calendarWeekday == 1 ? 7 : calendarWeekday - 1
-        return WeekDay(rawValue: mappedRawValue)!
+        return WeekDay(from: Date())
     }
     
     static func getTomorrowWeekDay() -> WeekDay {
@@ -37,5 +35,16 @@ enum WeekDay: Int, CaseIterable, Identifiable {
     
     init(from timestamp: Int) {
         self = WeekDay(rawValue: timestamp/WeekDay.MINUTES_IN_DAY+1)!
+    }
+    
+    func nextDay() -> WeekDay {
+        let nextRawValue = (self.rawValue % 7) + 1
+        return WeekDay(rawValue: nextRawValue)!
+    }
+    
+    init(from date: Date) {
+        let calendarWeekday = Calendar.current.component(.weekday, from: date)
+        let mappedRawValue = calendarWeekday == 1 ? 7 : calendarWeekday - 1
+        self = WeekDay(rawValue: mappedRawValue)!
     }
 }
