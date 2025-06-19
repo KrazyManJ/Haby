@@ -1,25 +1,24 @@
 
 import SwiftUI
 import SFSymbolsPicker
+import HealthKit
 
 struct AddEditHabitView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var isViewPresented: Bool
-    @ObservedObject var viewModel: AddEditHabitViewModel
+    @Bindable var viewModel: AddEditHabitViewModel
     
     @State private var isIconPickerPresented = false
     
-    var amountTypes = ["Km", "Litres", "Steps"]
-    @State private var amountType: String = "Km"
     @State private var habitName: String = ""
     @State private var selectedHabitType: HabitType = .Deadline
     @State private var selectedFrequency: HabitFrequency = .Daily
     @State private var selectedDay: WeekDay = .Monday
-    // convert date to int64
+
     @State private var selectedTime = Date()
     @State private var goalAmount: Float = 0.0
-    @State private var selectedAmountType: String = "Km"
-    @State private var healthData = true
+    @State private var selectedAmountType: AmountUnit = .None
+    //@State private var healthData = false
     @State private var selectedIcon: String = "star.fill"
     @State private var habitActive = true
     
@@ -38,8 +37,8 @@ struct AddEditHabitView: View {
                 }
             }
             _goalAmount = State(initialValue: habit.targetValue ?? 0)
-            _selectedAmountType = State(initialValue: habit.targetValueUnit ?? "")
-            _healthData = State(initialValue: habit.isUsingHealthData)
+            _selectedAmountType = State(initialValue: habit.targetValueUnit ?? .None)
+            //_healthData = State(initialValue: habit.isUsingHealthData)
             _selectedIcon = State(initialValue: habit.icon)
             _habitActive = State(initialValue: habit.isActive)
         }
@@ -68,6 +67,7 @@ struct AddEditHabitView: View {
                 .pickerStyle(.menu)
                 .accentColor(Color.Primary)
                 
+                
                 if selectedHabitType == .Amount {
                     HStack {
                         // todo check km/litr int/float
@@ -78,40 +78,18 @@ struct AddEditHabitView: View {
                         )
                         .keyboardType(.numberPad)
                         Picker("Amount type", selection: $selectedAmountType) {
-                            ForEach(amountTypes, id: \.self) { test in
-                                Text(test)
-                            }
-                        }
-                        .labelsHidden()
-                        .pickerStyle(.menu)
-                    }
-                    Toggle("Use Health Data", isOn: $healthData)
-                    
-                } else {
-                    switch selectedFrequency {
-                    case .Daily:
-                        DatePicker(
-                            "Daily Time",
-                            selection: $selectedTime,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .datePickerStyle(WheelDatePickerStyle())
-                    case .Weekly:
-                        DatePicker(
-                            "Weekly Time",
-                            selection: $selectedTime,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .datePickerStyle(WheelDatePickerStyle())
-                        Picker("Day of the Week", selection: $selectedDay){
-                            ForEach(WeekDay.allCases) { option in
+                            ForEach(AmountUnit.allCases){ option in
                                 Text(option.name)
                             }
-                            .pickerStyle(NavigationLinkPickerStyle())
                         }
+                        .pickerStyle(.menu)
+                        .labelsHidden()
+                        .accentColor(Color.Primary)
                     }
+                    
+                    Toggle("Use Health Data", isOn: $viewModel.healthData)
+                    
                 }
-                
                 Picker("Repetition", selection: $selectedFrequency) {
                     ForEach(HabitFrequency.allCases) { option in
                         Text(option.name)
@@ -119,6 +97,32 @@ struct AddEditHabitView: View {
                     .pickerStyle(NavigationLinkPickerStyle())
                 }
                 .pickerStyle(.menu)
+                switch selectedFrequency {
+                case .Daily:
+                    if selectedHabitType != .Amount {
+                        DatePicker(
+                            "Daily Time",
+                            selection: $selectedTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .datePickerStyle(WheelDatePickerStyle())
+                    }
+                case .Weekly:
+                    if selectedHabitType != .Amount {
+                        DatePicker(
+                            "Weekly Time",
+                            selection: $selectedTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .datePickerStyle(WheelDatePickerStyle())
+                    }
+                    Picker("Day of the Week", selection: $selectedDay){
+                        ForEach(WeekDay.allCases) { option in
+                            Text(option.name)
+                        }
+                        .pickerStyle(NavigationLinkPickerStyle())
+                    }
+                }
                 
                 HStack{
                     Text("Pick Icon")
@@ -184,7 +188,7 @@ struct AddEditHabitView: View {
             targetValue: goalAmount,
             targetValueUnit: selectedAmountType,
             isActive: habitActive,
-            isUsingHealthData: healthData
+            isUsingHealthData: viewModel.healthData
         )
         viewModel.addOrUpdateHabit(habit: newHabit)
     }

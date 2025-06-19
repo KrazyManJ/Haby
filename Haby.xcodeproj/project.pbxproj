@@ -15,9 +15,22 @@
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		44B063EA2DDDC4D000252D85 /* Haby */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */,
+			);
 			path = Haby;
 			sourceTree = "<group>";
 		};
@@ -262,11 +275,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Haby/Haby.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Haby/Preview Content\"";
+				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Haby/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "\"This app reads your step count to track your daily activity.\"";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "\"This app uses step count data to provide personalized health insights.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -290,11 +308,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Haby/Haby.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Haby/Preview Content\"";
+				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Haby/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "\"This app reads your step count to track your daily activity.\"";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "\"This app uses step count data to provide personalized health insights.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
