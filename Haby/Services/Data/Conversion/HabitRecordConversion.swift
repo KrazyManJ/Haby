@@ -6,6 +6,7 @@ extension HabitRecord : EntityConverting {
         let entity = HabitRecordEntity(context: dataManaging.wrappedValue.context)
         
         entity.id = id
+        entity.date = date
         entity.timestamp = Int16(timestamp ?? -1)
         entity.value = value ?? -1
         
@@ -20,6 +21,7 @@ extension HabitRecordEntity : ModelConverting {
     func toModel() -> HabitRecord {
         return HabitRecord(
             id: id ?? UUID(),
+            date: date!,
             timestamp: Int(timestamp),
             value: value,
             habitDefinition: habitDefinition!.toModel()

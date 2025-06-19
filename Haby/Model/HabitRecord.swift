@@ -2,6 +2,7 @@ import UIKit
 
 struct HabitRecord : Identifiable {
     var id: UUID
+    var date: Date
     var timestamp: Int?
     var value: Float?
     var habitDefinition: HabitDefinition
