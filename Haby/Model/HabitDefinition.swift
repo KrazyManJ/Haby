@@ -10,7 +10,7 @@ struct HabitDefinition: Identifiable {
     
     var targetTimestamp: Int?
     var targetValue: Float?
-    var targetValueUnit: String?
+    var targetValueUnit: AmountUnit?
     
     var isActive: Bool = false
     var isUsingHealthData: Bool = false

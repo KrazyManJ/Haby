@@ -13,7 +13,7 @@ extension HabitDefinition : EntityConverting {
         entity.isActive = isActive
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
-        entity.targetValueUnit = targetValueUnit
+        entity.targetValueUnit = (targetValueUnit ?? .None).rawValue
         
         return entity
     }
@@ -29,7 +29,7 @@ extension HabitDefinitionEntity : ModelConverting {
             frequency: HabitFrequency(rawValue: frequency)!,
             targetTimestamp: Int(targetTimestamp),
             targetValue: Float(targetValue),
-            targetValueUnit: targetValueUnit,
+            targetValueUnit: AmountUnit(rawValue: targetValueUnit)!,
             isActive: isActive,
             isUsingHealthData: isUsingHealthData
         )
