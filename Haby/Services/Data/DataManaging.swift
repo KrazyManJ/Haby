@@ -13,7 +13,7 @@ protocol DataManaging {
     func delete<E: NSManagedObject>(entity: E)
     
     // HabitDefinitionDataManager
-    func getHabitsForToday() -> [HabitDefinition]
+    func getTimeHabitsForToday() -> [HabitDefinition]
     
     // MoodDataManager
     func getMoodRecordByDate(date: Date) -> MoodRecordEntity?

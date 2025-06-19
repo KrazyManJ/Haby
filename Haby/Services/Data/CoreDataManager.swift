@@ -84,11 +84,15 @@ internal extension CoreDataManager {
     }
     
     func fetch<T: NSManagedObject>(
-        predicate: NSPredicate? = nil
+        predicate: NSPredicate? = nil,
+        sortDescriptions: [NSSortDescriptor]? = nil
     ) -> [T] {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         if predicate != nil {
             request.predicate = predicate
+        }
+        if let sortDescriptions = sortDescriptions {
+            request.sortDescriptors = sortDescriptions
         }
         var lines: [T] = []
         

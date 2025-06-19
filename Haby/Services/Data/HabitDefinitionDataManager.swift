@@ -1,16 +1,23 @@
 import CoreData
 
 extension CoreDataManager {
-    func getHabitsForToday() -> [HabitDefinition] {
-        let result: [HabitDefinitionEntity] = getHabitsEntitiesForToday()
-        return result.map { r in r.toModel()}
+    func getTimeHabitsForToday() -> [HabitDefinition] {
+        let result: [HabitDefinitionEntity] = getTimeHabitsEntitiesForToday()
+        return result
+            .map { r in r.toModel()}
+            .sorted {a,b in
+                a.targetTimestamp! % WeekDay.MINUTES_IN_DAY
+                <=
+                b.targetTimestamp! % WeekDay.MINUTES_IN_DAY
+            }
     }
     
-    internal func getHabitsEntitiesForToday() -> [HabitDefinitionEntity] {
+    internal func getTimeHabitsEntitiesForToday() -> [HabitDefinitionEntity] {
         return fetch(
             predicate: NSPredicate(
-                format:"(frequency == %d) OR (frequency == %d AND targetTimestamp >= %d AND targetTimestamp <= %d)",
+                format:"type != %d AND ((frequency == %d) OR (frequency == %d AND targetTimestamp >= %d AND targetTimestamp <= %d))",
                 argumentArray: [
+                    HabitType.Amount.rawValue,
                     HabitFrequency.Daily.rawValue,
                     HabitFrequency.Weekly.rawValue,
                     WeekDay.getTodayWeekDay().toTimestamp,

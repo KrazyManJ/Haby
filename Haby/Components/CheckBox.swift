@@ -5,12 +5,13 @@ struct CheckboxToggleStyle: ToggleStyle {
         HStack {
 
             RoundedRectangle(cornerRadius: 5.0)
-                .stroke(lineWidth: 2)
+                .stroke(lineWidth: 4)
                 .frame(width: 25, height: 25)
                 .cornerRadius(5.0)
                 .overlay {
                     if (configuration.isOn){
                         Image(systemName: "checkmark")
+                            .font(.system(size: 16, weight: .bold))
                     }
                 }
                 .onTapGesture {
