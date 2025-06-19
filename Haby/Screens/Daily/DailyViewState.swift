@@ -8,6 +8,7 @@ final class DailyViewState {
     )
     
     var habits: [HabitDefinition] = []
+    var amountHabits: [HabitDefinition] = []
     
     var habitRecords: [HabitRecord] = []
 }

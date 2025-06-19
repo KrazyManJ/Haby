@@ -23,8 +23,7 @@ struct WeeklyView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing){
                 NavigationLink(destination: OverviewView()) {
-                    Button("Streak", systemImage: "flame") {
-                    }
+                    Button("Streak", systemImage: "flame"){}
                 }
             }
         }

@@ -12,5 +12,18 @@ enum AmountUnit: Int16, CaseIterable, Identifiable {
     var name: String {
         String(describing: self)
     }
+    
+    var abbreviation: String {
+        switch self {
+        case .Steps:
+            return "steps"
+        case .Kilometers:
+            return "km"
+        case .Litres:
+            return "l"
+        case .None:
+            return ""
+        }
+    }
 }
 
