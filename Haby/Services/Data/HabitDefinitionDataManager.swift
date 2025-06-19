@@ -13,8 +13,8 @@ extension CoreDataManager {
                 argumentArray: [
                     HabitFrequency.Daily.rawValue,
                     HabitFrequency.Weekly.rawValue,
-                    WeekDay.getTodayWeekDay().rawValue,
-                    WeekDay.getTomorrowWeekDay().rawValue
+                    WeekDay.getTodayWeekDay().toTimestamp,
+                    WeekDay.getTomorrowWeekDay().toTimestamp
                 ]
             )
         )
