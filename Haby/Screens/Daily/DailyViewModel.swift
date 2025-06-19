@@ -22,7 +22,7 @@ class DailyViewModel: ObservableObject {
     }
     
     func getTodayHabits() {
-        state.habits = dataManaging.wrappedValue.getHabitsForToday()
+        state.habits = dataManaging.wrappedValue.getTimeHabitsForToday()
         state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
     }
     

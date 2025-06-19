@@ -2,7 +2,7 @@ import CoreData
 
 extension CoreDataManager {
     func getTodayRecords() -> [HabitRecord] {
-        let habits = getHabitsEntitiesForToday()
+        let habits = getTimeHabitsEntitiesForToday()
         
         let result: [HabitRecordEntity] = fetch(
             predicate: NSPredicate(
