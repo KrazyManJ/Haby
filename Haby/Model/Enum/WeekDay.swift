@@ -20,13 +20,22 @@ enum WeekDay: Int, CaseIterable, Identifiable {
     }
     
     var toTimestamp: Int {
-        return self.rawValue*WeekDay.MINUTES_IN_DAY
+        return (self.rawValue-1)*WeekDay.MINUTES_IN_DAY
     }
     
     static func getTodayWeekDay() -> WeekDay {
-        return WeekDay(rawValue: Calendar.current.component(.weekday, from: Date()))!
+        let calendarWeekday = Calendar.current.component(.weekday, from: Date())
+        let mappedRawValue = calendarWeekday == 1 ? 7 : calendarWeekday - 1
+        return WeekDay(rawValue: mappedRawValue)!
     }
+    
     static func getTomorrowWeekDay() -> WeekDay {
-        return WeekDay(rawValue: Calendar.current.component(.weekday, from: Date())+1)!
+        let today = getTodayWeekDay().rawValue
+        let tomorrow = today % 7 + 1
+        return WeekDay(rawValue: tomorrow)!
+    }
+    
+    init(from timestamp: Int) {
+        self = WeekDay(rawValue: timestamp/WeekDay.MINUTES_IN_DAY+1)!
     }
 }

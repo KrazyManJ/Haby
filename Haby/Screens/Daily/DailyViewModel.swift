@@ -43,6 +43,7 @@ class DailyViewModel: ObservableObject {
         else {
             dataManaging.wrappedValue.upsert(model: HabitRecord(
                 id: UUID(),
+                date: Date().onlyDate,
                 timestamp: currentTimestamp,
                 habitDefinition: habit
             ))

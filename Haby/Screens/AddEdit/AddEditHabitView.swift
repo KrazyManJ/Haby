@@ -31,6 +31,12 @@ struct AddEditHabitView: View {
             _habitName = State(initialValue: habit.name)
             _selectedHabitType = State(initialValue: habit.type)
             _selectedFrequency = State(initialValue: habit.frequency)
+            if let timestamp = habit.targetTimestamp {
+                _selectedTime = State(initialValue: Date.fromMinutesTimestamp(timestamp: timestamp))
+                if habit.frequency == .Weekly {
+                    _selectedDay = State(initialValue: WeekDay(from: timestamp))
+                }
+            }
             _goalAmount = State(initialValue: habit.targetValue ?? 0)
             _selectedAmountType = State(initialValue: habit.targetValueUnit ?? "")
             _healthData = State(initialValue: habit.isUsingHealthData)
@@ -162,17 +168,24 @@ struct AddEditHabitView: View {
         .padding(15)
     }
     private func saveHabit() {
-            let newHabit = HabitDefinition(
-                id: viewModel.habitToEdit?.id ?? UUID(),
-                name: habitName,
-                icon: selectedIcon,
-                type: selectedHabitType,
-                frequency: selectedFrequency,
-                targetValue: goalAmount,
-                targetValueUnit: selectedAmountType,
-                isActive: habitActive,
-                isUsingHealthData: healthData
-            )
+        
+        var timestamp = selectedTime.hourAndMinutesToMinutesTimestamp
+        if selectedFrequency == .Weekly {
+            timestamp += selectedDay.toTimestamp
+        }
+        
+        let newHabit = HabitDefinition(
+            id: viewModel.habitToEdit?.id ?? UUID(),
+            name: habitName,
+            icon: selectedIcon,
+            type: selectedHabitType,
+            frequency: selectedFrequency,
+            targetTimestamp: timestamp,
+            targetValue: goalAmount,
+            targetValueUnit: selectedAmountType,
+            isActive: habitActive,
+            isUsingHealthData: healthData
+        )
         viewModel.addOrUpdateHabit(habit: newHabit)
     }
     

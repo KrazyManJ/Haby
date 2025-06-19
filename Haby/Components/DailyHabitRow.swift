@@ -5,9 +5,21 @@ struct DailyHabitRow: View {
     @State private var showConfirmation = false
     var habit: HabitDefinition
     
+    var expiredTick: Bool {
+            guard let record = viewModel.state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }),
+                  let targetTimestamp = habit.targetTimestamp,
+                  let timestamp = record.timestamp else {
+                return false
+            }
+            return timestamp <= targetTimestamp
+        }
+    
     var body: some View {
         HStack{
             Text(habit.name)
+            if let record = viewModel.state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+                Text("\(expiredTick)")
+            }
             Spacer()
             CheckBox(isOn: Binding(
                 get: {
