@@ -3,7 +3,20 @@ import SwiftUI
 
 struct HabitRow: View {
     var habit: HabitDefinition
-    var time: String
+    
+    var requirementString: String
+    
+    init(habit: HabitDefinition) {
+        self.habit = habit
+        if let timestamp = habit.targetTimestamp {
+            self.requirementString = String(format: "%02d:%02d", timestamp / 60 % 24, timestamp % 60)
+        } else if let amount = habit.targetValue, let unit  = habit.targetValueUnit {
+            self.requirementString = "\(amount) \(unit)"
+        }
+        else {
+            requirementString = ""
+        }
+    }
     
     var body: some View {
         HStack{
@@ -12,7 +25,7 @@ struct HabitRow: View {
                     Image(systemName: habit.icon)
                     Text(habit.name)
                 }
-                Text("\(habit.type.name) • \(habit.frequency.name) • \(time)")
+                Text("\(habit.type.name) • \(habit.frequency.name) • \(requirementString)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }

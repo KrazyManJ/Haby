@@ -19,11 +19,9 @@ struct HabitManagementView: View {
                 List {
                     ForEach(viewModel.state.habits) { habit in
                         HabitRow(
-                            habit: habit,
-                            time: "cas"
+                            habit: habit
                         )
                         .onTapGesture {
-                            print("Editing habit:", habit)
                             habitToEdit = habit
                         }
                         .swipeActions {
