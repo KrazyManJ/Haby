@@ -1,13 +1,13 @@
 {
-  "originHash" : "d7c6be3fa9967d68764d17edf997125ad2acc565b23aae8a6d89fd6e4d51361e",
+  "originHash" : "fa62f810c7464791fdffbfe04b888c0af66f93bc733201af7adc53165191d813",
   "pins" : [
     {
-      "identity" : "lrstreakkit",
+      "identity" : "fscalendar",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lukerobertsapps/LRStreakKit.git",
+      "location" : "https://github.com/WenchaoD/FSCalendar",
       "state" : {
-        "revision" : "e7a4e176932f1de1d0932a1ed2489862543cb401",
-        "version" : "1.1.0"
+        "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
+        "version" : "2.8.4"
       }
     },
     {

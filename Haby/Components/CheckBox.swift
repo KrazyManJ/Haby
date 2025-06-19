@@ -22,8 +22,6 @@ struct CheckboxToggleStyle: ToggleStyle {
                 }
 
             configuration.label
-        }.onAppear {
-            print(isInvalid)
         }
     }
 }

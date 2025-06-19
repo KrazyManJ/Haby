@@ -19,5 +19,9 @@ protocol DataManaging {
     func getMoodRecordByDate(date: Date) -> MoodRecordEntity?
     
     // HabitRecordDataManager
+    func getRecordsByDate(date: Date) -> [HabitRecord]
     func getTodayRecords() -> [HabitRecord]
+    func fetchAllRecordsSortedByDate() -> [HabitRecord]
+    func fetchDatesWithHabitRecords() -> [Date]
+    func getHabitsForDate(date: Date) -> [HabitDefinition]
 }

@@ -6,14 +6,19 @@ import HealthKit
 @Observable
 class OverviewViewModel: ObservableObject {
     private let healthStore = HKHealthStore()
+    private let dataManaging: Injected<DataManaging>
         
 //    var distanceToday: Double = 0.0
 //    var monthlyDistances: [DistanceData] = []
     
     var stepsToday: Double = 0
     var monthlySteps: [StepData] = []
+    var completedDates: Set<Date> = Set()
     
-    init() { requestAuthorization() }
+    init() {
+        dataManaging = .init()
+        requestAuthorization()
+    }
 
     private func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else { return }
@@ -31,6 +36,25 @@ class OverviewViewModel: ObservableObject {
     func loadStepData() async {
         await fetchStepsToday()
         await fetchMonthlyStepData()
+    }
+    
+    func loadCompletedDates() {
+        dataManaging.wrappedValue.fetchDatesWithHabitRecords().forEach { date in
+            let habitsInDate: [HabitDefinition] = dataManaging.wrappedValue.getHabitsForDate(date: date)
+            let habitsRecords: [HabitRecord] = dataManaging.wrappedValue.getRecordsByDate(date: date)
+            
+            for habit in habitsInDate {
+                guard let record = habitsRecords.first(where: { r in
+                    r.date == date && r.habitDefinition.id == habit.id
+                }) else {
+                    break
+                }
+                
+                if habit.canBeCheckedInTimestamp(timestamp: record.timestamp!) {
+                    completedDates.insert(date)
+                }
+            }
+        }
     }
     
 //    func loadDistance() {
