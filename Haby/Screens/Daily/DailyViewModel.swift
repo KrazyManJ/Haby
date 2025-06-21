@@ -9,26 +9,58 @@ class DailyViewModel: ObservableObject {
     
     private let healthStore = HKHealthStore()
     var stepsToday: Double = 0
+    var isLoadingSteps: Bool = true
     
     func loadStepData() async {
         await fetchStepsToday()
     }
     
     private func fetchStepsToday() async {
-       let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-       let startOfDay = Calendar.current.startOfDay(for: Date())
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let startOfDay = Calendar.current.startOfDay(for: Date())
 
-       let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
 
-       let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
-           guard let quantity = result?.sumQuantity() else { return }
-           DispatchQueue.main.async {
-               self.stepsToday = quantity.doubleValue(for: .count())
-           }
-       }
+        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let quantity = result?.sumQuantity() else { return }
+            let steps = quantity.doubleValue(for: .count())
 
-       healthStore.execute(query)
-   }
+            DispatchQueue.main.async {
+                self.stepsToday = steps
+                self.isLoadingSteps = false
+                self.syncHealthDataToHabits()
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    
+
+    func syncHealthDataToHabits() {
+        for habit in state.amountHabits {
+            guard habit.isUsingHealthData,
+                  habit.targetValueUnit == .Steps else { continue }
+
+            let currentSteps = Float(stepsToday)
+
+            if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+                var updatedRecord = existing
+                updatedRecord.value = currentSteps
+                dataManaging.wrappedValue.upsert(model: updatedRecord)
+            } else {
+                let newRecord = HabitRecord(
+                    id: UUID(),
+                    date: Date().onlyDate,
+                    value: currentSteps,
+                    habitDefinition: habit
+                )
+                dataManaging.wrappedValue.upsert(model: newRecord)
+            }
+        }
+        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+    }
+
+
     
     func updateMood(mood: Mood) {
         dataManaging.wrappedValue.upsert(model: state.todayMoodData)
@@ -77,4 +109,25 @@ class DailyViewModel: ObservableObject {
 
         getTodayHabits()
     }
+    
+    func addToAmountHabit(habit: HabitDefinition, addedAmount: Float) {
+        let today = Date().onlyDate
+
+        if var record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+            record.value = (record.value ?? 0) + addedAmount
+            dataManaging.wrappedValue.upsert(model: record)
+            
+        } else {
+            let newRecord = HabitRecord(
+                id: UUID(),
+                date: today,
+                value: addedAmount,
+                habitDefinition: habit
+            )
+            dataManaging.wrappedValue.upsert(model: newRecord)
+        }
+
+        getTodayHabits()
+    }
+
 }

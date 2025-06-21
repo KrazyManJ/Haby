@@ -5,8 +5,6 @@ struct DailyView: View {
     @State private var viewModel: DailyViewModel
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
-    // todo finish step goal progress bar
-    let stepGoal = 10000.0
     
     init(viewModel: DailyViewModel) {
         self.viewModel = viewModel
@@ -40,26 +38,23 @@ struct DailyView: View {
                         Spacer(minLength: 0)
                     }.padding()
                     
-                    // step progress delete later
-                    //StepProgressBar(steps: viewModel.stepsToday, goal: stepGoal)
-                    //   .frame(height: 20)
-                    //   .padding(.horizontal)
-                    
-                    // amount habits
-                    LazyVStack(spacing: 0) {
-                        ForEach(viewModel.state.amountHabits) { habit in
-                            DailyGoalProgressBar(
-                                viewModel: $viewModel, habit: habit, currentAmount: 3.1
-                            )
+                    if !viewModel.state.amountHabits.isEmpty {
+                        LazyVStack(spacing: 0) {
+                            ForEach(viewModel.state.amountHabits) { habit in
+                                DailyGoalProgressBar(
+                                    viewModel: $viewModel, habit: habit
+                                )
+                                .padding(8)
+                            }
+                            Spacer(minLength: 0)
                         }
-                        Spacer(minLength: 0)
+                        .frame(minHeight: 100)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.Secondary)
+                        )
+                        .padding()
                     }
-                    .frame(height: 200)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.Secondary)
-                    )
-                    .padding()
                 }
                 MoodPickerView(selectedMood: mood).padding()
                
