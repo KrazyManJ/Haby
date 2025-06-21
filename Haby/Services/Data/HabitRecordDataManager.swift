@@ -4,15 +4,17 @@ extension CoreDataManager {
     func getTodayRecords() -> [HabitRecord] {
         return getRecordsByDate(date: Date())
     }
-    
+
     func getRecordsByDate(date: Date) -> [HabitRecord] {
-        let habits = getTimeHabitsEntitiesForDate(date: date)
-        
+        let timeHabits = getTimeHabitsEntitiesForDate(date: date)
+        let amountHabits = getAmountHabitsEntitiesForDate(date: date)
+        let allHabits = timeHabits + amountHabits
+
         let result: [HabitRecordEntity] = fetch(
             predicate: NSPredicate(
                 format:"habitDefinition IN %@ AND date = %@",
                 argumentArray: [
-                    habits,
+                    allHabits,
                     Date().onlyDate as NSDate
                 ]
             )

@@ -97,30 +97,29 @@ struct AddEditHabitView: View {
                     .pickerStyle(NavigationLinkPickerStyle())
                 }
                 .pickerStyle(.menu)
+                if selectedHabitType != .Amount {
                 switch selectedFrequency {
                 case .Daily:
-                    if selectedHabitType != .Amount {
                         DatePicker(
                             "Daily Time",
                             selection: $selectedTime,
                             displayedComponents: [.hourAndMinute]
                         )
                         .datePickerStyle(WheelDatePickerStyle())
-                    }
+                    
                 case .Weekly:
-                    if selectedHabitType != .Amount {
                         DatePicker(
                             "Weekly Time",
                             selection: $selectedTime,
                             displayedComponents: [.hourAndMinute]
                         )
                         .datePickerStyle(WheelDatePickerStyle())
-                    }
-                    Picker("Day of the Week", selection: $selectedDay){
-                        ForEach(WeekDay.allCases) { option in
-                            Text(option.name)
+                        Picker("Day of the Week", selection: $selectedDay){
+                            ForEach(WeekDay.allCases) { option in
+                                Text(option.name)
+                            }
+                            .pickerStyle(NavigationLinkPickerStyle())
                         }
-                        .pickerStyle(NavigationLinkPickerStyle())
                     }
                 }
                 
@@ -137,8 +136,6 @@ struct AddEditHabitView: View {
                         }
                     }
                 }
-                
-                Toggle("Turn off habit", isOn: $habitActive)
             }
             .navigationTitle(viewModel.habitToEdit == nil ? "Add Habit" : "Edit Habit")
             .navigationBarTitleDisplayMode(.inline)

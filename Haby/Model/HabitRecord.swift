@@ -19,8 +19,7 @@ struct HabitRecord : Identifiable {
                 return habitDefinition.canBeCheckedInTimestamp(timestamp: checkingTimestamp)
             }
             else if let amount = habitDefinition.targetValue {
-                // TODO: Implement
-                return true
+                return (value ?? 0) >= amount
             }
             return false
         }
