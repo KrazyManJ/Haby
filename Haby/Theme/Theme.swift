@@ -16,11 +16,13 @@ struct Theme {
 }
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .frame(maxWidth: .infinity, minHeight: 45)
             .padding(.horizontal)
-            .background(Color.Primary)
+            .background(isEnabled ? Color.Primary : Color.gray.opacity(0.5))
             .foregroundColor(Color.TextLight)
             .cornerRadius(15)
             .opacity(configuration.isPressed ? 0.7 : 1.0)
