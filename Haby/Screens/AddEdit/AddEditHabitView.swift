@@ -17,6 +17,8 @@ struct AddEditHabitView: View {
 
     @State private var selectedTime = Date()
     @State private var goalAmount: Float = 0.0
+    @State private var amountText: String = "0"
+
     @State private var selectedAmountType: AmountUnit = .None
     //@State private var healthData = false
     @State private var selectedIcon: String = "star.fill"
@@ -71,12 +73,14 @@ struct AddEditHabitView: View {
                 if selectedHabitType == .Amount {
                     HStack {
                         // todo check km/litr int/float
-                        TextField(
-                            "Goal Amount",
-                            value: $goalAmount,
-                            format: .number
-                        )
-                        .keyboardType(.numberPad)
+                        FloatTextField(value: $goalAmount, rawText: $amountText)
+
+//                        TextField(
+//                            "Goal Amount",
+//                            value: $goalAmount,
+//                            format: .number
+//                        )
+//                        .keyboardType(.numberPad)
                         Picker("Amount type", selection: $selectedAmountType) {
                             ForEach(AmountUnit.allCases){ option in
                                 Text(option.name)
@@ -166,8 +170,11 @@ struct AddEditHabitView: View {
             Text("Save Habit")
         }
         .buttonStyle(PrimaryButtonStyle())
+        //.buttonStyle(.borderedProminent)
         .padding(15)
+        .disabled(!isAmountInputValid())
     }
+    
     private func saveHabit() {
         
         var timestamp = selectedTime.hourAndMinutesToMinutesTimestamp
@@ -190,6 +197,12 @@ struct AddEditHabitView: View {
         viewModel.addOrUpdateHabit(habit: newHabit)
     }
     
+    func isAmountInputValid() -> Bool {
+        guard selectedHabitType == .Amount else { return true }
+        guard let value = Float(amountText), value > 0 else { return false }
+        return true
+    }
+
 }
 #Preview {
     AddEditHabitView(isViewPresented: .constant(true),

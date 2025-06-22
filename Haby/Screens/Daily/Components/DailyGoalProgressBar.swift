@@ -7,6 +7,8 @@ struct DailyGoalProgressBar: View {
     @State private var currentAmount: Float = 0.0
     @State private var isAddAmountPresented = false
     @State private var amountToAdd: Float = 0.0
+    @State private var amountText: String = "0"
+
 
     var targetValue: Float {
             habit.targetValue ?? 1.0
@@ -40,10 +42,10 @@ struct DailyGoalProgressBar: View {
                         .foregroundColor(.primary)
                 }
             }
-            if viewModel.isLoadingSteps {
+
+            if viewModel.isLoadingSteps && habit.isUsingHealthData == true {
                 ProgressView().frame(height: 10)
             } else {
-                
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 8)
@@ -66,36 +68,64 @@ struct DailyGoalProgressBar: View {
                 }
                 .sheet(isPresented: $isAddAmountPresented) {
                     VStack(spacing: 20) {
-                        Text("Add Amount")
-                            .font(.headline)
-                        
-                        TextField(
-                            "Add Amount",
-                            value: $amountToAdd,
-                            format: .number
-                        )
-                        //Stepper(value: $amountToAdd, in: 0...habit.targetValue!, step: 0.1) {
-                        //    Text("Amount: \(String(format: "%.1f", amountToAdd)) \(habit.targetValueUnit!.abbreviation)")
-                        //}
+                        HStack{
+                            Text("Add Amount")
+                                .font(.headline)
+                                .frame(alignment: .leading)
+                            Spacer()
+                            Button(action: {
+                                isAddAmountPresented = false
+                                amountToAdd = 0
+                            }) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 20))
+                                    .tint(Color.TextDarkPrimary)
+                                    .background(Color.black.opacity(0.1))
+                                    .clipShape(Circle())
+                            }
+                        }
+                        .padding(.horizontal)
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            FloatTextField(value: $amountToAdd, rawText: $amountText)
+
+//                            TextField("0", value: $amountToAdd, format: .number)
+//                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                                .font(.system(size: 40, weight: .medium))
+                                .frame(width: 120)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .foregroundStyle(Color.TextDarkPrimary, Color.TextLight)
+//                                .onChange(of: amountToAdd) { newValue in
+//                                    let filtered = newValue.filter { $0.isNumber }
+//                                    amountToAdd = filtered
+//                                }
+//                            
+//                            Text(habit.targetValueUnit?.abbreviation ?? "")
+//                                .font(.system(size: 40, weight: .medium))
+                        }
                         
                         Button("Confirm") {
                             viewModel.addToAmountHabit(habit: habit, addedAmount: amountToAdd)
                             currentAmount += amountToAdd
                             amountToAdd = 0
+                            amountText = "0"
                             isAddAmountPresented = false
                         }
+                        .buttonStyle(.borderedProminent)
+                        .tint(Color.Primary)
+                        .controlSize(.large)
+                        .disabled(!isValidFloat(amountText))
                         
-                        Button("Cancel", role: .cancel) {
-                            isAddAmountPresented = false
-                            amountToAdd = 0
-                        }
                     }
+                    .frame(alignment: .center)
                     .padding()
-                    .presentationDetents([.fraction(0.25)])
+                    .presentationDetents([.fraction(0.3)])
+                    .presentationBackground(Color.Background)
                 }
             }
         }
     }
+
 }
 
 #Preview {
