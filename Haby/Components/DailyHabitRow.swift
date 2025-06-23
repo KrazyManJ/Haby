@@ -28,7 +28,7 @@ struct DailyHabitRow: View {
             guard let record = viewModel.state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) else {
                 return false
             }
-            return record.isCompletedOnTime
+            return record.isCompleted
         }
         else {
             var timestamp = Date().hourAndMinutesToMinutesTimestamp

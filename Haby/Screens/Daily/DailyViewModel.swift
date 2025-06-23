@@ -6,9 +6,9 @@ import HealthKit
 class DailyViewModel: ObservableObject {
     var state: DailyViewState = DailyViewState()
     var dataManaging: Injected<DataManaging> = .init()
+    var healthKitManager: Injected<StepsManaging> = .init()
     
-    private let healthStore = HKHealthStore()
-    var stepsToday: Double = 0
+    var stepsToday: Int = 0
     var isLoadingSteps: Bool = true
     var showHealthKitError: Bool = false
     
@@ -17,39 +17,8 @@ class DailyViewModel: ObservableObject {
     }
     
     private func fetchStepsToday() async {
-        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        let startOfDay = Calendar.current.startOfDay(for: Date())
-
-        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
-
-        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, error in
-                DispatchQueue.main.async {
-                    guard let self else { return }
-
-                    if let error = error {
-                        print("HealthKit error: \(error.localizedDescription)")
-                        self.stepsToday = 0
-                        self.isLoadingSteps = false
-                        self.showHealthKitError = true
-                        return
-                    }
-
-                    guard let quantity = result?.sumQuantity() else {
-                        print("No step data available.")
-                        self.stepsToday = 0
-                        self.isLoadingSteps = false
-                        return
-                    }
-
-                    self.stepsToday = quantity.doubleValue(for: .count())
-                    self.isLoadingSteps = false
-                    self.syncHealthDataToHabits()
-                }
-            }
-        healthStore.execute(query)
+        stepsToday = await healthKitManager.wrappedValue.fetchStepsForToday()
     }
-
-    
 
     func syncHealthDataToHabits() {
         for habit in state.amountHabits {

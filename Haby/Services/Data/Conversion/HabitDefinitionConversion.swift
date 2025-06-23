@@ -8,8 +8,8 @@ extension HabitDefinition : EntityConverting {
         entity.name = name
         entity.type = type.rawValue
         entity.frequency = frequency.rawValue
-        entity.targetValue = targetValue ?? 0.0
-        entity.targetTimestamp = Int16(targetTimestamp ?? 0)
+        entity.targetValue = targetValue ?? -1
+        entity.targetTimestamp = Int16(targetTimestamp ?? -1)
         entity.isActive = isActive
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
@@ -27,8 +27,8 @@ extension HabitDefinitionEntity : ModelConverting {
             icon: icon ?? "",
             type: HabitType(rawValue: type)!,
             frequency: HabitFrequency(rawValue: frequency)!,
-            targetTimestamp: Int(targetTimestamp),
-            targetValue: Float(targetValue),
+            targetTimestamp: targetTimestamp == -1 ? nil : Int(targetTimestamp),
+            targetValue: targetValue == -1 ? nil : Float(targetValue),
             targetValueUnit: AmountUnit(rawValue: targetValueUnit)!,
             isActive: isActive,
             isUsingHealthData: isUsingHealthData

@@ -15,6 +15,8 @@ protocol DataManaging {
     // HabitDefinitionDataManager
     func getTimeHabitsForToday() -> [HabitDefinition]
     func getAmountHabitsForToday() -> [HabitDefinition]
+    func getTimeHabitsForDate(date: Date) -> [HabitDefinition]
+    func getAmountHabitsForDate(date: Date) -> [HabitDefinition]
     
     // MoodDataManager
     func getMoodRecordByDate(date: Date) -> MoodRecordEntity?
@@ -24,5 +26,5 @@ protocol DataManaging {
     func getTodayRecords() -> [HabitRecord]
     func fetchAllRecordsSortedByDate() -> [HabitRecord]
     func fetchDatesWithHabitRecords() -> [Date]
-    func getHabitsForDate(date: Date) -> [HabitDefinition]
+    
 }
