@@ -65,9 +65,11 @@ struct DailyView: View {
                 ToolbarItemGroup(placement: .topBarTrailing){
                     NavigationLink(destination: OverviewView()) {
                         Button("Streak", systemImage: "flame"){}
+                            .tint(.orange)
                     }
                 }
-            }.onAppear {
+            }
+            .onAppear {
                 if !viewModel.isTodayMoodSaved() {
                     viewModel.updateMood(mood: .Neutral)
                 }
@@ -75,7 +77,11 @@ struct DailyView: View {
                 Task {
                     await viewModel.loadStepData()
                 }
-            }.background(Color.Background)
+            }
+            .background(Color.Background)
+//            .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
+//                Button("OK", role: .cancel) {}
+//            }
         }
     }
 }

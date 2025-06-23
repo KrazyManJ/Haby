@@ -32,7 +32,7 @@ struct DailyGoalProgressBar: View {
                 Image(systemName: habit.icon)
                 Text(habit.name)
                 Spacer()
-                Text("\(Int(currentAmount)) / \(Int(targetValue)) \(habit.targetValueUnit!.abbreviation)")
+                Text("\(currentAmount, specifier: "%.2f") / \(targetValue,  specifier: "%.2f") \(habit.targetValueUnit!.abbreviation)")
                 if progress < 1.0 {
                     Button("", systemImage: "plus") {
                         isAddAmountPresented = true
@@ -78,6 +78,7 @@ struct DailyGoalProgressBar: View {
                                 amountToAdd = 0
                             }) {
                                 Image(systemName: "xmark")
+                                    .frame(width: 30, height: 30)
                                     .font(.system(size: 20))
                                     .tint(Color.TextDarkPrimary)
                                     .background(Color.black.opacity(0.1))
