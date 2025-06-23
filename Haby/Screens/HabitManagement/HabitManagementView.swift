@@ -53,9 +53,11 @@ struct HabitManagementView: View {
                     }
                 }
             }
+            .tint(Color.Primary)
             .sheet(item: $habitToEdit, onDismiss: {
                 viewModel.fetchHabits()
-            }) { habit in
+            }
+            ) { habit in
                 NavigationStack {
                     AddEditHabitView(
                         isViewPresented: .constant(true),

@@ -65,10 +65,10 @@ struct DailyView: View {
                 ToolbarItemGroup(placement: .topBarTrailing){
                     NavigationLink(destination: OverviewView()) {
                         Button("Streak", systemImage: "flame"){}
-                            .tint(.orange)
                     }
                 }
             }
+            .tint(.orange)
             .onAppear {
                 if !viewModel.isTodayMoodSaved() {
                     viewModel.updateMood(mood: .Neutral)

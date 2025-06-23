@@ -27,6 +27,7 @@ struct WeeklyView: View {
                 }
             }
         }
+        .tint(.orange)
         }
     }
 }
