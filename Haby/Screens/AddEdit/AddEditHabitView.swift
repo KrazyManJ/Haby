@@ -39,8 +39,9 @@ struct AddEditHabitView: View {
                 }
             }
             _goalAmount = State(initialValue: habit.targetValue ?? 0)
+            _amountText = State(initialValue: String(habit.targetValue ?? 0))
             _selectedAmountType = State(initialValue: habit.targetValueUnit ?? .None)
-            //_healthData = State(initialValue: habit.isUsingHealthData)
+            _healthData = State(initialValue: habit.isUsingHealthData)
             _selectedIcon = State(initialValue: habit.icon)
             _habitActive = State(initialValue: habit.isActive)
         }
@@ -66,11 +67,7 @@ struct AddEditHabitView: View {
                 
                 if selectedHabitType == .Amount {
                     HStack {
-                        if selectedAmountType == .Steps {
-                            FloatTextField(value: $goalAmount, rawText: $amountText)
-                        } else {
-                            FloatTextField(value: $goalAmount, rawText: $amountText)
-                        }
+                        FloatTextField(value: $goalAmount, rawText: $amountText)
                         
                         Picker("Amount type", selection: $selectedAmountType) {
                             ForEach(AmountUnit.allCases){ option in

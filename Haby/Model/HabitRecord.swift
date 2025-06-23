@@ -2,8 +2,11 @@ import UIKit
 
 struct HabitRecord : Identifiable {
     var id: UUID
+    /** Date of completion excluding hours and minutes */
     var date: Date
+    /** In minutes, if daily habit, includes minutes of completion in range from days midnight to next days midnight, only if habit is deadline or on time */
     var timestamp: Int?
+    /** Measured value of habit for amount habits */
     var value: Float?
     var habitDefinition: HabitDefinition
     
@@ -11,7 +14,6 @@ struct HabitRecord : Identifiable {
     
     var isCompleted: Bool {
         get {
-            print("lofas",habitDefinition.targetValue, habitDefinition.targetTimestamp)
             if let _ = habitDefinition.targetTimestamp {
                 var checkingTimestamp = timestamp!
                 if habitDefinition.frequency == .Weekly {
@@ -20,7 +22,6 @@ struct HabitRecord : Identifiable {
                 return habitDefinition.canBeCheckedInTimestamp(timestamp: checkingTimestamp)
             }
             else if let amount = habitDefinition.targetValue {
-                print(value,">=",amount)
                 return value! >= amount
             }
             return false

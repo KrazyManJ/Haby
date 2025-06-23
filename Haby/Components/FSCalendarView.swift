@@ -3,8 +3,9 @@ import FSCalendar
 
 struct FSCalendarView: UIViewRepresentable {
     @Binding var selectedDate: Date?
+    @Binding var highlightedDates: Set<Date>
 
-    class Coordinator: NSObject, FSCalendarDelegate, FSCalendarDataSource {
+    class Coordinator: NSObject, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
         var parent: FSCalendarView
 
         init(_ parent: FSCalendarView) {
@@ -13,6 +14,32 @@ struct FSCalendarView: UIViewRepresentable {
 
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
+        }
+        
+        func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+            let calendar = Calendar.current
+            if calendar.isDateInToday(date) {
+                    return nil
+                }
+            for highlighted in parent.highlightedDates {
+                if calendar.isDate(date, inSameDayAs: highlighted) {
+                    return UIColor.systemBlue.withAlphaComponent(0.3)
+                }
+            }
+            return nil
+        }
+
+        func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+            let calendar = Calendar.current
+            if calendar.isDateInToday(date) {
+                return nil
+            }
+            for highlighted in parent.highlightedDates {
+                if calendar.isDate(date, inSameDayAs: highlighted) {
+                    return UIColor.systemBlue
+                }
+            }
+            return nil
         }
     }
 
@@ -32,6 +59,6 @@ struct FSCalendarView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: FSCalendar, context: Context) {
-        // Optionally update the calendar here
+        
     }
 }
