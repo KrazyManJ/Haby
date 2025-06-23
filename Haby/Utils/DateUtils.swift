@@ -4,11 +4,12 @@ extension Date {
 
     var onlyDate: Date {
         get {
-            let calendar = Calendar.current
-            var dateComponents = calendar.dateComponents([.year, .month, .day], from: self)
-            dateComponents.timeZone = NSTimeZone.system
-            return calendar.date(from: dateComponents)!
+            Calendar.current.startOfDay(for: self)
         }
+    }
+    
+    func daysAgo(_ days: Int)->Date{
+        Calendar.current.date(byAdding: .day, value: -days, to: self) ?? self
     }
     
     var hourAndMinutesToMinutesTimestamp: Int {
@@ -35,4 +36,27 @@ extension Date {
         let midnight = calendar.startOfDay(for: Date())
         return calendar.date(byAdding: .minute, value: timestamp, to: midnight)!
     }
+    
+    var shortWeekday: String {
+          let formatter = DateFormatter()
+          formatter.locale = Locale.current
+          formatter.setLocalizedDateFormatFromTemplate("E")
+          return formatter.string(from: self)
+      }
+}
+
+extension Calendar {
+    func startOfWeek(for date: Date) -> Date {
+        return self.date(from: self.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
+    }
+    
+    func isDate(_ date1: Date, inSameWeekAs date2: Date) -> Bool {
+        return self.isDate(date1, equalTo: date2, toGranularity: .weekOfYear)
+    }
+
+    func currentWeekDates(from date: Date = Date()) -> [Date] {
+        let startOfWeek = self.date(from: self.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
+        return (0..<7).compactMap { self.date(byAdding: .day, value: $0, to: startOfWeek) }
+    }
+    
 }
