@@ -32,7 +32,7 @@ struct DailyGoalProgressBar: View {
                 Image(systemName: habit.icon)
                 Text(habit.name)
                 Spacer()
-                Text("\(currentAmount, specifier: "%.2f") / \(targetValue,  specifier: "%.2f") \(habit.targetValueUnit!.abbreviation)")
+                Text("\(currentAmount.trimmedString) / \(targetValue.trimmedString) \(habit.targetValueUnit!.abbreviation)")
                 if progress < 1.0 {
                     Button("", systemImage: "plus") {
                         isAddAmountPresented = true
@@ -88,21 +88,11 @@ struct DailyGoalProgressBar: View {
                         .padding(.horizontal)
                         HStack(alignment: .firstTextBaseline, spacing: 8) {
                             FloatTextField(value: $amountToAdd, rawText: $amountText)
-
-//                            TextField("0", value: $amountToAdd, format: .number)
-//                                .keyboardType(.numberPad)
                                 .multilineTextAlignment(.center)
                                 .font(.system(size: 40, weight: .medium))
-                                .frame(width: 120)
+                                .frame(width: 150)
                                 .textFieldStyle(PlainTextFieldStyle())
                                 .foregroundStyle(Color.TextDarkPrimary, Color.TextLight)
-//                                .onChange(of: amountToAdd) { newValue in
-//                                    let filtered = newValue.filter { $0.isNumber }
-//                                    amountToAdd = filtered
-//                                }
-//                            
-//                            Text(habit.targetValueUnit?.abbreviation ?? "")
-//                                .font(.system(size: 40, weight: .medium))
                         }
                         
                         Button("Confirm") {
@@ -115,7 +105,7 @@ struct DailyGoalProgressBar: View {
                         .buttonStyle(.borderedProminent)
                         .tint(Color.Primary)
                         .controlSize(.large)
-                        .disabled(!isValidFloat(amountText))
+                        .disabled(!isAddAmountInputValid())
                         
                     }
                     .frame(alignment: .center)
@@ -126,7 +116,15 @@ struct DailyGoalProgressBar: View {
             }
         }
     }
-
+    
+    func isAddAmountInputValid() -> Bool {
+        guard habit.type == .Amount else { return true }
+        guard let value = Float(amountText), value > 0 else { return false }
+        if habit.targetValueUnit == .Steps && amountText.contains(".") {
+                return false
+            }
+        return true
+    }
 }
 
 #Preview {
