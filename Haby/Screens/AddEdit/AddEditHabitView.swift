@@ -74,13 +74,7 @@ struct AddEditHabitView: View {
                     HStack {
                         // todo check km/litr int/float
                         FloatTextField(value: $goalAmount, rawText: $amountText)
-
-//                        TextField(
-//                            "Goal Amount",
-//                            value: $goalAmount,
-//                            format: .number
-//                        )
-//                        .keyboardType(.numberPad)
+                        
                         Picker("Amount type", selection: $selectedAmountType) {
                             ForEach(AmountUnit.allCases){ option in
                                 Text(option.name)
@@ -170,9 +164,10 @@ struct AddEditHabitView: View {
             Text("Save Habit")
         }
         .buttonStyle(PrimaryButtonStyle())
-        //.buttonStyle(.borderedProminent)
         .padding(15)
-        .disabled(!isAmountInputValid())
+//        .disabled(!isAmountInputValid())
+        .disabled(habitName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !isAmountInputValid())
+
     }
     
     private func saveHabit() {

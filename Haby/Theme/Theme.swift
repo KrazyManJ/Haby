@@ -23,7 +23,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity, minHeight: 45)
             .padding(.horizontal)
             .background(isEnabled ? Color.Primary : Color.gray.opacity(0.5))
-            .foregroundColor(Color.TextLight)
+            .foregroundColor(isEnabled ? Color.TextLight : Color.white)
             .cornerRadius(15)
             .opacity(configuration.isPressed ? 0.7 : 1.0)
     }
