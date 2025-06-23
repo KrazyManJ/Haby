@@ -46,12 +46,6 @@ struct AddEditHabitView: View {
         }
     }
     
-    let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-    
     var body: some View {
         NavigationStack {
             Form {
@@ -72,8 +66,11 @@ struct AddEditHabitView: View {
                 
                 if selectedHabitType == .Amount {
                     HStack {
-                        // todo check km/litr int/float
-                        FloatTextField(value: $goalAmount, rawText: $amountText)
+                        if selectedAmountType == .Steps {
+                            FloatTextField(value: $goalAmount, rawText: $amountText)
+                        } else {
+                            FloatTextField(value: $goalAmount, rawText: $amountText)
+                        }
                         
                         Picker("Amount type", selection: $selectedAmountType) {
                             ForEach(AmountUnit.allCases){ option in
@@ -84,15 +81,16 @@ struct AddEditHabitView: View {
                         .labelsHidden()
                         .accentColor(Color.Primary)
                     }
-                    
-                    Toggle("Use Health Data", isOn: $viewModel.healthData)
-                    
+                    if (selectedAmountType == .Steps){
+                        Toggle("Use Health Data", isOn: $viewModel.healthData)
+                    }
                 }
                 Picker("Repetition", selection: $selectedFrequency) {
                     ForEach(HabitFrequency.allCases) { option in
                         Text(option.name)
                     }
                     .pickerStyle(NavigationLinkPickerStyle())
+                    .accentColor(Color.Primary)
                 }
                 .pickerStyle(.menu)
                 if selectedHabitType != .Amount {
@@ -117,6 +115,7 @@ struct AddEditHabitView: View {
                                 Text(option.name)
                             }
                             .pickerStyle(NavigationLinkPickerStyle())
+                            .accentColor(Color.Primary)
                         }
                     }
                 }
@@ -131,6 +130,7 @@ struct AddEditHabitView: View {
                             Image(systemName: selectedIcon)
                                 .foregroundColor(.Primary)
                             Image(systemName: "chevron.up.chevron.down")
+                                .foregroundColor(Color.Primary)
                         }
                     }
                 }
@@ -156,19 +156,19 @@ struct AddEditHabitView: View {
                         .foregroundColor(.accentColor)
                 }
             }
+            Button{
+                saveHabit()
+                dismiss()
+            } label: {
+                Text("Save Habit")
+            }
+            .buttonStyle(PrimaryButtonStyle())
+            .padding(15)
+            .disabled(habitName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !isGoalAmountInputValid())
         }
-        Button{
-            saveHabit()
-            dismiss()
-        } label: {
-            Text("Save Habit")
-        }
-        .buttonStyle(PrimaryButtonStyle())
-        .padding(15)
-//        .disabled(!isAmountInputValid())
-        .disabled(habitName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !isAmountInputValid())
-
+        .background(Color.Background)
     }
+       
     
     private func saveHabit() {
         
@@ -192,9 +192,12 @@ struct AddEditHabitView: View {
         viewModel.addOrUpdateHabit(habit: newHabit)
     }
     
-    func isAmountInputValid() -> Bool {
+    func isGoalAmountInputValid() -> Bool {
         guard selectedHabitType == .Amount else { return true }
         guard let value = Float(amountText), value > 0 else { return false }
+        if selectedAmountType == .Steps && amountText.contains(".") {
+                return false
+            }
         return true
     }
 
