@@ -10,6 +10,7 @@ class DailyViewModel: ObservableObject {
     private let healthStore = HKHealthStore()
     var stepsToday: Double = 0
     var isLoadingSteps: Bool = true
+    var showHealthKitError: Bool = false
     
     func loadStepData() async {
         await fetchStepsToday()
@@ -21,16 +22,30 @@ class DailyViewModel: ObservableObject {
 
         let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
 
-        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
-            guard let quantity = result?.sumQuantity() else { return }
-            let steps = quantity.doubleValue(for: .count())
+        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, error in
+                DispatchQueue.main.async {
+                    guard let self else { return }
 
-            DispatchQueue.main.async {
-                self.stepsToday = steps
-                self.isLoadingSteps = false
-                self.syncHealthDataToHabits()
+                    if let error = error {
+                        print("HealthKit error: \(error.localizedDescription)")
+                        self.stepsToday = 0
+                        self.isLoadingSteps = false
+                        self.showHealthKitError = true
+                        return
+                    }
+
+                    guard let quantity = result?.sumQuantity() else {
+                        print("No step data available.")
+                        self.stepsToday = 0
+                        self.isLoadingSteps = false
+                        return
+                    }
+
+                    self.stepsToday = quantity.doubleValue(for: .count())
+                    self.isLoadingSteps = false
+                    self.syncHealthDataToHabits()
+                }
             }
-        }
         healthStore.execute(query)
     }
 
