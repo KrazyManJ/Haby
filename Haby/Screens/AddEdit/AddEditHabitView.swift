@@ -83,16 +83,17 @@ struct AddEditHabitView: View {
                     }
                     if (selectedAmountType == .Steps){
                         Toggle("Use Health Data", isOn: $viewModel.healthData)
+                            .toggleStyle(SwitchToggleStyle(tint: Color.Primary))
                     }
                 }
                 Picker("Repetition", selection: $selectedFrequency) {
                     ForEach(HabitFrequency.allCases) { option in
                         Text(option.name)
                     }
-                    .pickerStyle(NavigationLinkPickerStyle())
-                    .accentColor(Color.Primary)
                 }
                 .pickerStyle(.menu)
+                .accentColor(Color.Primary)
+                
                 if selectedHabitType != .Amount {
                 switch selectedFrequency {
                 case .Daily:
@@ -114,9 +115,9 @@ struct AddEditHabitView: View {
                             ForEach(WeekDay.allCases) { option in
                                 Text(option.name)
                             }
-                            .pickerStyle(NavigationLinkPickerStyle())
-                            .accentColor(Color.Primary)
                         }
+                        .accentColor(Color.Primary)
+                        .pickerStyle(.menu)
                     }
                 }
                 
@@ -135,6 +136,9 @@ struct AddEditHabitView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.Background)
+            
             .navigationTitle(viewModel.habitToEdit == nil ? "Add Habit" : "Edit Habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -145,6 +149,7 @@ struct AddEditHabitView: View {
                     }
                 }
             }
+            .tint(Color.Primary)
             .sheet(isPresented: $isIconPickerPresented) {
                 SymbolsPicker(
                     selection: $selectedIcon,
@@ -172,9 +177,12 @@ struct AddEditHabitView: View {
     
     private func saveHabit() {
         
-        var timestamp = selectedTime.hourAndMinutesToMinutesTimestamp
+        var timestamp: Int? = selectedTime.hourAndMinutesToMinutesTimestamp
         if selectedFrequency == .Weekly {
-            timestamp += selectedDay.toTimestamp
+            timestamp! += selectedDay.toTimestamp
+        }
+        if selectedHabitType == .Amount {
+            timestamp = nil
         }
         
         let newHabit = HabitDefinition(

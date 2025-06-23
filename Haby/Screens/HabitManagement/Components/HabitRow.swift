@@ -8,13 +8,18 @@ struct HabitRow: View {
     
     init(habit: HabitDefinition) {
         self.habit = habit
-        if let timestamp = habit.targetTimestamp {
-            self.requirementString = String(format: "%02d:%02d", timestamp / 60 % 24, timestamp % 60)
-        } else if let amount = habit.targetValue, let unit  = habit.targetValueUnit {
-            self.requirementString = "\(amount) \(unit)"
-        }
-        else {
-            requirementString = ""
+        if habit.type != .Amount {
+            if let timestamp = habit.targetTimestamp {
+                self.requirementString = String(format: "%02d:%02d", timestamp / 60 % 24, timestamp % 60)
+            } else {
+                requirementString = ""
+            }
+        } else {
+            if let amount = habit.targetValue, let unit  = habit.targetValueUnit?.abbreviation {
+                self.requirementString = "\(amount) \(unit)"
+            } else {
+                requirementString = ""
+            }
         }
     }
     

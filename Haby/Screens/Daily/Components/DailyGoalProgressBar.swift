@@ -33,10 +33,12 @@ struct DailyGoalProgressBar: View {
                 Text(habit.name)
                 Spacer()
                 Text("\(currentAmount.trimmedString) / \(targetValue.trimmedString) \(habit.targetValueUnit!.abbreviation)")
+                    .font(.caption)
                 if progress < 1.0 {
                     Button("", systemImage: "plus") {
                         isAddAmountPresented = true
                     }
+                    .foregroundColor(.primary)
                 } else {
                     Image(systemName: "checkmark")
                         .foregroundColor(.primary)
