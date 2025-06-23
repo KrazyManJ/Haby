@@ -5,7 +5,7 @@ import HealthKit
 
 @Observable
 class OverviewViewModel: ObservableObject {
-    let state = OverviewViewState()
+    var state = OverviewViewState()
     
     private let healthStore = HKHealthStore()
     private let dataManaging: Injected<DataManaging> = .init()
@@ -17,6 +17,7 @@ class OverviewViewModel: ObservableObject {
     }
     
     func loadCompletedDates() {
+        state.completedDates.removeAll()
         dataManaging.wrappedValue.fetchDatesWithHabitRecords().forEach { date in
             let timeHabitsInDate: [HabitDefinition] = dataManaging.wrappedValue.getTimeHabitsForDate(date: date)
             let amountHabitsInDate: [HabitDefinition] = dataManaging.wrappedValue.getAmountHabitsForDate(date: date)
@@ -24,28 +25,44 @@ class OverviewViewModel: ObservableObject {
             
             let allTimeHabitsRecorded = timeHabitsInDate.allSatisfy { habit in
                 if let record = habitsRecords.first(where: { r in
-                    r.date == date && r.habitDefinition.id == habit.id
+                    r.habitDefinition.id == habit.id
                 }) {
-                    return habit.canBeCheckedInTimestamp(timestamp: record.timestamp!)
+                    return record.isCompleted
                 }
                 return false
             }
-            print("time valid", allTimeHabitsRecorded)
             let allAmountHabitsRecorded = amountHabitsInDate.allSatisfy() { habit in
                 if let record = habitsRecords.first(where: { r in
-                    r.date == date && r.habitDefinition.id == habit.id
+                    r.habitDefinition.id == habit.id
                 }) {
-                    print(habit.name, record.value, habit.targetValue, record.isCompleted)
                     return record.isCompleted
                 }
                 
                 return false
             }
-            print("valid", allAmountHabitsRecorded)
+            habitsRecords.forEach { print($0.isCompleted,$0.habitDefinition.name) }
+            
             if allTimeHabitsRecorded && allAmountHabitsRecorded {
                 state.completedDates.insert(date)
             }
         }
+        state.streak = calculateStreak()
+    }
+    
+    private func calculateStreak() -> Int {
+        let calendar = Calendar.current
+        var streak = 0
+        var currentDate = calendar.startOfDay(for: Date()) // today at 00:00
+        
+        while state.completedDates.contains(currentDate) {
+            streak += 1
+            guard let previousDay = calendar.date(byAdding: .day, value: -1, to: currentDate) else {
+                break
+            }
+            currentDate = previousDay
+        }
+        
+        return streak
     }
 }
 

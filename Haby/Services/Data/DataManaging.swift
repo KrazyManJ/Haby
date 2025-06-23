@@ -4,6 +4,10 @@ import UIKit
 protocol DataManaging {
     var context: NSManagedObjectContext { get }
     
+    var isEmpty: Bool { get }
+    
+    func insertMockupData()
+    
     func fetch<E: NSManagedObject>() -> [E]
     func fetch<M:EntityConverting<E>, E: NSManagedObject>() -> [M] where E:ModelConverting<M>
     func fetchOneById<E: NSManagedObject>(id: UUID) -> E?

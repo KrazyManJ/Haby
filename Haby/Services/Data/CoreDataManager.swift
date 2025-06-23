@@ -7,11 +7,31 @@ final class CoreDataManager: DataManaging {
         container.viewContext
     }
     
+    var isEmpty: Bool {
+        let fetchRequest: NSFetchRequest<HabitDefinitionEntity> = HabitDefinitionEntity.fetchRequest()
+        fetchRequest.fetchLimit = 1
+
+        do {
+            let count = try context.count(for: fetchRequest)
+            return count == 0
+        } catch {
+            print("Failed to count entities: \(error)")
+            return false
+        }
+    }
+    
     init() {
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { description, error in
             if let error = error {
                 print("Cannot create persistent store: \(error.localizedDescription)")
             }
+            
+            let coordinator = self.container.persistentStoreCoordinator
+            // Destroy
+            try? coordinator.destroyPersistentStore(at: description.url!, type: .sqlite)
+
+            // Re-create
+            _ =  try? coordinator.addPersistentStore(type: .sqlite, at: description.url!)
         }
     }
     
