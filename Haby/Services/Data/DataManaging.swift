@@ -22,6 +22,9 @@ protocol DataManaging {
     func getTimeHabitsForDate(date: Date) -> [HabitDefinition]
     func getAmountHabitsForDate(date: Date) -> [HabitDefinition]
     
+    func getTimeHabitsForWeek() -> [HabitDefinition]
+    func getAmountHabitsForWeek() -> [HabitDefinition]
+    
     // MoodDataManager
     func getMoodRecordByDate(date: Date) -> MoodRecordEntity?
     
