@@ -20,7 +20,7 @@ struct AddEditHabitView: View {
     @State private var amountText: String = "0"
 
     @State private var selectedAmountType: AmountUnit = .None
-    //@State private var healthData = false
+    @State private var healthData = false
     @State private var selectedIcon: String = "star.fill"
     @State private var habitActive = true
     
@@ -28,7 +28,7 @@ struct AddEditHabitView: View {
         self._isViewPresented = isViewPresented
         self.viewModel = viewModel
         
-        if let habit = viewModel.habitToEdit {
+        if let habit = viewModel.state.habitToEdit {
             _habitName = State(initialValue: habit.name)
             _selectedHabitType = State(initialValue: habit.type)
             _selectedFrequency = State(initialValue: habit.frequency)
@@ -82,8 +82,13 @@ struct AddEditHabitView: View {
                         .accentColor(Color.Primary)
                     }
                     if (selectedAmountType == .Steps){
-                        Toggle("Use Health Data", isOn: $viewModel.healthData)
+                        Toggle("Use Health Data", isOn: $healthData)
                             .toggleStyle(SwitchToggleStyle(tint: Color.Primary))
+                            .onChange(of: healthData) { old, new in
+                                if new {
+                                    viewModel.requestHealthAuthorization()
+                                }
+                            }
                     }
                 }
                 Picker("Repetition", selection: $selectedFrequency) {
@@ -139,7 +144,7 @@ struct AddEditHabitView: View {
             .scrollContentBackground(.hidden)
             .background(Color.Background)
             
-            .navigationTitle(viewModel.habitToEdit == nil ? "Add Habit" : "Edit Habit")
+            .navigationTitle(viewModel.state.habitToEdit == nil ? "Add Habit" : "Edit Habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading){
@@ -186,7 +191,7 @@ struct AddEditHabitView: View {
         }
         
         let newHabit = HabitDefinition(
-            id: viewModel.habitToEdit?.id ?? UUID(),
+            id: viewModel.state.habitToEdit?.id ?? UUID(),
             name: habitName,
             icon: selectedIcon,
             type: selectedHabitType,
@@ -195,7 +200,7 @@ struct AddEditHabitView: View {
             targetValue: goalAmount,
             targetValueUnit: selectedAmountType,
             isActive: habitActive,
-            isUsingHealthData: viewModel.healthData
+            isUsingHealthData: healthData
         )
         viewModel.addOrUpdateHabit(habit: newHabit)
     }

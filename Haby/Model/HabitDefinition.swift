@@ -24,13 +24,8 @@ struct HabitDefinition: Identifiable {
                 return (lowerBound...higherBound).contains(timestamp)
             }
             else if type == .Deadline {
-                print("deadlinos",timestamp,definitionTimestamp)
                 return timestamp <= definitionTimestamp
             }
-        }
-        else if let amount = targetValue {
-            // TODO: Implement
-            return true
         }
         return false
     }

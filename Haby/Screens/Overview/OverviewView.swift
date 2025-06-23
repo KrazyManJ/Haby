@@ -16,16 +16,16 @@ struct OverviewView: View {
 //                if let date = selectedDate {
 //                    Text("Selected: \(date.formatted(date: .abbreviated, time: .omitted))")
 //                }
-                Text("Steps Today: \(Int(viewModel.stepsToday))")
+                Text("Steps Today: \(Int(viewModel.state.stepsToday))")
                                 .font(.title)
-                StepsChart(data: viewModel.monthlySteps)
+                StepsChart(data: viewModel.state.monthlySteps)
             }
         }.toolbar(.hidden, for: .tabBar)
-            .background(Color.background)
-            .onAppear {
-                viewModel.loadCompletedDates()
-                viewModel.completedDates.forEach { print($0) }
-            }
+        .background(Color.background)
+        .onAppear {
+            viewModel.loadCompletedDates()
+            viewModel.state.completedDates.forEach { print($0) }
+        }
     }
 }
 

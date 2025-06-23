@@ -9,9 +9,10 @@ struct HabitRecord : Identifiable {
     
     static let ON_TIME_HABIT_VALID_RANGE = 5
     
-    var isCompletedOnTime: Bool {
+    var isCompleted: Bool {
         get {
-            if let definitionTimestamp = habitDefinition.targetTimestamp {
+            print("lofas",habitDefinition.targetValue, habitDefinition.targetTimestamp)
+            if let _ = habitDefinition.targetTimestamp {
                 var checkingTimestamp = timestamp!
                 if habitDefinition.frequency == .Weekly {
                     checkingTimestamp += date.hourAndMinutesToMinutesTimestamp
@@ -19,7 +20,8 @@ struct HabitRecord : Identifiable {
                 return habitDefinition.canBeCheckedInTimestamp(timestamp: checkingTimestamp)
             }
             else if let amount = habitDefinition.targetValue {
-                return (value ?? 0) >= amount
+                print(value,">=",amount)
+                return value! >= amount
             }
             return false
         }

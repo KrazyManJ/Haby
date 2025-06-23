@@ -45,6 +45,9 @@ extension DIContainer {
         register(DataManaging.self, cached: true) {
             CoreDataManager()
         }
+        register(StepsManaging.self, cached: true) {
+            HealthKitStepsManager()
+        }
     }
 }
 

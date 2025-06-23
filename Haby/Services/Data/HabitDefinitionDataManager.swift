@@ -18,10 +18,16 @@ extension CoreDataManager {
             .map { $0.toModel() }
     }
     
-    func getHabitsForDate(date: Date) -> [HabitDefinition] {
+    func getTimeHabitsForDate(date: Date) -> [HabitDefinition] {
         let result: [HabitDefinitionEntity] = getTimeHabitsEntitiesForDate(date: Date())
         return result.map { $0.toModel() }
     }
+    
+    func getAmountHabitsForDate(date: Date) -> [HabitDefinition] {
+        let result: [HabitDefinitionEntity] = getAmountHabitsEntitiesForDate(date: date)
+        return result.map { $0.toModel() }
+    }
+    
     
     internal func getTimeHabitsEntitiesForDate(date: Date) -> [HabitDefinitionEntity] {
         let today: WeekDay = WeekDay(from: date)
@@ -33,9 +39,7 @@ extension CoreDataManager {
                     HabitFrequency.Daily.rawValue,
                     HabitFrequency.Weekly.rawValue,
                     today.toTimestamp,
-                    today.nextDay().toTimestamp,
-//                    WeekDay.getTodayWeekDay().toTimestamp,
-//                    WeekDay.getTomorrowWeekDay().toTimestamp
+                    today.nextDay().toTimestamp
                 ]
             )
         )
