@@ -14,6 +14,7 @@ extension HabitDefinition : EntityConverting {
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
         entity.targetValueUnit = (targetValueUnit ?? .None).rawValue
+        entity.creationDate = creationDate
         
         return entity
     }
@@ -25,6 +26,7 @@ extension HabitDefinitionEntity : ModelConverting {
             id: id!,
             name: name!,
             icon: icon ?? "",
+            creationDate: creationDate!,
             type: HabitType(rawValue: type)!,
             frequency: HabitFrequency(rawValue: frequency)!,
             targetTimestamp: targetTimestamp == -1 ? nil : Int(targetTimestamp),

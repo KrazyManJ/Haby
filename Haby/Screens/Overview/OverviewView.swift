@@ -9,12 +9,13 @@ struct OverviewView: View {
     var body: some View {
         ScrollView {
             VStack{
-                Image(systemName: "flame").font(.system(size: 80)).foregroundColor(.orange)
+                Image(systemName: "flame").font(.system(size: 80)).foregroundColor(.orange).padding([.top],32)
                 Text("Your streak is")
                 Text("\(viewModel.state.streak) day\(viewModel.state.streak > 1 ? "s" : "")").font(.system(size: 48))
                 FSCalendarView(
                     selectedDate: $selectedDate,
-                    highlightedDates: $viewModel.state.completedDates
+                    highlightedDates: $viewModel.state.completedDates,
+                    moodRecords: viewModel.state.moodRecords
                 )
                     .frame(height: 300)
                     .padding()
@@ -29,7 +30,6 @@ struct OverviewView: View {
         .background(Color.background)
         .onAppear {
             viewModel.loadCompletedDates()
-            viewModel.state.completedDates.forEach { print($0) }
         }
     }
 }

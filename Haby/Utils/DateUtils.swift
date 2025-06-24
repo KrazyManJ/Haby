@@ -12,6 +12,10 @@ extension Date {
         Calendar.current.date(byAdding: .day, value: -days, to: self) ?? self
     }
     
+    var nextDay: Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: self) ?? self
+    }
+    
     var hourAndMinutesToMinutesTimestamp: Int {
         get {
             let calendar = Calendar.current

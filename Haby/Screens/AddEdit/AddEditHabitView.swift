@@ -191,6 +191,7 @@ struct AddEditHabitView: View {
             id: viewModel.state.habitToEdit?.id ?? UUID(),
             name: habitName,
             icon: selectedIcon,
+            creationDate: Date(),
             type: selectedHabitType,
             frequency: selectedFrequency,
             targetTimestamp: timestamp,

@@ -4,6 +4,7 @@ struct HabitDefinition: Identifiable {
     var id: UUID
     var name: String
     var icon: String
+    var creationDate: Date
     
     var type: HabitType
     var frequency: HabitFrequency
