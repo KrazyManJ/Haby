@@ -4,7 +4,6 @@ import SwiftUI
 struct WeeklyGoalProgressBar: View {
     @Binding var viewModel: WeeklyViewModel
     var habit: HabitDefinition
-//    @State private var currentAmount: Float = 0.0
     @State private var isAddAmountPresented = false
     @State private var amountToAdd: Float = 0.0
     @State private var amountText: String = "0"
@@ -48,9 +47,9 @@ struct WeeklyGoalProgressBar: View {
                 }
             }
 
-//            if viewModel.isLoadingSteps && habit.isUsingHealthData == true {
-//                ProgressView().frame(height: 10)
-//            } else {
+            if viewModel.isLoadingSteps && habit.isUsingHealthData == true {
+                ProgressView().frame(height: 10)
+            } else {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 8)
@@ -62,17 +61,10 @@ struct WeeklyGoalProgressBar: View {
                             .frame(width: geo.size.width * CGFloat(progress), height: 10)
                             .animation(.easeInOut, value: progress)
                     }
-//                }
+                }
                 
                 .onAppear {
                     viewModel.getWeekHabits()
-//                    currentAmount = viewModel.state.habitRecords
-//                        .first(where: { $0.habitDefinition.id == habit.id })?.value ?? 0
-                    
-                    //currentAmount = viewModel.totalWeeklyAmount(for: habit, from: viewModel.state.habitRecords)
-//                    if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
-//                        currentAmount = Float(viewModel.stepsToday)
-//                    }
                 }
                 .sheet(isPresented: $isAddAmountPresented) {
                     VStack(spacing: 20) {
