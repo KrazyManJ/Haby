@@ -16,28 +16,35 @@ struct HabitManagementView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                List {
-                    ForEach(viewModel.state.habits) { habit in
-                        HabitRow(
-                            habit: habit
-                        )
-                        .onTapGesture {
-                            habitToEdit = habit
-                        }
-                        .swipeActions {
-                            Button() {
-                                habitToDelete = habit
-                                showAlert = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
+                if !viewModel.state.habits.isEmpty {
+                    List {
+                        ForEach(viewModel.state.habits) { habit in
+                            HabitRow(
+                                habit: habit
+                            )
+                            .onTapGesture {
+                                habitToEdit = habit
+                            }
+                            .swipeActions {
+                                Button() {
+                                    habitToDelete = habit
+                                    showAlert = true
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
                             }
                         }
                     }
-                    
+                    .listRowBackground(Color.clear)
+                    .scrollContentBackground(.hidden)
                 }
-                .listRowBackground(Color.clear)
-                .scrollContentBackground(.hidden)
+                else {
+                    Text("You have no defined habits, tap...").italic().foregroundColor(Color.gray).padding(.vertical,16)
+                    Image(systemName: "plus.circle").foregroundStyle(Color.gray).font(.system(size: 64))
+                    Text("...at the top right corner.").italic().foregroundColor(Color.gray).padding(.vertical,16)
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear{
                 viewModel.fetchHabits()
             }

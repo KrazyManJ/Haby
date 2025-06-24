@@ -44,14 +44,16 @@ struct WeeklyView: View {
                     NavigationLink(destination: OverviewView()) {
                         Button("Streak", systemImage: "flame"){}
                     }
+                    .tint(.orange)
                 }
             }
-            .tint(.orange)
+            
             .onAppear {
                 viewModel.getWeekHabits()
             }
             .background(Color.Background)
         }
+        .tint(.Primary)
     }
 }
 
