@@ -27,17 +27,30 @@ struct DailyView: View {
     
     var body: some View {
         NavigationStack{
-            VStack{
+            VStack(spacing: 0) {
                 ScrollView {
+                    Text("Daily timeline")
+                        .padding(.horizontal, 32)
+                        .padding([.top], 16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.title3).bold()
                     LazyVStack(spacing: 0) {
                         ForEach(viewModel.state.habits.filter { $0.type != .Amount}) { habit in
                             DailyHabitRow(
                                 viewModel: $viewModel, habit: habit
                             )
                         }
+                        if viewModel.state.habits.filter({ $0.type != .Amount}).isEmpty {
+                            Text("No habits in daily timeline for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
+                        }
                         Spacer(minLength: 0)
                     }.padding()
                     
+                    Text("Goals")
+                        .padding(.horizontal, 32)
+                        .padding([.top], 16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.title3).bold()
                     if !viewModel.state.amountHabits.isEmpty {
                         LazyVStack(spacing: 0) {
                             ForEach(viewModel.state.amountHabits) { habit in
@@ -48,14 +61,22 @@ struct DailyView: View {
                             }
                             Spacer(minLength: 0)
                         }
+                        .padding()
                         .frame(minHeight: 100)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.Secondary)
                         )
                         .padding()
+                    } else {
+                        Text("No goal habits for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
                     }
                 }
+                Text("Mood")
+                    .padding(.horizontal, 32)
+                    .padding([.top], 16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.title3).bold()
                 MoodPickerView(selectedMood: mood).padding()
                
             }
@@ -64,11 +85,13 @@ struct DailyView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing){
                     NavigationLink(destination: OverviewView()) {
-                        Button("Streak", systemImage: "flame"){}
+                        Button("Streak", systemImage: "flame"){
+                            
+                        }
                     }
+                    .tint(Color.orange)
                 }
             }
-            .tint(.orange)
             .onAppear {
                 if !viewModel.isTodayMoodSaved() {
                     viewModel.updateMood(mood: .Neutral)
@@ -83,6 +106,7 @@ struct DailyView: View {
 //                Button("OK", role: .cancel) {}
 //            }
         }
+        .tint(.Primary)
     }
 }
 

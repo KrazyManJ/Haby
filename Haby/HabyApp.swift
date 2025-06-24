@@ -8,7 +8,7 @@ struct HabyApp: App {
     
     init() {
         if dataManaging.wrappedValue.isEmpty {
-            dataManaging.wrappedValue.insertMockupData()
+//            dataManaging.wrappedValue.insertMockupData()
         }
     }
     
