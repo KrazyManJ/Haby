@@ -5,6 +5,7 @@ import SwiftUI
 class WeeklyViewModel: ObservableObject {
     var state: WeeklyViewState = WeeklyViewState()
     var dataManaging: Injected<DataManaging> = .init()
+    var selectedDates: [UUID: Date] = [:]
     
     func getWeekHabits() {
         state.amountHabits = dataManaging.wrappedValue.getAmountHabitsForWeek()
@@ -35,8 +36,7 @@ class WeeklyViewModel: ObservableObject {
         }
         self.getWeekHabits()
     }
-    
-    // TODO fix
+
     func isHabitChecked(habit: HabitDefinition, on date: Date) -> Bool {
         state.habitRecords.contains {
             $0.habitDefinition.id == habit.id && Calendar.current.isDate($0.date, inSameDayAs: date)
@@ -45,7 +45,6 @@ class WeeklyViewModel: ObservableObject {
 
     func setHabit(_ habit: HabitDefinition, checked: Bool, on date: Date) {
         if checked {
-            // Add record
             if !isHabitChecked(habit: habit, on: date) {
                 let record = HabitRecord(
                     id: UUID(),
@@ -56,13 +55,23 @@ class WeeklyViewModel: ObservableObject {
                 dataManaging.wrappedValue.upsert(model: record)
             }
         } else {
-            // Remove record
+            print(dataManaging.wrappedValue.getWeekRecords().count)
             if let record = state.habitRecords.first(where: {
                 $0.habitDefinition.id == habit.id &&
                 Calendar.current.isDate($0.date, inSameDayAs: date)
             }) {
-                //dataManaging.wrappedValue.delete(model: record)
+                if let entity: HabitRecordEntity = dataManaging.wrappedValue.fetchOneById(id: record.id) {
+                    
+                    dataManaging.wrappedValue.delete(entity: entity)
+                }
             }
+            print(dataManaging.wrappedValue.getWeekRecords().count)
+            print(
+                state.habitRecords.first(where: {
+                    $0.habitDefinition.id == habit.id &&
+                    Calendar.current.isDate($0.date, inSameDayAs: date)
+                })
+            )
         }
 
         getWeekHabits()
