@@ -72,6 +72,21 @@ struct FSCalendarView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: FSCalendar, context: Context) {
-        
+        let calendar = Calendar.current
+
+        if let selected = selectedDate {
+            // Only select the date if it's not already selected
+            if let currentSelected = uiView.selectedDate,
+               !calendar.isDate(currentSelected, inSameDayAs: selected) {
+                uiView.select(selected)
+            } else if uiView.selectedDate == nil {
+                uiView.select(selected)
+            }
+        } else {
+            // Deselect current selection if selectedDate is nil
+            if let currentSelected = uiView.selectedDate {
+                uiView.deselect(currentSelected)
+            }
+        }
     }
 }

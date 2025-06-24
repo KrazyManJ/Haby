@@ -54,7 +54,7 @@ extension CoreDataManager {
             type: .Amount,
             frequency: .Weekly,
             targetValue: 10,
-            targetValueUnit: .Steps
+            targetValueUnit: .Hours
         )
                 
         let habits = [yoga,pill,walk,journaling]
@@ -121,7 +121,7 @@ extension CoreDataManager {
         var records: [MoodRecord] = []
         let today = Date().onlyDate
         
-        let validDaysOffsets = [0, 1, 2, 5]
+        let validDaysOffsets = 0...5
         
         for offset in validDaysOffsets {
             let recordDate = today.daysAgo(offset)
