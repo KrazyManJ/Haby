@@ -8,6 +8,7 @@ struct WeekTable: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack{
+                Spacer()
                 ForEach(weekDates, id: \.self) { date in
                     VStack {
                         Text(date.shortWeekday)
@@ -24,7 +25,7 @@ struct WeekTable: View {
            ForEach(viewModel.state.habits) { habit in
                HStack {
                    Image(systemName: habit.icon)
-                       .frame(width: 100, alignment: .leading)
+                       .frame(width: 50, alignment: .leading)
                    
                    ForEach(weekDates, id: \.self) { date in
                        let isInvalid = date > Date().onlyDate
@@ -39,6 +40,7 @@ struct WeekTable: View {
                            ),
                            isInvalid: isInvalid
                        )
+                       .padding(.trailing, 10)
                    }
                }
            }

@@ -4,6 +4,10 @@ extension CoreDataManager {
     func getTodayRecords() -> [HabitRecord] {
         return getRecordsByDate(date: Date())
     }
+    
+    func getWeekRecords() -> [HabitRecord] {
+        return getRecordsForWeek(of: Date())
+    }
 
     func getRecordsByDate(date: Date) -> [HabitRecord] {
         let timeHabits = getTimeHabitsEntitiesForDate(date: date)
@@ -21,6 +25,36 @@ extension CoreDataManager {
         );
         return result.map { $0.toModel() }
     }
+    
+    func getRecordsForWeek(of date: Date) -> [HabitRecord] {
+        let startOfWeek = date.startOfWeek
+        let endOfWeek = date.endOfWeek
+        
+        let weeklyHabits: [HabitDefinitionEntity] = fetch(
+            predicate: NSPredicate(
+                format: "frequency = %d",
+                argumentArray: [
+                    HabitFrequency.Weekly.rawValue
+                ]
+            )
+        )
+
+        let predicate = NSPredicate(
+            format: "habitDefinition IN %@ AND date >= %@ AND date <= %@",
+            argumentArray: [
+                weeklyHabits,
+                startOfWeek.onlyDate as NSDate,
+                endOfWeek.onlyDate as NSDate
+            ]
+        )
+        
+        
+        
+        let result: [HabitRecordEntity] = fetch(predicate: predicate)
+        return result.map { $0.toModel() }
+    }
+
+
     
     func fetchAllRecordsSortedByDate() -> [HabitRecord] {
         let result: [HabitRecordEntity] = fetch(

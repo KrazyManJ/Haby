@@ -8,21 +8,21 @@ class WeeklyViewModel: ObservableObject {
     
     func getWeekHabits() {
         state.amountHabits = dataManaging.wrappedValue.getAmountHabitsForWeek()
-        //state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+        state.habitRecords = dataManaging.wrappedValue.getWeekRecords()
         state.habits = dataManaging.wrappedValue.getTimeHabitsForWeek()
     }
     
-    func addToAmountHabit(habit: HabitDefinition, addedAmount: Float) {
+    func addToWeeklyAmountHabit(habit: HabitDefinition, addedAmount: Float) {
+        let calendar = Calendar.current
         let today = Date().onlyDate
-        let weekStart = Calendar.current.startOfWeek(for: today)
         
-        // Find existing record for the same habit within the current week
-        if var existingRecord = state.habitRecords.first(where: {
-            $0.habitDefinition.id == habit.id &&
-            Calendar.current.isDate($0.date, inSameWeekAs: today)
+        if var record = state.habitRecords.first(where: {
+            return $0.habitDefinition.id == habit.id &&
+            calendar.isDate($0.date.onlyDate, inSameWeekAs: today)
         }) {
-            existingRecord.value = (existingRecord.value ?? 0) + addedAmount
-            dataManaging.wrappedValue.upsert(model: existingRecord)
+            record.value = (record.value ?? 0) + addedAmount
+            dataManaging.wrappedValue.upsert(model: record)
+            print("record updated")
         } else {
             let newRecord = HabitRecord(
                 id: UUID(),
@@ -31,10 +31,9 @@ class WeeklyViewModel: ObservableObject {
                 habitDefinition: habit
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
+            print("new record saved")
         }
-        
-        getWeekHabits()
-        
+        self.getWeekHabits()
     }
     
     // TODO fix
@@ -68,5 +67,17 @@ class WeeklyViewModel: ObservableObject {
 
         getWeekHabits()
     }
+    
+    func totalWeeklyAmount(for habit: HabitDefinition, weekOf date: Date = Date()) -> Float {
+        let calendar = Calendar.current
+
+        return state.habitRecords
+            .filter {
+                $0.habitDefinition.id == habit.id &&
+                calendar.isDate($0.date, inSameWeekAs: date)
+            }
+            .reduce(0.0) { $0 + ($1.value ?? 0) }
+    }
+
 
 }
