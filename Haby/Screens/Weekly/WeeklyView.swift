@@ -13,17 +13,11 @@ struct WeeklyView: View {
         NavigationStack{
             VStack{
                 ScrollView {
-                    WeekTable(viewModel: $viewModel)
-//                    LazyVStack(spacing: 0) {
-//                        ForEach(viewModel.state.habits.filter { $0.type != .Amount}) { habit in
-//                            WeekTable(
-//                                viewModel: $viewModel, habit: habit
-//                            )
-//                        }
-//                        Spacer(minLength: 0)
-//                    }
-//                    .padding()
-                    
+                    LazyVStack(spacing: 0) {
+                        //if !viewModel.state.timeHabits.isEmpty {
+                        WeekTable(viewModel: $viewModel)
+                        //}
+                    }
                     if !viewModel.state.amountHabits.isEmpty {
                         LazyVStack(spacing: 0) {
                             ForEach(viewModel.state.amountHabits) { habit in

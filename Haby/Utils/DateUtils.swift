@@ -43,20 +43,20 @@ extension Date {
           formatter.setLocalizedDateFormatFromTemplate("E")
           return formatter.string(from: self)
       }
+    var startOfWeek: Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Monday = 2
+        let currentWeekday = calendar.component(.weekday, from: self)
+        let daysToSubtract = (currentWeekday + 5) % 7
+        return calendar.date(byAdding: .day, value: -daysToSubtract, to: self.onlyDate)!
+    }
+        
+    var endOfWeek: Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Monday = 2
+        let start = self.startOfWeek.onlyDate
+        return calendar.date(byAdding: .day, value: 6, to: start)!
+    }
 }
 
-extension Calendar {
-    func startOfWeek(for date: Date) -> Date {
-        return self.date(from: self.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
-    }
-    
-    func isDate(_ date1: Date, inSameWeekAs date2: Date) -> Bool {
-        return self.isDate(date1, equalTo: date2, toGranularity: .weekOfYear)
-    }
 
-    func currentWeekDates(from date: Date = Date()) -> [Date] {
-        let startOfWeek = self.date(from: self.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
-        return (0..<7).compactMap { self.date(byAdding: .day, value: $0, to: startOfWeek) }
-    }
-    
-}

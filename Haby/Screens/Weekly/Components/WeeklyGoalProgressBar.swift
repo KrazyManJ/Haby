@@ -4,11 +4,14 @@ import SwiftUI
 struct WeeklyGoalProgressBar: View {
     @Binding var viewModel: WeeklyViewModel
     var habit: HabitDefinition
-    @State private var currentAmount: Float = 0.0
+//    @State private var currentAmount: Float = 0.0
     @State private var isAddAmountPresented = false
     @State private var amountToAdd: Float = 0.0
     @State private var amountText: String = "0"
 
+    var currentAmount: Float {
+        viewModel.totalWeeklyAmount(for: habit)
+    }
 
     var targetValue: Float {
             habit.targetValue ?? 1.0
@@ -62,8 +65,11 @@ struct WeeklyGoalProgressBar: View {
 //                }
                 
                 .onAppear {
-                    currentAmount = viewModel.state.habitRecords
-                        .first(where: { $0.habitDefinition.id == habit.id })?.value ?? 0
+                    viewModel.getWeekHabits()
+//                    currentAmount = viewModel.state.habitRecords
+//                        .first(where: { $0.habitDefinition.id == habit.id })?.value ?? 0
+                    
+                    //currentAmount = viewModel.totalWeeklyAmount(for: habit, from: viewModel.state.habitRecords)
 //                    if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
 //                        currentAmount = Float(viewModel.stepsToday)
 //                    }
@@ -98,8 +104,8 @@ struct WeeklyGoalProgressBar: View {
                         }
                         
                         Button("Confirm") {
-                            viewModel.addToAmountHabit(habit: habit, addedAmount: amountToAdd)
-                            currentAmount += amountToAdd
+                            viewModel.addToWeeklyAmountHabit(habit: habit, addedAmount: amountToAdd)
+                            //currentAmount += amountToAdd
                             amountToAdd = 0
                             amountText = "0"
                             isAddAmountPresented = false

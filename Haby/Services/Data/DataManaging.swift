@@ -31,6 +31,7 @@ protocol DataManaging {
     // HabitRecordDataManager
     func getRecordsByDate(date: Date) -> [HabitRecord]
     func getTodayRecords() -> [HabitRecord]
+    func getWeekRecords() -> [HabitRecord]
     func fetchAllRecordsSortedByDate() -> [HabitRecord]
     func fetchDatesWithHabitRecords() -> [Date]
     
