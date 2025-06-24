@@ -19,7 +19,7 @@ extension CoreDataManager {
                 format:"habitDefinition IN %@ AND date = %@",
                 argumentArray: [
                     allHabits,
-                    Date().onlyDate as NSDate
+                    date.onlyDate as NSDate
                 ]
             )
         );

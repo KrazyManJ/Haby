@@ -21,6 +21,7 @@ protocol DataManaging {
     func getAmountHabitsForToday() -> [HabitDefinition]
     func getTimeHabitsForDate(date: Date) -> [HabitDefinition]
     func getAmountHabitsForDate(date: Date) -> [HabitDefinition]
+    func getHabitsForDate(date: Date) -> [HabitDefinition]
     
     func getTimeHabitsForWeek() -> [HabitDefinition]
     func getAmountHabitsForWeek() -> [HabitDefinition]

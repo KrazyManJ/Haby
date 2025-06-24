@@ -28,7 +28,7 @@ extension Date {
         }
     }
     
-    func toDisplayFormat(format: String = "yyyy-MM-dd") -> String {
+    func toDisplayFormat(format: String = "MM. dd. yyyy") -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
 

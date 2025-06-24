@@ -45,6 +45,9 @@ extension CoreDataManager {
         return result.map { $0.toModel() }
     }
     
+    func getHabitsForDate(date: Date) -> [HabitDefinition] {
+        return getTimeHabitsForDate(date: date)+getAmountHabitsForDate(date: date)
+    }
     
     internal func getTimeHabitsEntitiesForDate(date: Date) -> [HabitDefinitionEntity] {
         let today: WeekDay = WeekDay(from: date)

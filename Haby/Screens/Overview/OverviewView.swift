@@ -4,7 +4,6 @@ import SwiftUI
 
 struct OverviewView: View {
     @State var viewModel = OverviewViewModel()
-    @State private var selectedDate: Date?
     
     var body: some View {
         ScrollView {
@@ -13,15 +12,24 @@ struct OverviewView: View {
                 Text("Your streak is")
                 Text("\(viewModel.state.streak) day\(viewModel.state.streak > 1 ? "s" : "")").font(.system(size: 48))
                 FSCalendarView(
-                    selectedDate: $selectedDate,
+                    selectedDate: Binding(
+                        get: {
+                            viewModel.state.selectedDateData?.date
+                        },
+                        set: {
+                            if let date = $0 {
+                                viewModel.selectDate(date: date)
+                            }
+                            else {
+                                viewModel.selectDate(date: nil)
+                            }
+                        }
+                    ),
                     highlightedDates: $viewModel.state.completedDates,
                     moodRecords: viewModel.state.moodRecords
                 )
                     .frame(height: 300)
                     .padding()
-//                if let date = selectedDate {
-//                    Text("Selected: \(date.formatted(date: .abbreviated, time: .omitted))")
-//                }
                 Text("Steps Today: \(Int(viewModel.state.stepsToday))")
                                 .font(.title)
                 StepsChart(data: viewModel.state.monthlySteps)
@@ -31,6 +39,24 @@ struct OverviewView: View {
         .onAppear {
             viewModel.loadCompletedDates()
         }
+        .sheet(
+            isPresented: Binding(
+                get: {
+                    viewModel.state.selectedDateData != nil
+                }, set: { val in
+                    if !val {
+                        viewModel.selectDate(date: nil)
+                    }
+                }
+            ),
+            content:{
+                DayDetails(
+                    viewModel: $viewModel,
+                    selectedDateData: viewModel.state.selectedDateData!
+                )
+                .presentationDetents([.fraction(0.3), .medium, .large])
+            }
+        )
     }
 }
 
