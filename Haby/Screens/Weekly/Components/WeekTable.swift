@@ -21,15 +21,16 @@ struct WeekTable: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Spacer()
+                Color.clear.frame(width: 30)
                 ForEach(weekDates, id: \.self) { date in
                     VStack {
                         Text(date.shortWeekday)
+                            .font(.caption)
                         Text("\(Calendar.current.component(.day, from: date))")
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(width: 35)
                 }
             }
             .font(.headline)
@@ -38,7 +39,7 @@ struct WeekTable: View {
             ForEach(viewModel.state.habits) { habit in
                 HStack {
                     Image(systemName: habit.icon)
-                        .frame(width: 50, alignment: .leading)
+                        .frame(width: 30, alignment: .leading)
                     
                     ForEach(weekDates, id: \.self) { date in
                         //let isInvalid = date > Date().onlyDate
@@ -63,7 +64,8 @@ struct WeekTable: View {
                             ),
                             isInvalid: !isValid || isDisabled
                         )
-                        .padding(.trailing, 10)
+                        //.padding(.trailing, 10)
+                        .frame(width: 35, alignment: .center)
                         .disabled(isDisabled)
                         .foregroundStyle(
                             isChecked ? (isValid ? Color.Primary : .red) : .primary
@@ -74,21 +76,23 @@ struct WeekTable: View {
                 }
             }
         }
-            .frame(minHeight: 100)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.Secondary)
-            )
-            .padding()
-            .confirmationDialog("Are you sure you want to uncheck this habit? This action loses your current stage of habit.", isPresented: $showingConfirmation, titleVisibility: .visible) {
-                Button("Uncheck", role: .destructive) {
-                    if let habit = habitToUncheck, let date = dateToUncheck {
-                        viewModel.setHabit(habit, checked: false, on: date)
-                        viewModel.selectedDates[habit.id] = nil
-                    }
+        .padding()
+        .frame(minHeight: 100)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.Secondary)
+        )
+        .padding()
+        .confirmationDialog("Are you sure you want to uncheck this habit? This action loses your current stage of habit.", isPresented: $showingConfirmation, titleVisibility: .visible) {
+            Button("Uncheck", role: .destructive) {
+                if let habit = habitToUncheck, let date = dateToUncheck {
+                    viewModel.setHabit(habit, checked: false, on: date)
+                    viewModel.selectedDates[habit.id] = nil
                 }
-                Button("Cancel", role: .cancel) {}
             }
+            Button("Cancel", role: .cancel) {}
+        }
         
     }
+        
 }

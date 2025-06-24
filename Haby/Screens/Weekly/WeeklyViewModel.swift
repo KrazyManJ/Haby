@@ -7,6 +7,44 @@ class WeeklyViewModel: ObservableObject {
     var dataManaging: Injected<DataManaging> = .init()
     var selectedDates: [UUID: Date] = [:]
     
+    var healthKitManager: Injected<StepsManaging> = .init()
+    
+    var stepsThisWeek: Int = 0
+    var isLoadingSteps: Bool = true
+    var showHealthKitError: Bool = false
+    
+    func loadStepData() async {
+        await fetchStepsThisWeek()
+    }
+    
+    private func fetchStepsThisWeek() async {
+        stepsThisWeek = await healthKitManager.wrappedValue.fetchStepsForWeek()
+    }
+
+    func syncHealthDataToHabits() {
+        for habit in state.amountHabits {
+            guard habit.isUsingHealthData,
+                  habit.targetValueUnit == .Steps else { continue }
+
+            let currentSteps = Float(stepsThisWeek)
+
+            if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+                var updatedRecord = existing
+                updatedRecord.value = currentSteps
+                dataManaging.wrappedValue.upsert(model: updatedRecord)
+            } else {
+                let newRecord = HabitRecord(
+                    id: UUID(),
+                    date: Date().onlyDate,
+                    value: currentSteps,
+                    habitDefinition: habit
+                )
+                dataManaging.wrappedValue.upsert(model: newRecord)
+            }
+        }
+        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+    }
+    
     func getWeekHabits() {
         state.amountHabits = dataManaging.wrappedValue.getAmountHabitsForWeek()
         state.habitRecords = dataManaging.wrappedValue.getWeekRecords()
@@ -78,6 +116,10 @@ class WeeklyViewModel: ObservableObject {
     }
     
     func totalWeeklyAmount(for habit: HabitDefinition, weekOf date: Date = Date()) -> Float {
+        if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
+                return Float(stepsThisWeek)
+            }
+
         let calendar = Calendar.current
 
         return state.habitRecords

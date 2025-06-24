@@ -55,6 +55,50 @@ class HealthKitStepsManager : StepsManaging {
         }
     }
     
+    func fetchStepsForWeek() async -> Int {
+        await withCheckedContinuation { continuation in
+            let calendar = Calendar.current
+            let now = Date()
+            guard let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)) else {
+                continuation.resume(returning: 0)
+                return
+            }
+
+            let predicate = HKQuery.predicateForSamples(withStart: startOfWeek, end: now, options: .strictStartDate)
+            
+            let interval = DateComponents(day: 1)
+
+            let query = HKStatisticsCollectionQuery(
+                quantityType: stepType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum,
+                anchorDate: startOfWeek,
+                intervalComponents: interval
+            )
+
+            query.initialResultsHandler = { _, results, error in
+                guard let statsCollection = results, error == nil else {
+                    print("Error fetching weekly steps: \(error?.localizedDescription ?? "Unknown error")")
+                    continuation.resume(returning: 0)
+                    return
+                }
+
+                var totalSteps = 0
+
+                statsCollection.enumerateStatistics(from: startOfWeek, to: now) { stats, _ in
+                    let steps = stats.sumQuantity()?.doubleValue(for: .count()) ?? 0
+                    totalSteps += Int(steps)
+                }
+
+                continuation.resume(returning: totalSteps)
+            }
+
+            healthStore.execute(query)
+        }
+    }
+
+
+    
     func fetchMonthlyStepData() async -> [StepData] {
         await withCheckedContinuation { continuation in
             let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
