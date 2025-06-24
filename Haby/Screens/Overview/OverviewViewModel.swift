@@ -11,6 +11,10 @@ class OverviewViewModel: ObservableObject {
     private let dataManaging: Injected<DataManaging> = .init()
     private let stepsManaging: Injected<StepsManaging> = .init()
     
+    init() {
+        state.moodRecords = dataManaging.wrappedValue.fetch()
+    }
+    
     func loadStepData() async {
         state.stepsToday = await stepsManaging.wrappedValue.fetchStepsForToday()
         state.monthlySteps =  await stepsManaging.wrappedValue.fetchMonthlyStepData()
@@ -23,7 +27,9 @@ class OverviewViewModel: ObservableObject {
             let amountHabitsInDate: [HabitDefinition] = dataManaging.wrappedValue.getAmountHabitsForDate(date: date)
             let habitsRecords: [HabitRecord] = dataManaging.wrappedValue.getRecordsByDate(date: date)
             
-            let allTimeHabitsRecorded = timeHabitsInDate.allSatisfy { habit in
+            let allTimeHabitsRecorded = timeHabitsInDate
+                .filter({ date.nextDay > $0.creationDate })
+                .allSatisfy { habit in
                 if let record = habitsRecords.first(where: { r in
                     r.habitDefinition.id == habit.id
                 }) {
@@ -31,7 +37,9 @@ class OverviewViewModel: ObservableObject {
                 }
                 return false
             }
-            let allAmountHabitsRecorded = amountHabitsInDate.allSatisfy() { habit in
+            let allAmountHabitsRecorded = amountHabitsInDate
+                .filter({ date.nextDay > $0.creationDate })
+                .allSatisfy() { habit in
                 if let record = habitsRecords.first(where: { r in
                     r.habitDefinition.id == habit.id
                 }) {
@@ -40,7 +48,6 @@ class OverviewViewModel: ObservableObject {
                 
                 return false
             }
-            habitsRecords.forEach { print($0.isCompleted,$0.habitDefinition.name) }
             
             if allTimeHabitsRecorded && allAmountHabitsRecorded {
                 state.completedDates.insert(date)
@@ -50,22 +57,18 @@ class OverviewViewModel: ObservableObject {
     }
     
     private func calculateStreak() -> Int {
-        let calendar = Calendar.current
         var streak = 0
-        var currentDate = calendar.startOfDay(for: Date()) // today at 00:00
+        if state.completedDates.contains(Date().onlyDate) {
+            streak += 1
+        }
+        
+        var currentDate = Date().onlyDate.daysAgo(1)
         
         while state.completedDates.contains(currentDate) {
             streak += 1
-            guard let previousDay = calendar.date(byAdding: .day, value: -1, to: currentDate) else {
-                break
-            }
-            currentDate = previousDay
+            currentDate = currentDate.daysAgo(1)
         }
         
         return streak
     }
-}
-
-#Preview {
-   // OverviewViewModel()
 }

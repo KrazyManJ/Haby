@@ -8,4 +8,5 @@ final class OverviewViewState {
     var monthlySteps: [StepData] = []
     var completedDates: Set<Date> = Set()
     var streak: Int = 0
+    var moodRecords: [MoodRecord] = []
 }

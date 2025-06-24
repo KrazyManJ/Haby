@@ -4,6 +4,7 @@ import FSCalendar
 struct FSCalendarView: UIViewRepresentable {
     @Binding var selectedDate: Date?
     @Binding var highlightedDates: Set<Date>
+    var moodRecords: [MoodRecord]
 
     class Coordinator: NSObject, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
         var parent: FSCalendarView
@@ -14,6 +15,16 @@ struct FSCalendarView: UIViewRepresentable {
 
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
+        }
+
+        func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+            let calendar = Calendar.current
+            if let record = parent.moodRecords.first(where: {
+                calendar.isDate($0.date, inSameDayAs: date)
+            }) {
+                return record.mood.emoji
+            }
+            return nil
         }
         
         func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
@@ -54,6 +65,8 @@ struct FSCalendarView: UIViewRepresentable {
         calendar.scrollDirection = .horizontal
         calendar.scope = .month
         calendar.firstWeekday = 2
+        
+        calendar.appearance.subtitleOffset = CGPoint(x: 0, y: 2)
         
         return calendar
     }
