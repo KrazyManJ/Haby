@@ -5,6 +5,8 @@ import SwiftUI
 struct WeeklyView: View {
     @State private var viewModel: WeeklyViewModel
     
+    @Environment(\.scenePhase) var scenePhase
+    
     init(viewModel: WeeklyViewModel) {
         self.viewModel = viewModel
     }
@@ -66,13 +68,27 @@ struct WeeklyView: View {
             }
             
             .onAppear {
-                viewModel.getWeekHabits()
+                refreshData()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("App returned to foreground. Refreshing data...")
+                    refreshData()
+                }
             }
             .background(Color.Background)
         }
     
         .tint(.Primary)
     }
+    func refreshData() {
+            viewModel.getWeekHabits()
+            Task {
+                await viewModel.loadStepData()
+                // Optional: If you want to persist the new step count to your local DB immediately:
+                viewModel.syncHealthDataToHabits()
+            }
+        }
 }
 
 

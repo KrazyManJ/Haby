@@ -78,7 +78,12 @@ struct AddEditHabitView: View {
                         .labelsHidden()
                         .accentColor(Color.Primary)
                     }
-                    if (selectedAmountType == .Steps){
+                    if (
+                        selectedAmountType == .Steps ||
+                        selectedAmountType == .Calories ||
+                        selectedAmountType == .ExerciseTime ||
+                        selectedAmountType == .Kilometers
+                    ){
                         Toggle("Use Health Data", isOn: $healthData)
                             .toggleStyle(SwitchToggleStyle(tint: Color.Primary))
                             .onChange(of: healthData) { old, new in

@@ -7,10 +7,10 @@ class WeeklyViewModel: ObservableObject {
     var dataManaging: Injected<DataManaging> = .init()
     var selectedDates: [UUID: Date] = [:]
     
-    var healthKitManager: Injected<StepsManaging> = .init()
+    var healthKitManager: Injected<HealthManaging> = .init()
     
     var stepsThisWeek: Int = 0
-    var isLoadingSteps: Bool = true
+    var isLoadingSteps: Bool = false
     var showHealthKitError: Bool = false
     
     func loadStepData() async {
@@ -18,7 +18,7 @@ class WeeklyViewModel: ObservableObject {
     }
     
     private func fetchStepsThisWeek() async {
-        stepsThisWeek = await healthKitManager.wrappedValue.fetchStepsForWeek()
+        stepsThisWeek = await Int(healthKitManager.wrappedValue.fetchWeekSteps())
     }
 
     func syncHealthDataToHabits() {

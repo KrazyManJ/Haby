@@ -2,7 +2,7 @@ import Charts
 import SwiftUI
 
 struct StepsChart: View {
-    var data: [StepData]
+    var data: [HealthDataPoint]
 
     var body: some View {
         VStack(alignment: .leading){
@@ -10,7 +10,7 @@ struct StepsChart: View {
             Chart(data) {
                 BarMark(
                     x: .value("Date", $0.date),
-                    y: .value("Steps", $0.steps)
+                    y: .value("Steps", $0.value)
                 )
                 .foregroundStyle(.white)
             }

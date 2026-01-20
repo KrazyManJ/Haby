@@ -6,10 +6,10 @@ import HealthKit
 class DailyViewModel: ObservableObject {
     var state: DailyViewState = DailyViewState()
     var dataManaging: Injected<DataManaging> = .init()
-    var healthKitManager: Injected<StepsManaging> = .init()
+    var healthKitManager: Injected<HealthManaging> = .init()
     
     var stepsToday: Int = 0
-    var isLoadingSteps: Bool = true
+    var isLoadingSteps: Bool = false
     var showHealthKitError: Bool = false
     
     func loadStepData() async {
@@ -17,7 +17,7 @@ class DailyViewModel: ObservableObject {
     }
     
     private func fetchStepsToday() async {
-        stepsToday = await healthKitManager.wrappedValue.fetchStepsForToday()
+        stepsToday = await Int(healthKitManager.wrappedValue.fetchTodaySteps())
     }
 
     func syncHealthDataToHabits() {

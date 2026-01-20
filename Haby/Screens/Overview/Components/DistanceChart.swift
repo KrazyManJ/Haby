@@ -3,13 +3,13 @@ import Charts
 import SwiftUI
 
 struct DistanceChart: View {
-    var data: [DistanceData]
+    var data: [HealthDataPoint]
 
     var body: some View {
             Chart(data) { entry in
                 LineMark(
                     x: .value("Date", entry.date),
-                    y: .value("Kilometers", entry.kilometers)
+                    y: .value("Kilometers", entry.value)
                 )
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(.blue)

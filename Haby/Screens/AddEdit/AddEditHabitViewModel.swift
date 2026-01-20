@@ -6,7 +6,7 @@ class AddEditHabitViewModel {
     var state: AddEditHabitViewState = AddEditHabitViewState()
 
     private var dataManager: Injected<DataManaging> = .init()
-    private var stepsManaging: Injected<StepsManaging> = .init()
+    private var healthManager: Injected<HealthManaging> = .init()
         
     init(habit: HabitDefinition? = nil) {
         state.habitToEdit = habit
@@ -17,11 +17,11 @@ class AddEditHabitViewModel {
     }
     
     func requestHealthAuthorization() {
-        if stepsManaging.wrappedValue.hasAskedForPermission() {
+        if healthManager.wrappedValue.hasAskedForPermission() {
             return
         }
         Task {
-            _ = await stepsManaging.wrappedValue.requestPermission()
+            _ = await healthManager.wrappedValue.requestPermission()
         }
     }
 }

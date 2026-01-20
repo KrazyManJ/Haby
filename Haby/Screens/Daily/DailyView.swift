@@ -6,6 +6,8 @@ struct DailyView: View {
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
     
+    @Environment(\.scenePhase) var scenePhase
+    
     init(viewModel: DailyViewModel) {
         self.viewModel = viewModel
         UISegmentedControl.appearance().backgroundColor = UIColor(Color.Primary)
@@ -96,9 +98,12 @@ struct DailyView: View {
                 if !viewModel.isTodayMoodSaved() {
                     viewModel.updateMood(mood: .Neutral)
                 }
-                viewModel.getTodayHabits()
-                Task {
-                    await viewModel.loadStepData()
+                refreshData()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("App returned to foreground. Refreshing data...")
+                    refreshData()
                 }
             }
             .background(Color.Background)
@@ -108,6 +113,14 @@ struct DailyView: View {
         }
         .tint(.Primary)
     }
+    func refreshData() {
+            viewModel.getTodayHabits()
+            Task {
+                await viewModel.loadStepData()
+                // Optional: If you want to persist the new step count to your local DB immediately:
+                viewModel.syncHealthDataToHabits()
+            }
+        }
 }
 
 #Preview {

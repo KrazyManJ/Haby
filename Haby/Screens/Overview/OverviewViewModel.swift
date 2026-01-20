@@ -9,15 +9,15 @@ class OverviewViewModel: ObservableObject {
     
     private let healthStore = HKHealthStore()
     private let dataManaging: Injected<DataManaging> = .init()
-    private let stepsManaging: Injected<StepsManaging> = .init()
+    private let healthManaging: Injected<HealthManaging> = .init()
     
     init() {
         state.moodRecords = dataManaging.wrappedValue.fetch()
     }
     
     func loadStepData() async {
-        state.stepsToday = await stepsManaging.wrappedValue.fetchStepsForToday()
-        state.monthlySteps =  await stepsManaging.wrappedValue.fetchMonthlyStepData()
+        state.stepsToday = await Int(healthManaging.wrappedValue.fetchTodaySteps())
+        state.monthlySteps =  await healthManaging.wrappedValue.fetchCurrentMonthStepData()
     }
     
     func selectDate(date: Date?) {

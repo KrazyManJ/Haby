@@ -10,6 +10,8 @@ enum AmountUnit: Int16, CaseIterable, Identifiable {
     case Litres = 4
     case Hours = 5
     case Minutes = 6
+    case Calories = 7
+    case ExerciseTime = 8
     
     var name: String {
         String(describing: self)
@@ -27,6 +29,10 @@ enum AmountUnit: Int16, CaseIterable, Identifiable {
             return "h"
         case .Minutes:
             return "min"
+        case .Calories:
+            return "kcal"
+        case .ExerciseTime:
+            return "Exercise Time"
         case .None:
             return ""
         }

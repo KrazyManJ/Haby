@@ -24,11 +24,11 @@ struct WeekTable: View {
                 Color.clear.frame(width: 30)
                 ForEach(weekDates, id: \.self) { date in
                     VStack {
-                        Text(date.shortWeekday)
+                        Text(date.shortWeekday.uppercased())
                             .font(.caption)
-                        Text("\(Calendar.current.component(.day, from: date))")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+//                        Text("\(Calendar.current.component(.day, from: date))")
+//                            .font(.caption)
+//                            .foregroundColor(.gray)
                     }
                     .frame(width: 35)
                 }
@@ -48,7 +48,7 @@ struct WeekTable: View {
                         let selectedDate = viewModel.selectedDates[habit.id]
                         let isDisabled = selectedDate != nil && selectedDate != date
                         
-                        CheckBox(
+                        CircleCheck(
                             isOn: Binding<Bool>(
                                 get: { isChecked },
                                 set: { newValue in
@@ -70,10 +70,9 @@ struct WeekTable: View {
                         .foregroundStyle(
                             isChecked ? (isValid ? Color.Primary : .red) : .primary
                         )
-                        
                     }
-                    
                 }
+                .padding(.top, 10)
             }
         }
         .padding()
@@ -95,4 +94,8 @@ struct WeekTable: View {
         
     }
         
+}
+
+#Preview {
+//    WeekTable(viewModel: WeeklyViewModel(), showingConfirmation: false, habitToUncheck: <#T##HabitDefinition?#>, dateToUncheck: <#T##Date?#>)
 }
