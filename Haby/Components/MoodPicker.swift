@@ -17,7 +17,6 @@ struct MoodPickerView: View {
                             .foregroundColor(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
-                    
                 }
             }
             .padding(8)
