@@ -1,0 +1,4 @@
+#include "Base.xcconfig"
+#include? "User.xcconfig"
+
+BUNDLE_ID_PREFIX = com

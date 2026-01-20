@@ -52,3 +52,6 @@ fastlane/test_output
 
 ## Accidental files
 *~.nib
+
+## User Config
+User.xcconfig
