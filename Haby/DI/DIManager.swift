@@ -2,8 +2,13 @@ import Foundation
 
 final class DIContainer {
     typealias Resolver = () -> Any
+    
+    private struct Dependency {
+        let resolver: Resolver
+        let cached: Bool
+    }
 
-    private var resolvers = [String: Resolver]()
+    private var dependencies = [String: Dependency]()
     private var cache = [String: Any]()
 
     static let shared = DIContainer()
@@ -12,13 +17,9 @@ final class DIContainer {
         registerDependencies()
     }
 
-    func register<T, R>(_ type: T.Type, cached: Bool = false, service: @escaping () -> R) {
+    func register<T, R>(_ type: T.Type, cached: Bool = true, dependencyResolver: @escaping () -> R) {
         let key = String(reflecting: type)
-        resolvers[key] = service
-
-        if cached {
-            cache[key] = service()
-        }
+        dependencies[key] = Dependency(resolver: dependencyResolver, cached: cached)
     }
 
     func resolve<T>() -> T {
@@ -26,28 +27,24 @@ final class DIContainer {
 
         if let cachedService = cache[key] as? T {
             print("🥣 Resolving cached instance of \(T.self).")
-
             return cachedService
         }
 
-        if let resolver = resolvers[key], let service = resolver() as? T {
-            print("🥣 Resolving new instance of \(T.self).")
-
-            return service
+        guard let config = dependencies[key] else {
+            fatalError("🥣 \(key) has not been registered.")
         }
 
-        fatalError("🥣 \(key) has not been registered.")
+        guard let service = config.resolver() as? T else {
+            fatalError("🥣 \(key) could not be cast to \(T.self)")
+        }
+        
+        if config.cached {
+            print("🥣 Creating and caching new instance of \(T.self).")
+            cache[key] = service
+        } else {
+            print("🥣 Creating new non-cached instance of \(T.self).")
+        }
+
+        return service
     }
 }
-
-extension DIContainer {
-    func registerDependencies() {
-        register(DataManaging.self, cached: true) {
-            CoreDataManager()
-        }
-        register(StepsManaging.self, cached: true) {
-            HealthKitStepsManager()
-        }
-    }
-}
-
