@@ -10,11 +10,22 @@ struct MoodPickerView: View {
                     Button(action: {
                         selectedMood = mood
                     }) {
-                        Text(mood.emoji)
-                            .font(.system(size: 32))
-                            .frame(height: 64)
+                        Image(mood.symbolResource)
+                            .resizable()
+                            .renderingMode(.template)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 32)
+                            .foregroundStyle(Colors.TextPrimary)
                             .frame(maxWidth: .infinity)
-                            .if(selectedMood == mood) { $0.background(Colors.TextSecondary) }
+                            .padding(16)
+                            .if(selectedMood == mood) {
+                                $0.background(Colors.TextSecondary)
+                            }
+//                        Text(mood.emoji)
+//                            .font(.system(size: 32))
+//                            .frame(height: 64)
+//                            .frame(maxWidth: .infinity)
+//                            .if(selectedMood == mood) { $0.background(Colors.TextSecondary) }
                             
                     }
                         .clipShape(RoundedRectangle(cornerRadius: 8))
