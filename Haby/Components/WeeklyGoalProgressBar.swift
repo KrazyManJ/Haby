@@ -111,7 +111,7 @@ struct WeeklyGoalProgressBar: View {
                     .frame(alignment: .center)
                     .padding()
                     .presentationDetents([.fraction(0.3)])
-//                    .presentationBackground(Color.Background)
+                    .presentationBackground(Colors.BackgroundPrimary)
                 }
             }
         }
