@@ -7,5 +7,8 @@ internal extension DIContainer {
         register(HealthManaging.self) {
             HealthManager()
         }
+        register(NotificationManaging.self) {
+            NotificationManager()
+        }
     }
 }
