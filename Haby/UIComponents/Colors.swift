@@ -2,7 +2,7 @@
 import SwiftUI
 
 enum Colors {
-    static let Primary = Color(.primary)
+    static let Primary = Color(.brandPrimary)
     
     static let BackgroundPrimary = Color(.backgroundPrimary)
     static let BackgroundSecondary = Color(.backgroundSecondary)
