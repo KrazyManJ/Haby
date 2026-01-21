@@ -94,7 +94,7 @@ struct AmountGoalProgressBar: View {
                                 Image(systemName: "xmark")
                                     .frame(width: 30, height: 30)
                                     .font(.system(size: 20))
-                                    .tint(Color.TextDarkPrimary)
+                                    .tint(Colors.TextPrimary)
                                     .background(Color.black.opacity(0.1))
                                     .clipShape(Circle())
                             }
@@ -106,7 +106,7 @@ struct AmountGoalProgressBar: View {
                                 .font(.system(size: 40, weight: .medium))
                                 .frame(width: 150)
                                 .textFieldStyle(PlainTextFieldStyle())
-                                .foregroundStyle(Color.TextDarkPrimary, Color.TextLight)
+                                .foregroundStyle(Colors.TextPrimary)
                         }
                         
                         Button("Confirm") {
@@ -119,7 +119,6 @@ struct AmountGoalProgressBar: View {
                             resetSheet()
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(Color.Primary)
                         .controlSize(.large)
                         .disabled(!isAddAmountInputValid())
                         
@@ -127,7 +126,7 @@ struct AmountGoalProgressBar: View {
                     .frame(alignment: .center)
                     .padding()
                     .presentationDetents([.fraction(0.3)])
-                    .presentationBackground(Color.Background)
+                    .presentationBackground(Colors.BackgroundPrimary)
                 }
             }
         }

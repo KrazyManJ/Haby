@@ -94,7 +94,7 @@ struct DailyView: View {
                 }
                 refreshData()
             }
-            .onChange(of: scenePhase) { newPhase in
+            .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
                     refreshData()
