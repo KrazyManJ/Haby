@@ -4,8 +4,8 @@ internal extension DIContainer {
         register(DataManaging.self) {
             CoreDataManager()
         }
-        register(StepsManaging.self) {
-            HealthKitStepsManager()
+        register(HealthManaging.self) {
+            HealthManager()
         }
     }
 }
