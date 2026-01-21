@@ -1,0 +1,57 @@
+## macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+## Xcode
+# Build generated
+build/
+DerivedData/
+
+# Configuration settings specific to the user (e.g., window layout)
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+xcuserdata/
+
+# Code signing handling (if managing manually)
+# Note: Comment these out if you are syncing certificates via git (not recommended)
+*.p12
+*.cer
+
+## Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+# Note: Keep Package.resolved! It locks your dependency versions.
+
+## Xcode Project generation (if using tools like Xcodegen)
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+
+## CocoaPods (if you use them)
+# We usually ignore the Pods directory to keep the repo small
+Pods/
+# Do not ignore Podfile.lock!
+
+## Carthage (if you use it)
+Carthage/Build/
+
+## Fastlane (Automation)
+fastlane/report.xml
+fastlane/screenshots
+fastlane/test_output
+
+## Testing
+*.xccheckout
+*.xcresult
+
+## Accidental files
+*~.nib
+
+## User Config
+User.xcconfig

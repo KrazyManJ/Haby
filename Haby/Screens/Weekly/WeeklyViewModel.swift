@@ -93,7 +93,6 @@ class WeeklyViewModel: ObservableObject {
                 dataManaging.wrappedValue.upsert(model: record)
             }
         } else {
-            print(dataManaging.wrappedValue.getWeekRecords().count)
             if let record = state.habitRecords.first(where: {
                 $0.habitDefinition.id == habit.id &&
                 Calendar.current.isDate($0.date, inSameDayAs: date)
@@ -103,13 +102,6 @@ class WeeklyViewModel: ObservableObject {
                     dataManaging.wrappedValue.delete(entity: entity)
                 }
             }
-            print(dataManaging.wrappedValue.getWeekRecords().count)
-            print(
-                state.habitRecords.first(where: {
-                    $0.habitDefinition.id == habit.id &&
-                    Calendar.current.isDate($0.date, inSameDayAs: date)
-                })
-            )
         }
 
         getWeekHabits()

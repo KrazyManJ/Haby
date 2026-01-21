@@ -1,0 +1,30 @@
+//
+// Changes bundle prefix - Differs user accounts for developer account certificate
+// Defaults to empty to prevent accidental certificate creation (when empty, bundle starts with dot, which is not accepted by Apple)
+//
+// ALWAYS CONFIGURE IN User.xcconfig
+// (only one exception is release, which leads to 'com')
+//
+BUNDLE_ID_PREFIX =
+//
+// Changes bundle suffix - Differs targets
+// Use values like '.Watch', '.Tests', '.UITests' (with dot in the beginning)
+// Defaults to empty so core application is the main target
+//
+BUDNLE_ID_SUFFIX =
+//
+// Changes development team id so each developer can decide what id to use for their Personal Account
+//
+// - When dev has membership, it can be found on apple developer account site
+// - When dev has no membership (free account), it can be found by setting it manualy in project, then copy it from source XML
+//   (DON'T FORGET TO ERASE THE MANUAL SET ONE)
+//
+// ALWAYS CONFIGURE IN User.xcconfig
+//
+DEVELOPMENT_TEAM =
+
+//
+// BASE SETTINGS
+// (don't touch it, if you don't know, what are you doing)
+//
+PRODUCT_BUNDLE_IDENTIFIER = $(BUNDLE_ID_PREFIX).krazymanj-katapl.Haby$(BUNDLE_ID_SUFFIX)

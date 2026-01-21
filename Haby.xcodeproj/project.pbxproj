@@ -13,9 +13,23 @@
 
 /* Begin PBXFileReference section */
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C79B44A2F1F1B9300CA4B0C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5C79B47E2F1FD89D00CA4B0C /* Exceptions for "Config" folder in "Haby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Base.xcconfig,
+				Debug.xcconfig,
+				Release.xcconfig,
+				"Targets/App/App-Base.xcconfig",
+				"Targets/App/App-Debug.xcconfig",
+				"Targets/App/App-Release.xcconfig",
+				User.xcconfig,
+			);
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
 		A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -32,6 +46,19 @@
 				A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */,
 			);
 			path = Haby;
+			sourceTree = "<group>";
+		};
+		5C79B45A2F1F203400CA4B0C /* Config */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5C79B47E2F1FD89D00CA4B0C /* Exceptions for "Config" folder in "Haby" target */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		5C79B5952F20426A00CA4B0C /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +79,9 @@
 		44B063DF2DDDC4D000252D85 = {
 			isa = PBXGroup;
 			children = (
+				5C79B45A2F1F203400CA4B0C /* Config */,
+				5C79B44A2F1F1B9300CA4B0C /* .gitignore */,
+				5C79B5952F20426A00CA4B0C /* Shared */,
 				44B063EA2DDDC4D000252D85 /* Haby */,
 				44B063E92DDDC4D000252D85 /* Products */,
 			);
@@ -82,6 +112,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				44B063EA2DDDC4D000252D85 /* Haby */,
+				5C79B45A2F1F203400CA4B0C /* Config */,
+				5C79B5952F20426A00CA4B0C /* Shared */,
 			);
 			name = Haby;
 			packageProductDependencies = (
@@ -99,8 +131,8 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					44B063E72DDDC4D000252D85 = {
 						CreatedOnToolsVersion = 16.2;
@@ -153,6 +185,8 @@
 /* Begin XCBuildConfiguration section */
 		44B063F42DDDC4D100252D85 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -186,6 +220,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = RG2CM658T3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -209,13 +244,17 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		44B063F52DDDC4D100252D85 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -249,6 +288,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = RG2CM658T3;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -265,13 +305,17 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		44B063F72DDDC4D100252D85 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/App/App-Debug.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -279,7 +323,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Haby/Preview Content\"";
-				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Haby/Info.plist;
@@ -295,7 +338,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cz.mendelu.Haby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -305,14 +347,16 @@
 		};
 		44B063F82DDDC4D100252D85 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/App/App-Release.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Haby/Haby.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Haby/Preview Content\"";
-				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Haby/Info.plist;
@@ -328,8 +372,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cz.mendelu.Haby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

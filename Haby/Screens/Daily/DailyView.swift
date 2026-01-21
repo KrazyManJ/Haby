@@ -8,13 +8,8 @@ struct DailyView: View {
     
     @Environment(\.scenePhase) var scenePhase
     
-    init(viewModel: DailyViewModel) {
+    init(viewModel: DailyViewModel = DailyViewModel()) {
         self.viewModel = viewModel
-        UISegmentedControl.appearance().backgroundColor = UIColor(Color.Primary)
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.Secondary)
-        UISegmentedControl.appearance().setTitleTextAttributes([
-            .font: UIFont.systemFont(ofSize: 24),
-        ], for: .normal)
         viewModel.getTodayMood()
         mood = Binding(
             get: {
@@ -54,24 +49,23 @@ struct DailyView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.title3).bold()
                     if !viewModel.state.amountHabits.isEmpty {
-                        LazyVStack(spacing: 0) {
-                            ForEach(viewModel.state.amountHabits) { habit in
-                                DailyGoalProgressBar(
-                                    viewModel: $viewModel, habit: habit
-                                )
-                                .padding(8)
-                            }
-                            Spacer(minLength: 0)
+                        Card {
+                            LazyVStack(spacing: 0) {
+                                ForEach(viewModel.state.amountHabits) { habit in
+                                    DailyGoalProgressBar(
+                                        viewModel: $viewModel, habit: habit
+                                    )
+                                    .padding(8)
+                                }
+                            }.padding()
                         }
-                        .padding()
                         .frame(minHeight: 100)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.Secondary)
-                        )
                         .padding()
                     } else {
-                        Text("No goal habits for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
+                        Text("No goal habits for today!")
+                            .italic()
+                            .foregroundColor(Color.gray)
+                            .padding(.vertical,32)
                     }
                 }
                 Text("Mood")
@@ -106,12 +100,11 @@ struct DailyView: View {
                     refreshData()
                 }
             }
-            .background(Color.Background)
-//            .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
-//                Button("OK", role: .cancel) {}
-//            }
+            .background(Colors.BackgroundPrimary)
+            .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
+                Button("OK", role: .cancel) {}
+            }
         }
-        .tint(.Primary)
     }
     func refreshData() {
             viewModel.getTodayHabits()

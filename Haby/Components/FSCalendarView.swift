@@ -34,7 +34,7 @@ struct FSCalendarView: UIViewRepresentable {
                 }
             for highlighted in parent.highlightedDates {
                 if calendar.isDate(date, inSameDayAs: highlighted) {
-                    return UIColor(.Secondary).withAlphaComponent(0.8)
+//                    return UIColor(.Secondary).withAlphaComponent(0.8)
                 }
             }
             return nil
@@ -47,7 +47,7 @@ struct FSCalendarView: UIViewRepresentable {
             }
             for highlighted in parent.highlightedDates {
                 if calendar.isDate(date, inSameDayAs: highlighted) {
-                    return UIColor(.textDarkPrimary)
+//                    return UIColor(.textDarkPrimary)
                 }
             }
             return nil
@@ -66,11 +66,13 @@ struct FSCalendarView: UIViewRepresentable {
         calendar.scope = .month
         calendar.firstWeekday = 2
         
-        calendar.appearance.weekdayTextColor = UIColor(Color.Primary)
+        calendar.appearance.titleDefaultColor = Colors.TextPrimary.ui
+        calendar.appearance.titlePlaceholderColor = Colors.TextSecondary.ui
+        calendar.appearance.weekdayTextColor = Colors.Primary.ui
         calendar.appearance.subtitleOffset = CGPoint(x: 0, y: 2)
-        calendar.appearance.todayColor = UIColor(Color.Primary)
-        calendar.appearance.headerTitleColor = UIColor(Color.Primary)
-        calendar.appearance.selectionColor = UIColor(Color.backgroundDisabled)
+        calendar.appearance.todayColor = Colors.Primary.ui
+        calendar.appearance.headerTitleColor = Colors.Primary.ui
+        calendar.appearance.selectionColor = Colors.Experiment.ui
         
         return calendar
     }

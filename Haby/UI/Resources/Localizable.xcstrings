@@ -1,0 +1,205 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "...at the top right corner." : {
+
+    },
+    "%@ / %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ / %2$@ %3$@"
+          }
+        }
+      }
+    },
+    "%@ • %@ • %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ • %2$@ • %3$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "%lld day%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld day%2$@"
+          }
+        }
+      }
+    },
+    "0" : {
+
+    },
+    "Add Amount" : {
+
+    },
+    "Add Habit" : {
+
+    },
+    "Amount type" : {
+
+    },
+    "Are you sure you want to uncheck this habit? This action loses your current stage of habit." : {
+
+    },
+    "avg" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Close" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Daily Habits" : {
+
+    },
+    "Daily Time" : {
+
+    },
+    "Daily timeline" : {
+
+    },
+    "Date" : {
+
+    },
+    "Day of the Week" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete this habit?" : {
+
+    },
+    "Edit Habit" : {
+
+    },
+    "goal" : {
+
+    },
+    "Goals" : {
+
+    },
+    "Habit Name" : {
+
+    },
+    "Habit type" : {
+
+    },
+    "Habits data for: %@" : {
+
+    },
+    "Habits Management" : {
+
+    },
+    "Kilometers" : {
+
+    },
+    "km" : {
+
+    },
+    "Mood" : {
+
+    },
+    "Mood: %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Mood: %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "New Habit" : {
+
+    },
+    "No goal habits for this week!" : {
+
+    },
+    "No goal habits for today!" : {
+
+    },
+    "No habits data found" : {
+
+    },
+    "No habits in daily timeline for today!" : {
+
+    },
+    "No weekly habits!" : {
+
+    },
+    "OK" : {
+
+    },
+    "Pick Icon" : {
+
+    },
+    "Repetition" : {
+
+    },
+    "Save Habit" : {
+
+    },
+    "Steps" : {
+
+    },
+    "Steps Today: %lld" : {
+
+    },
+    "Streak" : {
+
+    },
+    "Unable to load step data from HealthKit" : {
+
+    },
+    "Uncheck" : {
+
+    },
+    "Use Health Data" : {
+
+    },
+    "Week Timeline" : {
+
+    },
+    "Weekly Habits" : {
+
+    },
+    "Weekly Time" : {
+
+    },
+    "You have no defined habits, tap..." : {
+
+    },
+    "You will not be able to recover this habit's data after deletion." : {
+
+    },
+    "Your Average" : {
+
+    },
+    "Your Goal" : {
+
+    },
+    "Your streak is" : {
+
+    }
+  },
+  "version" : "1.1"
+}

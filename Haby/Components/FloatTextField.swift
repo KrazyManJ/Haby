@@ -9,7 +9,7 @@ struct FloatTextField: View {
         TextField("0", text: $rawText)
             .keyboardType(.decimalPad)
             .textFieldStyle(PlainTextFieldStyle())
-            .onChange(of: rawText) { newValue in
+            .onChange(of: rawText) { _, newValue in
                 let allowedChars = "0123456789."
                 var filtered = newValue.filter { allowedChars.contains($0) }
 

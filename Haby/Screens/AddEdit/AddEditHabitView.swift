@@ -50,25 +50,26 @@ struct AddEditHabitView: View {
     var body: some View {
         NavigationStack {
             Form {
-                
                 TextField(
                     "Habit Name",
                     text: $habitName
                 )
+                .listRowBackground(Colors.BackgroundSecondary)
+                .foregroundStyle(Colors.TextPrimary)
                 
                 Picker("Habit type", selection: $selectedHabitType) {
                     ForEach(HabitType.allCases){ option in
                         Text(option.name)
                     }
                 }
+                .listRowBackground(Colors.BackgroundSecondary)
+                .foregroundStyle(Colors.TextPrimary)
                 .pickerStyle(.menu)
-                .accentColor(Color.Primary)
-                
                 
                 if selectedHabitType == .Amount {
                     HStack {
                         FloatTextField(value: $goalAmount, rawText: $amountText)
-                        
+                            .foregroundStyle(Colors.TextPrimary)
                         Picker("Amount type", selection: $selectedAmountType) {
                             ForEach(AmountUnit.allCases){ option in
                                 Text(option.name)
@@ -76,8 +77,9 @@ struct AddEditHabitView: View {
                         }
                         .pickerStyle(.menu)
                         .labelsHidden()
-                        .accentColor(Color.Primary)
+                        .foregroundStyle(Colors.TextPrimary)
                     }
+                    .listRowBackground(Colors.BackgroundSecondary)
                     if (
                         selectedAmountType == .Steps ||
                         selectedAmountType == .Calories ||
@@ -85,12 +87,12 @@ struct AddEditHabitView: View {
                         selectedAmountType == .Kilometers
                     ){
                         Toggle("Use Health Data", isOn: $healthData)
-                            .toggleStyle(SwitchToggleStyle(tint: Color.Primary))
                             .onChange(of: healthData) { old, new in
                                 if new {
                                     viewModel.requestHealthAuthorization()
                                 }
                             }
+                            .listRowBackground(Colors.BackgroundSecondary)
                     }
                 }
                 Picker("Repetition", selection: $selectedFrequency) {
@@ -99,53 +101,59 @@ struct AddEditHabitView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .accentColor(Color.Primary)
+                .listRowBackground(Colors.BackgroundSecondary)
+                .foregroundStyle(Colors.TextPrimary)
                 
                 if selectedHabitType != .Amount {
+                    
                 switch selectedFrequency {
-                case .Daily:
+                    case .Daily:
                         DatePicker(
                             "Daily Time",
                             selection: $selectedTime,
-                            displayedComponents: [.hourAndMinute]
+                            displayedComponents: [.hourAndMinute],
                         )
-                        .datePickerStyle(WheelDatePickerStyle())
+                        .datePickerStyle(.wheel)
+                        .colorMultiply(Colors.TextPrimary)
+                        .listRowBackground(Colors.BackgroundSecondary)
                     
-                case .Weekly:
+                    case .Weekly:
                         DatePicker(
                             "Weekly Time",
                             selection: $selectedTime,
                             displayedComponents: [.hourAndMinute]
                         )
-                        .datePickerStyle(WheelDatePickerStyle())
+                        .datePickerStyle(.wheel)
+                        .colorMultiply(Colors.TextPrimary)
+                        .listRowBackground(Colors.BackgroundSecondary)
                         Picker("Day of the Week", selection: $selectedDay){
                             ForEach(WeekDay.allCases) { option in
                                 Text(option.name)
                             }
                         }
-                        .accentColor(Color.Primary)
                         .pickerStyle(.menu)
+                        .colorMultiply(Colors.TextPrimary)
+                        .listRowBackground(Colors.BackgroundSecondary)
                     }
                 }
                 
                 HStack{
                     Text("Pick Icon")
+                        .foregroundStyle(Colors.TextPrimary)
                     Spacer()
                     Button{
                         isIconPickerPresented.toggle()
                     } label: {
                         HStack{
                             Image(systemName: selectedIcon)
-                                .foregroundColor(.Primary)
                             Image(systemName: "chevron.up.chevron.down")
-                                .foregroundColor(Color.Primary)
                         }
                     }
                 }
+                .listRowBackground(Colors.BackgroundSecondary)
             }
             .scrollContentBackground(.hidden)
-            .background(Color.Background)
-            
+            .background(Colors.BackgroundPrimary)
             .navigationTitle(viewModel.state.habitToEdit == nil ? "Add Habit" : "Edit Habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -156,7 +164,6 @@ struct AddEditHabitView: View {
                     }
                 }
             }
-            .tint(Color.Primary)
             .sheet(isPresented: $isIconPickerPresented) {
                 SymbolsPicker(
                     selection: $selectedIcon,
@@ -174,11 +181,10 @@ struct AddEditHabitView: View {
             } label: {
                 Text("Save Habit")
             }
-            .buttonStyle(PrimaryButtonStyle())
             .padding(15)
             .disabled(habitName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !isGoalAmountInputValid())
         }
-        .background(Color.Background)
+        .background(Colors.BackgroundPrimary)
     }
        
     
@@ -219,6 +225,8 @@ struct AddEditHabitView: View {
 
 }
 #Preview {
-    AddEditHabitView(isViewPresented: .constant(true),
-                     viewModel: AddEditHabitViewModel())
+    AddEditHabitView(
+        isViewPresented: .constant(true),
+        viewModel: AddEditHabitViewModel()
+    )
 }

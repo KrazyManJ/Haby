@@ -37,3 +37,12 @@ struct CheckBox: View {
             .toggleStyle(CheckboxToggleStyle(isInvalid: isInvalid))
     }
 }
+
+#Preview {
+    HStack {
+        CheckBox(isOn: .constant(false), isInvalid: false)
+        CheckBox(isOn: .constant(true), isInvalid: false)
+        CheckBox(isOn: .constant(false), isInvalid: true)
+        CheckBox(isOn: .constant(true), isInvalid: true)
+    }
+}

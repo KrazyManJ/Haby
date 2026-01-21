@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct DailyHabitRow: View {
+    
     @Binding var viewModel: DailyViewModel
     @State private var showConfirmation = false
     var habit: HabitDefinition
+    
     private var isCheckedBinding: Binding<Bool> {
         Binding<Bool>(
             get: {
@@ -43,40 +45,32 @@ struct DailyHabitRow: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment:.bottom) {
                 Rectangle()
-                    .fill(isChecked || !isValid ? Color.backgroundDisabled : Color.Primary)
+                    .fill(Colors.BackgroundSecondary)
                     .frame(width: 8, height: 40)
                     .padding([.leading],48)
                 Text(String(format: "%02d:%02d", habit.targetTimestamp! / 60 % 24, habit.targetTimestamp! % 60))
                     .padding([.bottom],8)
                     .font(.system(.footnote))
             }
-            HStack{
-                let img = Image(systemName: habit.icon)
-                if (isChecked && isValid) {
-                    img.foregroundStyle(Color.textDisabled)
+            Card {
+                HStack {
+                    Image(systemName: habit.icon)
+                    Text(habit.name)
+                        .bold()
+                    Spacer()
+                    CheckBox(isOn: isCheckedBinding,isInvalid: !isValid)
                 }
-                else {
-                    img
-                }
-                
-                Text(habit.name)
-                    .foregroundStyle(Color.TextLight)
-                    .bold()
-                Spacer()
-                CheckBox(isOn: isCheckedBinding,isInvalid: !isValid)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .if(isChecked && isValid) { $0.foregroundStyle(Colors.Primary) }
+                    .if(isChecked && !isValid) { $0.foregroundStyle(Colors.Destructive) }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(isChecked || !isValid ? Color.backgroundDisabled : Color.Primary)
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 3)
-            )
-            .foregroundStyle(
-                isValid ? Color.Secondary : (habit.type == .OnTime && !isChecked ? Color.textDisabled : .red )
-            )
         }
-        .confirmationDialog("Are you sure you want to uncheck this habit? This action loses your current stage of habit.", isPresented: $showConfirmation, titleVisibility: .visible) {
+        .confirmationDialog(
+            "Are you sure you want to uncheck this habit? This action loses your current stage of habit.",
+            isPresented: $showConfirmation,
+            titleVisibility: .visible
+        ) {
             Button("Uncheck", role: .destructive) {
                 viewModel.checkHabit(habit: habit)
             }
@@ -86,5 +80,15 @@ struct DailyHabitRow: View {
 }
 
 #Preview {
-    
+    DailyHabitRow(
+        viewModel: .constant(DailyViewModel()),
+        habit: HabitDefinition(
+            id: UUID(),
+            name: "Lol",
+            icon: "star",
+            creationDate: Date(),
+            type: .Deadline,
+            frequency: .Daily
+        )
+    )
 }
