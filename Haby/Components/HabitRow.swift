@@ -32,7 +32,7 @@ struct HabitRow: View {
                 }
                 Text("\(habit.type.name) • \(habit.frequency.name) • \(requirementString)")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Colors.TextSecondary)
             }
             Spacer()
         }

@@ -82,7 +82,7 @@ struct DailyGoalProgressBar: View {
                                 Image(systemName: "xmark")
                                     .frame(width: 30, height: 30)
                                     .font(.system(size: 20))
-                                    .tint(Color.TextDarkPrimary)
+//                                    .tint(Color.TextDarkPrimary)
                                     .background(Color.black.opacity(0.1))
                                     .clipShape(Circle())
                             }
@@ -94,7 +94,7 @@ struct DailyGoalProgressBar: View {
                                 .font(.system(size: 40, weight: .medium))
                                 .frame(width: 150)
                                 .textFieldStyle(PlainTextFieldStyle())
-                                .foregroundStyle(Color.TextDarkPrimary, Color.TextLight)
+//                                .foregroundStyle(Color.TextDarkPrimary, Color.TextLight)
                         }
                         
                         Button("Confirm") {
@@ -105,7 +105,7 @@ struct DailyGoalProgressBar: View {
                             isAddAmountPresented = false
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(Color.Primary)
+//                        .tint(Color.Primary)
                         .controlSize(.large)
                         .disabled(!isAddAmountInputValid())
                         
@@ -113,7 +113,7 @@ struct DailyGoalProgressBar: View {
                     .frame(alignment: .center)
                     .padding()
                     .presentationDetents([.fraction(0.3)])
-                    .presentationBackground(Color.Background)
+//                    .presentationBackground(Color.Background)
                 }
             }
         }

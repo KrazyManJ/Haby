@@ -17,6 +17,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5C79B47E2F1FD89D00CA4B0C /* Exceptions for "Config" folder in "Haby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Base.xcconfig,
+				Debug.xcconfig,
+				Release.xcconfig,
+				"Targets/App/App-Base.xcconfig",
+				"Targets/App/App-Debug.xcconfig",
+				"Targets/App/App-Release.xcconfig",
+				User.xcconfig,
+			);
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
 		A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -37,7 +50,15 @@
 		};
 		5C79B45A2F1F203400CA4B0C /* Config */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5C79B47E2F1FD89D00CA4B0C /* Exceptions for "Config" folder in "Haby" target */,
+			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		5C79B5952F20426A00CA4B0C /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -60,6 +81,7 @@
 			children = (
 				5C79B45A2F1F203400CA4B0C /* Config */,
 				5C79B44A2F1F1B9300CA4B0C /* .gitignore */,
+				5C79B5952F20426A00CA4B0C /* Shared */,
 				44B063EA2DDDC4D000252D85 /* Haby */,
 				44B063E92DDDC4D000252D85 /* Products */,
 			);
@@ -91,6 +113,7 @@
 			fileSystemSynchronizedGroups = (
 				44B063EA2DDDC4D000252D85 /* Haby */,
 				5C79B45A2F1F203400CA4B0C /* Config */,
+				5C79B5952F20426A00CA4B0C /* Shared */,
 			);
 			name = Haby;
 			packageProductDependencies = (
@@ -109,7 +132,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					44B063E72DDDC4D000252D85 = {
 						CreatedOnToolsVersion = 16.2;
@@ -197,6 +220,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = RG2CM658T3;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -220,7 +244,9 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -262,6 +288,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = RG2CM658T3;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -278,7 +305,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

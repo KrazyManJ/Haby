@@ -9,7 +9,7 @@ struct HabitManagementView: View {
     @State private var habitToDelete: HabitDefinition? = nil
     @State private var habitToEdit: HabitDefinition?
     
-    init(viewModel: HabitManagementViewModel) {
+    init(viewModel: HabitManagementViewModel = HabitManagementViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -22,6 +22,7 @@ struct HabitManagementView: View {
                             HabitRow(
                                 habit: habit
                             )
+                            .listRowBackground(Colors.BackgroundSecondary)
                             .onTapGesture {
                                 habitToEdit = habit
                             }
@@ -35,7 +36,6 @@ struct HabitManagementView: View {
                             }
                         }
                     }
-                    .listRowBackground(Color.clear)
                     .scrollContentBackground(.hidden)
                 }
                 else {
@@ -60,7 +60,6 @@ struct HabitManagementView: View {
                     }
                 }
             }
-            .tint(Color.Primary)
             .sheet(item: $habitToEdit, onDismiss: {
                 viewModel.fetchHabits()
             }
@@ -95,7 +94,7 @@ struct HabitManagementView: View {
                     }
                 )
             }
-            .background(Color.Background)
+            .background(Colors.BackgroundPrimary)
         }
     }
 }

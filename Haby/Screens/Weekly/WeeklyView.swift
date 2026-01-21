@@ -5,7 +5,7 @@ import SwiftUI
 struct WeeklyView: View {
     @State private var viewModel: WeeklyViewModel
     
-    init(viewModel: WeeklyViewModel) {
+    init(viewModel: WeeklyViewModel = WeeklyViewModel()) {
         self.viewModel = viewModel
     }
     
@@ -18,35 +18,34 @@ struct WeeklyView: View {
                         .padding([.top], 16)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.title3).bold()
-                    LazyVStack(spacing: 0) {
-                        if !viewModel.state.habits.filter({ $0.type != .Amount }).isEmpty {
-                            WeekTable(viewModel: $viewModel)
-                        }  else {
-                            Text("No weekly habits!").italic().foregroundColor(.gray)
-                                .padding(.vertical,32)
-                        }
+                    if !viewModel.state.habits.filter({ $0.type != .Amount }).isEmpty {
+                        
+                        WeekTable(viewModel: $viewModel)
+                            .padding()
+                    }  else {
+                        Text("No weekly habits!").italic().foregroundColor(.gray)
+                            .padding(.vertical,32)
                     }
+                    
                     Text("Goals")
                         .padding(.horizontal, 32)
                         .padding([.top], 16)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.title3).bold()
                     if !viewModel.state.amountHabits.isEmpty {
-                        LazyVStack(spacing: 0) {
-                            ForEach(viewModel.state.amountHabits) { habit in
-                                WeeklyGoalProgressBar(
-                                    viewModel: $viewModel, habit: habit
-                                )
-                                .padding(8)
+                        Card {
+                            LazyVStack(spacing: 0) {
+                                ForEach(viewModel.state.amountHabits) { habit in
+                                    WeeklyGoalProgressBar(
+                                        viewModel: $viewModel, habit: habit
+                                    )
+                                    .padding(8)
+                                }
+                                Spacer(minLength: 0)
                             }
-                            Spacer(minLength: 0)
+                            .padding()
                         }
-                        .padding()
                         .frame(minHeight: 100)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.Secondary)
-                        )
                         .padding()
                     }  else {
                         Text("No goal habits for this week!")
@@ -68,10 +67,10 @@ struct WeeklyView: View {
             .onAppear {
                 viewModel.getWeekHabits()
             }
-            .background(Color.Background)
+            .background(Colors.BackgroundPrimary)
         }
     
-        .tint(.Primary)
+//        .tint(.Primary)
     }
 }
 

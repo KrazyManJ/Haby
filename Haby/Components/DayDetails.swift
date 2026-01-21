@@ -41,6 +41,6 @@ struct DayDetails: View {
         .padding([.top],32)
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .foregroundStyle(.white)
-        .background(Color.backgroundDisabled)
+//        .background(Color.backgroundDisabled)
     }
 }

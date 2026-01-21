@@ -35,7 +35,7 @@ struct OverviewView: View {
                 StepsChart(data: viewModel.state.monthlySteps)
             }
         }.toolbar(.hidden, for: .tabBar)
-        .background(Color.background)
+        .background(Colors.BackgroundPrimary)
         .onAppear {
             viewModel.loadCompletedDates()
         }

@@ -17,7 +17,7 @@ struct HabitDefinition: Identifiable {
     var isUsingHealthData: Bool = false
     
     func canBeCheckedInTimestamp(timestamp: Int) -> Bool {
-        if var definitionTimestamp = targetTimestamp {
+        if let definitionTimestamp = targetTimestamp {
             if type == .OnTime {
                 let lowerBound = definitionTimestamp - HabitRecord.ON_TIME_HABIT_VALID_RANGE
                 let higherBound = definitionTimestamp + HabitRecord.ON_TIME_HABIT_VALID_RANGE
