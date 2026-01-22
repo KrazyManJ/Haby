@@ -30,20 +30,28 @@ struct AddEditHabitView: View {
         
         if let habit = viewModel.state.habitToEdit {
             _habitName = State(initialValue: habit.name)
-            _selectedHabitType = State(initialValue: habit.type)
-            _selectedFrequency = State(initialValue: habit.frequency)
-            if let timestamp = habit.targetTimestamp {
-                _selectedTime = State(initialValue: Date.fromMinutesTimestamp(timestamp: timestamp))
-                if habit.frequency == .Weekly {
-                    _selectedDay = State(initialValue: WeekDay(from: timestamp))
+            _selectedHabitType = State(initialValue: habit.data.type)
+            _selectedFrequency = State(initialValue: habit.data.details.frequency)
+            
+            switch habit.data {
+            case .Amount(let data):
+                _goalAmount = State(initialValue: data.amount)
+                _amountText = State(initialValue: String(data.amount))
+                _selectedAmountType = State(initialValue: data.unit)
+            case .Deadline(let data):
+                _selectedTime = State(initialValue: Date.fromMinutesTimestamp(timestamp: data.minutesOfCompletionInFrequency))
+                if data.frequency == .Weekly {
+                    _selectedDay = State(initialValue: WeekDay(from: data.minutesOfCompletionInFrequency))
+                }
+            case .OnTime(let data):
+                _selectedTime = State(initialValue: Date.fromMinutesTimestamp(timestamp: data.minutesOfCompletionInFrequency))
+                if data.frequency == .Weekly {
+                    _selectedDay = State(initialValue: WeekDay(from: data.minutesOfCompletionInFrequency))
                 }
             }
-            _goalAmount = State(initialValue: habit.targetValue ?? 0)
-            _amountText = State(initialValue: String(habit.targetValue ?? 0))
-            _selectedAmountType = State(initialValue: habit.targetValueUnit ?? .None)
+            
             _healthData = State(initialValue: habit.isUsingHealthData)
             _selectedIcon = State(initialValue: habit.icon)
-            _habitActive = State(initialValue: habit.isActive)
         }
     }
     
@@ -198,6 +206,17 @@ struct AddEditHabitView: View {
             timestamp = nil
         }
         
+        var data: HabitDefinitionData {
+            switch selectedHabitType {
+            case .OnTime:
+                return .OnTime(data: .init(frequency: selectedFrequency, minutesOfCompletionInFrequency: timestamp!))
+            case .Deadline:
+                return .Deadline(data: .init(frequency: selectedFrequency, minutesOfCompletionInFrequency: timestamp!))
+            case .Amount:
+                return .Amount(data: .init(frequency: selectedFrequency, amount: goalAmount, unit: selectedAmountType))
+            }
+        }
+        
         let newHabit = HabitDefinition(
             id: viewModel.state.habitToEdit?.id ?? UUID(),
             name: habitName,
@@ -208,8 +227,8 @@ struct AddEditHabitView: View {
             targetTimestamp: timestamp,
             targetValue: goalAmount,
             targetValueUnit: selectedAmountType,
-            isActive: habitActive,
-            isUsingHealthData: healthData
+            isUsingHealthData: healthData,
+            data: data
         )
         viewModel.addOrUpdateHabit(habit: newHabit)
     }

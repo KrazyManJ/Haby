@@ -13,6 +13,7 @@ class AddEditHabitViewModel {
     }
 
     func addOrUpdateHabit(habit: HabitDefinition) {
+        print(habit)
         dataManager.wrappedValue.upsert(model: habit)
     }
     

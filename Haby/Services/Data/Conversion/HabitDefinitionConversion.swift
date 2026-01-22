@@ -7,15 +7,21 @@ extension HabitDefinition : EntityConverting {
         
         entity.id = id
         entity.name = name
-        entity.type = type.rawValue
-        entity.frequency = frequency.rawValue
-        entity.targetValue = targetValue ?? -1
-        entity.targetTimestamp = Int16(targetTimestamp ?? -1)
-        entity.isActive = isActive
+        entity.type = data.type.rawValue
+        entity.frequency = data.details.frequency.rawValue
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
-        entity.targetValueUnit = (targetValueUnit ?? .None).rawValue
         entity.creationDate = creationDate
+        
+        switch self.data {
+        case .Amount(let data):
+            entity.targetValue = data.amount
+            entity.targetValueUnit = data.unit.rawValue
+        case .Deadline(let data):
+            entity.targetTimestamp = data.minutesOfCompletionInFrequency.int16
+        case .OnTime(let data):
+            entity.targetTimestamp = data.minutesOfCompletionInFrequency.int16
+        }
         
         return entity
     }
@@ -23,18 +29,44 @@ extension HabitDefinition : EntityConverting {
 
 extension HabitDefinitionEntity : ModelConverting {
     func toModel() -> HabitDefinition {
+        
+        let type: HabitType = HabitType(rawValue: self.type)!
+        let frequency = HabitFrequency(rawValue: self.frequency)!
+        
+        var data: HabitDefinitionData {
+            switch type {
+            case .Amount:
+                return .Amount(data: .init(
+                    frequency: frequency,
+                    amount: Float(targetValue),
+                    unit: AmountUnit(rawValue: targetValueUnit)!
+                ))
+            case .Deadline:
+                return .Deadline(data: .init(
+                    frequency: frequency,
+                    minutesOfCompletionInFrequency: Int(targetTimestamp))
+                )
+            case .OnTime:
+                return .OnTime(data: .init(
+                    frequency: frequency,
+                    minutesOfCompletionInFrequency: Int(targetTimestamp)
+                ))
+            }
+        }
+        
+        
         return HabitDefinition(
             id: id!,
             name: name!,
             icon: icon ?? "",
             creationDate: creationDate!,
-            type: HabitType(rawValue: type)!,
-            frequency: HabitFrequency(rawValue: frequency)!,
+            type: type,
+            frequency: frequency,
             targetTimestamp: targetTimestamp == -1 ? nil : Int(targetTimestamp),
             targetValue: targetValue == -1 ? nil : Float(targetValue),
-            targetValueUnit: AmountUnit(rawValue: targetValueUnit)!,
-            isActive: isActive,
-            isUsingHealthData: isUsingHealthData
+            targetValueUnit: AmountUnit(rawValue: targetValueUnit) ?? .None,
+            isUsingHealthData: isUsingHealthData,
+            data: data
         )
     }
 }

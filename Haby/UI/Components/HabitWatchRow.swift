@@ -54,5 +54,13 @@ struct HabitWatchRow: View {
 }
 
 #Preview {
-    HabitWatchRow(habit: HabitDefinition(id: UUID(), name: "test", icon: "star.fill", creationDate: .now, type: .Deadline, frequency: .Daily, targetTimestamp: Date().hourAndMinutesToMinutesTimestamp))
+    HabitWatchRow(habit: HabitDefinition(
+        name: "test",
+        icon: "star.fill",
+        creationDate: .now,
+        type: .Deadline,
+        frequency: .Daily,
+        targetTimestamp: Date().hourAndMinutesToMinutesTimestamp,
+        data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: Date().hourAndMinutesToMinutesTimestamp))
+    ))
 }

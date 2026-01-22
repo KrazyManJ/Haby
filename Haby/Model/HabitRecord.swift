@@ -1,17 +1,18 @@
 import UIKit
 
 struct HabitRecord : Identifiable {
-    var id: UUID
-    /** Date of completion excluding hours and minutes */
+    var id: UUID = UUID()
     var date: Date
-    /** In minutes, if daily habit, includes minutes of completion in range from days midnight to next days midnight, only if habit is deadline or on time */
-    var timestamp: Int?
-    /** Measured value of habit for amount habits */
-    var value: Float?
+    @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var timestamp: Int?
+    @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var value: Float?
+    
     var habitDefinition: HabitDefinition
+    
+    var data: HabitRecordData
     
     static let ON_TIME_HABIT_VALID_RANGE = 5
     
+    @available(*, deprecated, message: "Use wasDoneCorrectly instead")
     var isCompleted: Bool {
         get {
             if let _ = habitDefinition.targetTimestamp {
@@ -27,5 +28,44 @@ struct HabitRecord : Identifiable {
             return false
         }
     }
+    
+    var wasDoneCorrectly: Bool {
+        switch self.data {
+        case .Amount(let data):
+            let definitionData: AmountHabitDefinitionData = habitDefinition.data.force()
+            
+            return definitionData.amount <= data.value
+        case .Deadline(let data):
+            let definitionData: DeadlineHabitDefinitionData = habitDefinition.data.force()
+            
+            return definitionData.minutesOfCompletionInFrequency >= data.minutesOfCompletionInFrequency
+        case .OnTime(let data):
+            let definitionData: OnTimeHabitDefinitionData = habitDefinition.data.force()
+            
+            let ON_TIME_HABIT_MINUTES_TIME_RANGE = 5
+            
+            let startRange = definitionData.minutesOfCompletionInFrequency - ON_TIME_HABIT_MINUTES_TIME_RANGE
+            let endRange = definitionData.minutesOfCompletionInFrequency + ON_TIME_HABIT_MINUTES_TIME_RANGE
+            
+            return (startRange...endRange).contains(data.minutesOfCompletionInFrequency)
+        }
+    }
 }
 
+struct AmountHabitRecordData {
+    var value: Float
+}
+
+struct DeadlineHabitRecordData {
+    var minutesOfCompletionInFrequency: Int
+}
+
+struct OnTimeHabitRecordData {
+    var minutesOfCompletionInFrequency: Int
+}
+
+enum HabitRecordData {
+    case Amount(data: AmountHabitRecordData)
+    case Deadline(data: DeadlineHabitRecordData)
+    case OnTime(data: OnTimeHabitRecordData)
+}
