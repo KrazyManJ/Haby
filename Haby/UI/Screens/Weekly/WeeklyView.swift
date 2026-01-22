@@ -6,6 +6,7 @@ struct WeeklyView: View {
     @State private var viewModel: WeeklyViewModel
     
     @Environment(\.scenePhase) var scenePhase
+    @ObservedObject var sessionManager = PhoneSessionManager.shared
     
     init(viewModel: WeeklyViewModel = WeeklyViewModel()) {
         self.viewModel = viewModel
@@ -73,6 +74,12 @@ struct WeeklyView: View {
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
                     refreshData()
+                }
+            }
+            .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
+                if !newHabits.isEmpty {
+                    print("📤 Habits loaded. Syncing to Watch...")
+                    sessionManager.syncAllHabitsToWatch()
                 }
             }
             .background(Colors.BackgroundPrimary)

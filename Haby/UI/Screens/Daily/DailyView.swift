@@ -6,7 +6,6 @@ struct DailyView: View {
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
     
-    //@StateObject private var connector = PhoneSessionManager()
     @ObservedObject var sessionManager = PhoneSessionManager.shared
     
     @Environment(\.scenePhase) var scenePhase
@@ -119,7 +118,6 @@ struct DailyView: View {
             viewModel.getTodayHabits()
             Task {
                 await viewModel.loadHealthDataForToday()
-                // Optional: If you want to persist the new step count to your local DB immediately:
                 viewModel.syncHealthDataToHabits()
             }
         }

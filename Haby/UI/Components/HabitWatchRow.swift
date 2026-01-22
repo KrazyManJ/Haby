@@ -1,31 +1,14 @@
 import SwiftUI
 
 struct HabitWatchRow: View {
-    var habit: HabitDefinition
-    
-    var requirementString: String
-    
-    init(habit: HabitDefinition) {
+    let habit: HabitDefinition
+    let record: HabitRecord?
+    private let status: HabitStatusHelper
+        
+    init(habit: HabitDefinition, record: HabitRecord?) {
         self.habit = habit
-        if habit.type != .Amount {
-            if let timestamp = habit.targetTimestamp {
-                let targetDate = Date.fromMinutesTimestamp(timestamp: timestamp)
-                
-                let formatter = RelativeDateTimeFormatter()
-                formatter.unitsStyle = .short
-                
-                self.requirementString = formatter.localizedString(for: targetDate, relativeTo: Date())
-            } else {
-                requirementString = ""
-            }
-        } else {
-            if let amount = habit.targetValue,
-               let unit  = habit.targetValueUnit?.abbreviation {
-                self.requirementString = "\(amount.rounded(.towardZero)) \(unit)"
-            } else {
-                requirementString = ""
-            }
-        }
+        self.record = record
+        self.status = HabitStatusHelper(habit: habit, record: record)
     }
     
     var body: some View {
@@ -33,34 +16,36 @@ struct HabitWatchRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     HStack {
-                        Image(systemName: habit.icon)
+                        Image(systemName: habit.icon).font(.caption2)
                         Text(habit.name)
+                            .font(.caption2)
                     }
                     HStack {
-                        Text("\(habit.frequency.name) • \(habit.type.name)")
-                            .font(.footnote)
+                        // todo if amount dont show type name
+                        if (habit.data.type != .Amount){
+                            Text("\(habit.data.details.frequency.name) • \(habit.data.type.name)")
+                                .font(.footnote)
+                        } else {
+                            Text(habit.data.details.frequency.name)
+                                .font(.footnote)
+                        }
                     }
                 }
                 Spacer()
-                if habit.type != .Amount {
-                    Text(requirementString).font(.footnote)
-                } else {
-                    Text("value/\(requirementString)").font(.footnote)
+                VStack(alignment: .trailing) {
+                    if case .Amount = habit.data {
+                        Text(status.progressString)
+                            .font(.footnote)
+                            .foregroundColor(Colors.TextSecondary)
+                    }
+                    else {
+                        Text(status.requirementString)
+                            .font(.footnote)
+                            .foregroundColor(status.isOverdue ? Colors.Destructive : Colors.TextSecondary)
+                    }
                 }
             }
             .padding()
         }
     }
-}
-
-#Preview {
-    HabitWatchRow(habit: HabitDefinition(
-        name: "test",
-        icon: "star.fill",
-        creationDate: .now,
-        type: .Deadline,
-        frequency: .Daily,
-        targetTimestamp: Date().hourAndMinutesToMinutesTimestamp,
-        data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: Date().hourAndMinutesToMinutesTimestamp))
-    ))
 }

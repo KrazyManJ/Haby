@@ -17,6 +17,19 @@ extension CoreDataManager {
             ))
         )
         
+        // for testing grace period on watch
+        let yoga2 = HabitDefinition(
+            name: "Yoga",
+            icon: "figure.yoga",
+            creationDate: createdAt,
+            type: .Deadline,
+            frequency: .Daily,
+            targetTimestamp: 60 * 23,
+            data: .Deadline(data: .init(
+                frequency: .Daily, minutesOfCompletionInFrequency: 60 * 23
+            ))
+        )
+        
         let pill = HabitDefinition(
             id: UUID(),
             name: "Take medication",
@@ -66,7 +79,7 @@ extension CoreDataManager {
             data: .Amount(data: .init(frequency: .Weekly, amount: 10, unit: .Hours))
         )
                 
-        let habits = [yoga,pill,walk,journaling]
+        let habits = [yoga,yoga2,pill,walk,journaling]
         
         _ = habits.map { $0.toEntity()}
         _ = createMockHabitRecords(for: habits).map { $0.toEntity()}

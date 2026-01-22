@@ -74,6 +74,7 @@
 				DI/DIManager.swift,
 				DI/DIRegister.swift,
 				DI/Injected.swift,
+				Extensions/HabitDefinitionExtension.swift,
 				Extensions/IntExtension.swift,
 				Extensions/ViewExtensions.swift,
 				"UI/Resources/Global Assets.xcassets",
@@ -111,6 +112,7 @@
 				UI/Resources/Assets.xcassets,
 				UI/Resources/Colors.swift,
 				Utils/DateUtils.swift,
+				Utils/HabitStatusHelper.swift,
 			);
 			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
 		};

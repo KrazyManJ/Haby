@@ -1,4 +1,4 @@
 
 protocol PhoneSessionManaging {
-    func sendHabits(habits: [HabitDefinition])
+    func sendDataToWatch(habits: [HabitDefinition]?, records: [HabitRecord]?)
 }

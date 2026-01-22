@@ -40,4 +40,51 @@ extension Dictionary where Key == String {
         )
         return habit
     }
+    
+    func convertToRecord(using definitions: [HabitDefinition]) -> HabitRecord? {
+        guard let idString = self["id"] as? String,
+              let id = UUID(uuidString: idString),
+              let date = self["date"] as? Date,
+              let habitIdString = self["habitId"] as? String,
+              let habitId = UUID(uuidString: habitIdString),
+              let typeString = self["recordType"] as? String
+        else {
+            return nil
+        }
+        
+        guard let parentDefinition = definitions.first(where: { $0.id == habitId }) else {
+            print("Received record for unknown habit ID: \(habitId)")
+            return nil
+        }
+        
+        let recordData: HabitRecordData
+        
+        switch typeString {
+        case "amount":
+            let val = self["value"] as? Float ?? 0.0
+            recordData = .Amount(data: AmountHabitRecordData(value: val))
+            
+        case "deadline":
+            let mins = self["minutes"] as? Int ?? 0
+            recordData = .Deadline(data: DeadlineHabitRecordData(minutesOfCompletionInFrequency: mins))
+            
+        case "ontime":
+            let mins = self["minutes"] as? Int ?? 0
+            recordData = .OnTime(data: OnTimeHabitRecordData(minutesOfCompletionInFrequency: mins))
+            
+        default:
+            return nil
+        }
+        
+        return HabitRecord(
+            id: id,
+            date: date,
+            timestamp: nil, // Deprecated
+            value: nil,     // Deprecated
+            habitDefinition: parentDefinition,
+            data: recordData
+        )
+    }
 }
+
+

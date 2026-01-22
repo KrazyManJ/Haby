@@ -56,40 +56,6 @@ class DailyViewModel: ObservableObject {
         state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
     }
     
-//    func loadStepData() async {
-//        await fetchStepsToday()
-//    }
-//    
-//    private func fetchStepsToday() async {
-//        stepsToday = await Int(healthKitManager.wrappedValue.fetchTodaySteps())
-//    }
-//
-//    func syncHealthDataToHabits() {
-//        for habit in state.amountHabits {
-//            guard habit.isUsingHealthData,
-//                  habit.targetValueUnit == .Steps else { continue }
-//
-//            let currentSteps = Float(stepsToday)
-//
-//            if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
-//                var updatedRecord = existing
-//                updatedRecord.value = currentSteps
-//                dataManaging.wrappedValue.upsert(model: updatedRecord)
-//            } else {
-//                let newRecord = HabitRecord(
-//                    id: UUID(),
-//                    date: Date().onlyDate,
-//                    value: currentSteps,
-//                    habitDefinition: habit
-//                )
-//                dataManaging.wrappedValue.upsert(model: newRecord)
-//            }
-//        }
-//        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
-//    }
-
-
-    
     func updateMood(mood: Mood) {
         dataManaging.wrappedValue.upsert(model: state.todayMoodData)
     }
@@ -143,6 +109,7 @@ class DailyViewModel: ObservableObject {
                 habitDefinition: habit,
                 data: recordData
             ))
+            PhoneSessionManager.shared.syncAllHabitsToWatch()
         }
 
         getTodayHabits()
@@ -164,6 +131,8 @@ class DailyViewModel: ObservableObject {
                 data: .Amount(data: .init(value: addedAmount))
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
+            
+            PhoneSessionManager.shared.syncAllHabitsToWatch()
         }
 
         getTodayHabits()
