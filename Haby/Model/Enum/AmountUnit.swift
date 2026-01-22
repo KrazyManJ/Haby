@@ -32,7 +32,7 @@ enum AmountUnit: Int16, CaseIterable, Identifiable {
         case .Calories:
             return "kcal"
         case .ExerciseTime:
-            return "Exercise Time"
+            return "min"
         case .None:
             return ""
         }

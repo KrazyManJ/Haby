@@ -1,3 +1,4 @@
+import CoreData
 
 extension MoodRecord : EntityConverting {
     func toEntity() -> MoodRecordEntity {

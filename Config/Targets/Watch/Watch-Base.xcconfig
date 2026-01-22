@@ -1,0 +1,3 @@
+// Empty for app
+BUNDLE_ID_SUFFIX = .Watch
+INFOPLIST_KEY_WKCompanionAppBundleIdentifier = $(ROOT_IDENTIFIER)

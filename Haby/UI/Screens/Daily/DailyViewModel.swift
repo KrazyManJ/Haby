@@ -8,41 +8,84 @@ class DailyViewModel: ObservableObject {
     var dataManaging: Injected<DataManaging> = .init()
     var healthKitManager: Injected<HealthManaging> = .init()
     
-    var stepsToday: Int = 0
-    var isLoadingSteps: Bool = false
     var showHealthKitError: Bool = false
     
-    func loadStepData() async {
-        await fetchStepsToday()
+    var healthData: [AmountUnit: Double] = [:]
+
+    // fix - data based on chosen values in popup
+    func loadHealthDataForToday() async {
+        async let steps = healthKitManager.wrappedValue.fetchTodaySteps()
+        async let calories = healthKitManager.wrappedValue.fetchTodayCalories()
+        async let distance = healthKitManager.wrappedValue.fetchTodayDistance()
+        async let workoutTime = healthKitManager.wrappedValue.fetchTodayWorkoutTime()
+        
+        let fetchedSteps = await steps
+        let fetchedCalories = await calories
+        let fetchedDistance = await distance
+        let fetchedWorkoutTime = await workoutTime
+        
+        healthData[.Steps] = fetchedSteps
+        healthData[.Calories] = fetchedCalories
+        healthData[.Kilometers] = fetchedDistance
+        healthData[.ExerciseTime] = fetchedWorkoutTime
     }
     
-    private func fetchStepsToday() async {
-        stepsToday = await Int(healthKitManager.wrappedValue.fetchTodaySteps())
-    }
-
     func syncHealthDataToHabits() {
         for habit in state.amountHabits {
             guard habit.isUsingHealthData,
-                  habit.targetValueUnit == .Steps else { continue }
-
-            let currentSteps = Float(stepsToday)
-
+                  let unit = habit.targetValueUnit,
+                  let healthValue = healthData[unit] else { continue }
+            
+//            upsertHabitRecord(habit: habit, value: Float(healthValue))
             if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
                 var updatedRecord = existing
-                updatedRecord.value = currentSteps
+                updatedRecord.value = Float(healthValue)
                 dataManaging.wrappedValue.upsert(model: updatedRecord)
             } else {
                 let newRecord = HabitRecord(
                     id: UUID(),
                     date: Date().onlyDate,
-                    value: currentSteps,
+                    value: Float(healthValue),
                     habitDefinition: habit
                 )
                 dataManaging.wrappedValue.upsert(model: newRecord)
             }
         }
+        
         state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
     }
+    
+//    func loadStepData() async {
+//        await fetchStepsToday()
+//    }
+//    
+//    private func fetchStepsToday() async {
+//        stepsToday = await Int(healthKitManager.wrappedValue.fetchTodaySteps())
+//    }
+//
+//    func syncHealthDataToHabits() {
+//        for habit in state.amountHabits {
+//            guard habit.isUsingHealthData,
+//                  habit.targetValueUnit == .Steps else { continue }
+//
+//            let currentSteps = Float(stepsToday)
+//
+//            if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+//                var updatedRecord = existing
+//                updatedRecord.value = currentSteps
+//                dataManaging.wrappedValue.upsert(model: updatedRecord)
+//            } else {
+//                let newRecord = HabitRecord(
+//                    id: UUID(),
+//                    date: Date().onlyDate,
+//                    value: currentSteps,
+//                    habitDefinition: habit
+//                )
+//                dataManaging.wrappedValue.upsert(model: newRecord)
+//            }
+//        }
+//        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+//    }
 
 
     

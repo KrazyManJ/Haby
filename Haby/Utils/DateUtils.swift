@@ -61,6 +61,12 @@ extension Date {
         let start = self.startOfWeek.onlyDate
         return calendar.date(byAdding: .day, value: 6, to: start)!
     }
+    
+    func timeUntil(date: Date){
+        let formatter = RelativeDateTimeFormatter()
+        let relativeDate = formatter.localizedString(for: date, relativeTo: Date.now)
+
+    }
 }
 
 

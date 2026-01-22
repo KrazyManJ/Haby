@@ -5,8 +5,9 @@ struct DailyGoalProgressBar: View {
     var habit: HabitDefinition
     
     var currentValue: Float {
-        if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
-            return Float(viewModel.stepsToday)
+        if habit.isUsingHealthData, let unit = habit.targetValueUnit {
+            let value = viewModel.healthData[unit] ?? 0.0
+            return Float(value)
         } else {
             return viewModel.state.habitRecords
                 .first(where: { $0.habitDefinition.id == habit.id })?.value ?? 0
@@ -17,9 +18,8 @@ struct DailyGoalProgressBar: View {
         AmountGoalProgressBar(
             habit: habit,
             currentValue: currentValue,
-            isLoading: viewModel.isLoadingSteps && habit.isUsingHealthData == true,
+            isLoading: habit.isUsingHealthData && viewModel.healthData[habit.targetValueUnit!] == nil,
             onAddAmount: { addedValue in
-                // The Dumb View told us to add value, so we tell the ViewModel
                 viewModel.addToAmountHabit(habit: habit, addedAmount: addedValue)
             }
         )

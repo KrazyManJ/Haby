@@ -1,3 +1,4 @@
+import CoreData
 
 extension HabitDefinition : EntityConverting {
     func toEntity() -> HabitDefinitionEntity {

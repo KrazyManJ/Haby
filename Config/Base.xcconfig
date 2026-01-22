@@ -28,3 +28,4 @@ DEVELOPMENT_TEAM =
 // (don't touch it, if you don't know, what are you doing)
 //
 PRODUCT_BUNDLE_IDENTIFIER = $(BUNDLE_ID_PREFIX).krazymanj-katapl.Haby$(BUNDLE_ID_SUFFIX)
+ROOT_IDENTIFIER = $(BUNDLE_ID_PREFIX).krazymanj-katapl.Haby

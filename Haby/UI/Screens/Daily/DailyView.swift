@@ -6,6 +6,9 @@ struct DailyView: View {
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
     
+    //@StateObject private var connector = PhoneSessionManager()
+    @ObservedObject var sessionManager = PhoneSessionManager.shared
+    
     @Environment(\.scenePhase) var scenePhase
     
     init(viewModel: DailyViewModel = DailyViewModel()) {
@@ -100,6 +103,12 @@ struct DailyView: View {
                     refreshData()
                 }
             }
+            .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
+                if !newHabits.isEmpty {
+                    print("📤 Habits loaded. Syncing to Watch...")
+                    sessionManager.syncAllHabitsToWatch()
+                }
+            }
             .background(Colors.BackgroundPrimary)
             .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
                 Button("OK", role: .cancel) {}
@@ -109,7 +118,7 @@ struct DailyView: View {
     func refreshData() {
             viewModel.getTodayHabits()
             Task {
-                await viewModel.loadStepData()
+                await viewModel.loadHealthDataForToday()
                 // Optional: If you want to persist the new step count to your local DB immediately:
                 viewModel.syncHealthDataToHabits()
             }

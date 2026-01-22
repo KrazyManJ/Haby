@@ -1,6 +1,6 @@
 import UIKit
 
-struct HabitDefinition: Identifiable {
+struct HabitDefinition: Identifiable, Equatable {
     var id: UUID
     var name: String
     var icon: String

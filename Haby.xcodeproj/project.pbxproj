@@ -9,11 +9,37 @@
 /* Begin PBXBuildFile section */
 		44D51C472E04471400309324 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 44D51C462E04471400309324 /* FSCalendar */; };
 		A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */; };
+		BB2C2B772F20D5120030CF44 /* Haby Companion Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB2C2B752F20D5120030CF44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB2C2B6C2F20D5110030CF44;
+			remoteInfo = "Haby Companion Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BB2C2B612F20D1DA0030CF44 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				BB2C2B772F20D5120030CF44 /* Haby Companion Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C79B44A2F1F1B9300CA4B0C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Haby Companion Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -26,6 +52,9 @@
 				"Targets/App/App-Base.xcconfig",
 				"Targets/App/App-Debug.xcconfig",
 				"Targets/App/App-Release.xcconfig",
+				"Targets/Watch/Watch-Base.xcconfig",
+				"Targets/Watch/Watch-Debug.xcconfig",
+				"Targets/Watch/Watch-Release.xcconfig",
 				User.xcconfig,
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
@@ -37,6 +66,58 @@
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
 		};
+		BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Convertors/PhoneConvertor.swift,
+				Convertors/WatchConvertor.swift,
+				DI/DIManager.swift,
+				DI/DIRegister.swift,
+				DI/Injected.swift,
+			);
+			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
+		};
+		BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Model/Enum/AmountUnit.swift,
+				Model/Enum/HabitFrequency.swift,
+				Model/Enum/HabitType.swift,
+				Model/Enum/Mood.swift,
+				Model/Enum/WeekDay.swift,
+				Model/HabitDefinition.swift,
+				Model/HabitRecord.swift,
+				Model/Haby.xcdatamodeld,
+				Model/HealthDataPoint.swift,
+				Model/MoodRecord.swift,
+				Services/Data/Conversion/HabitDefinitionConversion.swift,
+				Services/Data/Conversion/HabitRecordConversion.swift,
+				Services/Data/Conversion/MoodRecordConversion.swift,
+				Services/Data/Conversion/Protocols/EntityConverting.swift,
+				Services/Data/Conversion/Protocols/ModelConverting.swift,
+				Services/Data/CoreDataManager.swift,
+				Services/Data/DataManaging.swift,
+				Services/Data/HabitDefinitionDataManager.swift,
+				Services/Data/HabitRecordDataManager.swift,
+				Services/Data/MockupDataManager.swift,
+				Services/Data/MoodDataManager.swift,
+				Services/Health/HealthManager.swift,
+				Services/Health/HealthManaging.swift,
+				UI/Components/Card.swift,
+				UI/Components/HabitWatchRow.swift,
+				UI/Resources/Assets.xcassets,
+				UI/Resources/Colors.swift,
+				Utils/DateUtils.swift,
+			);
+			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
+		};
+		BB5FECC92F2127DE0007EF29 /* Exceptions for "Haby Companion Watch App" folder in "Haby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +125,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */,
+				BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */,
 			);
 			path = Haby;
 			sourceTree = "<group>";
@@ -58,7 +140,18 @@
 		};
 		5C79B5952F20426A00CA4B0C /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */,
+			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BB5FECC92F2127DE0007EF29 /* Exceptions for "Haby Companion Watch App" folder in "Haby" target */,
+			);
+			path = "Haby Companion Watch App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -73,6 +166,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB2C2B6A2F20D5110030CF44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -83,6 +183,7 @@
 				5C79B44A2F1F1B9300CA4B0C /* .gitignore */,
 				5C79B5952F20426A00CA4B0C /* Shared */,
 				44B063EA2DDDC4D000252D85 /* Haby */,
+				BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */,
 				44B063E92DDDC4D000252D85 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				44B063E82DDDC4D000252D85 /* Haby.app */,
+				BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,10 +207,12 @@
 				44B063E42DDDC4D000252D85 /* Sources */,
 				44B063E52DDDC4D000252D85 /* Frameworks */,
 				44B063E62DDDC4D000252D85 /* Resources */,
+				BB2C2B612F20D1DA0030CF44 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BB2C2B762F20D5120030CF44 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				44B063EA2DDDC4D000252D85 /* Haby */,
@@ -124,6 +228,28 @@
 			productReference = 44B063E82DDDC4D000252D85 /* Haby.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB2C2B782F20D5120030CF44 /* Build configuration list for PBXNativeTarget "Haby Companion Watch App" */;
+			buildPhases = (
+				BB2C2B692F20D5110030CF44 /* Sources */,
+				BB2C2B6A2F20D5110030CF44 /* Frameworks */,
+				BB2C2B6B2F20D5110030CF44 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */,
+			);
+			name = "Haby Companion Watch App";
+			packageProductDependencies = (
+			);
+			productName = "Haby Companion Watch App";
+			productReference = BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -136,6 +262,9 @@
 				TargetAttributes = {
 					44B063E72DDDC4D000252D85 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					BB2C2B6C2F20D5110030CF44 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
@@ -158,12 +287,20 @@
 			projectRoot = "";
 			targets = (
 				44B063E72DDDC4D000252D85 /* Haby */,
+				BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		44B063E62DDDC4D000252D85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB2C2B6B2F20D5110030CF44 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -180,7 +317,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB2C2B692F20D5110030CF44 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB2C2B762F20D5120030CF44 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
+			targetProxy = BB2C2B752F20D5120030CF44 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		44B063F42DDDC4D100252D85 /* Debug */ = {
@@ -287,7 +439,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -379,6 +530,71 @@
 			};
 			name = Release;
 		};
+		BB2C2B792F20D5120030CF44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Watch/Watch-Debug.xcconfig";
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Haby;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		BB2C2B7A2F20D5120030CF44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Watch/Watch-Release.xcconfig";
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Haby;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -396,6 +612,15 @@
 			buildConfigurations = (
 				44B063F72DDDC4D100252D85 /* Debug */,
 				44B063F82DDDC4D100252D85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB2C2B782F20D5120030CF44 /* Build configuration list for PBXNativeTarget "Haby Companion Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB2C2B792F20D5120030CF44 /* Debug */,
+				BB2C2B7A2F20D5120030CF44 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

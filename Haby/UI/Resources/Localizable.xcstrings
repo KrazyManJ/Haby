@@ -17,6 +17,16 @@
         }
       }
     },
+    "%@ • %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ • %2$@"
+          }
+        }
+      }
+    },
     "%@ • %@ • %@" : {
       "localizations" : {
         "en" : {
@@ -58,6 +68,9 @@
     "avg" : {
 
     },
+    "avg %@" : {
+
+    },
     "Cancel" : {
 
     },
@@ -94,7 +107,13 @@
     "goal" : {
 
     },
+    "goal %@" : {
+
+    },
     "Goals" : {
+
+    },
+    "habit name" : {
 
     },
     "Habit Name" : {
@@ -174,6 +193,9 @@
 
     },
     "Use Health Data" : {
+
+    },
+    "value/%@" : {
 
     },
     "Week Timeline" : {

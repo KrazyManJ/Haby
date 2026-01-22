@@ -16,6 +16,8 @@ class HealthManager: HealthManaging {
         // if connected but 0 results, show "no data available" in UI
         // .notDetermined - user was not asked yet
         // .sharingAuthorized, .sharingDenied - prompt has appeared
+        
+        // requestPermission function requests all types -> we can check only one here
         let status = healthStore.authorizationStatus(for: stepType)
         return status != .notDetermined
     }
@@ -32,35 +34,6 @@ class HealthManager: HealthManaging {
                 print("Error requesting HealthKit: \(error.localizedDescription)")
             }
         }
-    
-    /*
-or
-    private let hasAskedKey = "hasAskedHealthKitPermission"
-
-    func hasAskedForPermission() -> Bool {
-        // Check our own internal flag
-        return UserDefaults.standard.bool(forKey: hasAskedKey)
-    }
-
-    func requestPermission() async {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
-        
-        // ... (Your existing types setup) ...
-
-        do {
-            // Try to request authorization
-            try await healthStore.requestAuthorization(toShare: [], read: Set([stepType, activeEnergyType, workoutTimeType, distanceType]))
-            
-            // If no error was thrown, we assume the sheet was shown.
-            // Even if they clicked "Cancel" or "Deny", we technically "Asked".
-            UserDefaults.standard.set(true, forKey: hasAskedKey)
-            print("✅ HealthKit sheet presented")
-            
-        } catch {
-            print("❌ Error requesting HealthKit: \(error.localizedDescription)")
-        }
-    }
-    */
     
     // returns single value for time range (day, week, month)
     func fetchStatistics(
@@ -135,6 +108,7 @@ or
 
 extension HealthManager {
     
+    // todo make sure week starts on monday
     internal func getStartOf(component: Calendar.Component) -> Date {
         let calendar = Calendar.current
         let componentsToUse: Set<Calendar.Component> = component == .weekOfYear
