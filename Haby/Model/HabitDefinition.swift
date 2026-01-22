@@ -1,20 +1,21 @@
 import UIKit
 
 struct HabitDefinition: Identifiable {
-    var id: UUID
+    var id: UUID = .init()
     var name: String
     var icon: String
-    var creationDate: Date
+    var creationDate: Date = Date()
     
-    var type: HabitType
-    var frequency: HabitFrequency
+    @available(*, deprecated, message: "Use `data: HabyData` instead") var type: HabitType
+    @available(*, deprecated, message: "Use `data: HabyData` instead") var frequency: HabitFrequency
     
-    var targetTimestamp: Int?
-    var targetValue: Float?
-    var targetValueUnit: AmountUnit?
+    @available(*, deprecated, message: "Use `data: HabyData` instead") var targetTimestamp: Int?
+    @available(*, deprecated, message: "Use `data: HabyData` instead") var targetValue: Float?
+    @available(*, deprecated, message: "Use `data: HabyData` instead") var targetValueUnit: AmountUnit?
     
-    var isActive: Bool = false
     var isUsingHealthData: Bool = false
+    
+    var data: HabitDefinitionData
     
     func canBeCheckedInTimestamp(timestamp: Int) -> Bool {
         if let definitionTimestamp = targetTimestamp {
@@ -28,5 +29,54 @@ struct HabitDefinition: Identifiable {
             }
         }
         return false
+    }
+}
+
+protocol HabitDataDefining {
+    var frequency: HabitFrequency { get set }
+}
+
+struct OnTimeHabitDefinitionData : HabitDataDefining {
+    var frequency: HabitFrequency
+    var minutesOfCompletionInFrequency: Int
+}
+
+struct DeadlineHabitDefinitionData : HabitDataDefining {
+    var frequency: HabitFrequency
+    var minutesOfCompletionInFrequency: Int
+}
+
+struct AmountHabitDefinitionData : HabitDataDefining {
+    var frequency: HabitFrequency
+    var amount: Float
+    var unit: AmountUnit
+}
+
+enum HabitDefinitionData {
+    case OnTime(data: OnTimeHabitDefinitionData)
+    case Deadline(data: DeadlineHabitDefinitionData)
+    case Amount(data: AmountHabitDefinitionData)
+    
+    var details: HabitDataDefining {
+        switch self {
+            case .OnTime(let data): return data
+            case .Deadline(let data): return data
+            case .Amount(let data): return data
+        }
+    }
+    
+    var type: HabitType {
+        switch self {
+            case .OnTime: return .OnTime
+            case .Amount: return .Amount
+            case .Deadline: return .Deadline
+        }
+    }
+    
+    func force<T: HabitDataDefining>(as type: T.Type = T.self) -> T {
+        guard let data = self.details as? T else {
+            fatalError("Type Mismatch! You tried to force '\(T.self)' but the enum contains '\(Swift.type(of: self.details))'")
+        }
+        return data
     }
 }

@@ -6,6 +6,6 @@ enum HabitFrequency: Int16, CaseIterable, Identifiable {
     case Weekly = 2
     
     var name: String {
-            String(describing: self)
+        String(describing: self)
     }
 }

@@ -36,7 +36,8 @@ class DailyViewModel: ObservableObject {
                     id: UUID(),
                     date: Date().onlyDate,
                     value: currentSteps,
-                    habitDefinition: habit
+                    habitDefinition: habit,
+                    data: .Amount(data: .init(value: currentSteps))
                 )
                 dataManaging.wrappedValue.upsert(model: newRecord)
             }
@@ -77,17 +78,27 @@ class DailyViewModel: ObservableObject {
         
         let currentTimestamp = hour * 60 + minute
         
+        
+        
         if let record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
             if let entity: HabitRecordEntity = dataManaging.wrappedValue.fetchOneById(id: record.id) {
                 dataManaging.wrappedValue.delete(entity: entity)
             }
         }
         else {
+            var recordData: HabitRecordData {
+                if habit.data.type == .Deadline {
+                    return .Deadline(data: .init(minutesOfCompletionInFrequency: currentTimestamp))
+                } else {
+                    return .OnTime(data: .init(minutesOfCompletionInFrequency: currentTimestamp))
+                }
+            }
+            
             dataManaging.wrappedValue.upsert(model: HabitRecord(
-                id: UUID(),
                 date: Date().onlyDate,
                 timestamp: currentTimestamp,
-                habitDefinition: habit
+                habitDefinition: habit,
+                data: recordData
             ))
         }
 
@@ -106,7 +117,8 @@ class DailyViewModel: ObservableObject {
                 id: UUID(),
                 date: today,
                 value: addedAmount,
-                habitDefinition: habit
+                habitDefinition: habit,
+                data: .Amount(data: .init(value: addedAmount))
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
         }

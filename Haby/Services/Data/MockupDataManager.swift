@@ -6,13 +6,15 @@ extension CoreDataManager {
         let createdAt = Date().onlyDate.daysAgo(5)
         
         let yoga = HabitDefinition(
-            id: UUID(),
             name: "Yoga",
             icon: "figure.yoga",
             creationDate: createdAt,
             type: .Deadline,
             frequency: .Daily,
-            targetTimestamp: 60 * 17 // 17:00
+            targetTimestamp: 60 * 17, // 17:00
+            data: .Deadline(data: .init(
+                frequency: .Daily, minutesOfCompletionInFrequency: 60 * 17
+            ))
         )
         
         let pill = HabitDefinition(
@@ -22,7 +24,11 @@ extension CoreDataManager {
             creationDate: createdAt,
             type: .OnTime,
             frequency: .Daily,
-            targetTimestamp: 60 * 9 // 9:00
+            targetTimestamp: 60 * 9, // 9:00
+            data: .OnTime(data: .init(
+                frequency: .Daily,
+                minutesOfCompletionInFrequency: 60 * 9
+            ))
         )
         
         let walk = HabitDefinition(
@@ -33,7 +39,8 @@ extension CoreDataManager {
             type: .Amount,
             frequency: .Daily,
             targetValue: 10000,
-            targetValueUnit: .Steps
+            targetValueUnit: .Steps,
+            data: .Amount(data: .init(frequency: .Daily, amount: 1000, unit: .Steps))
         )
         
         let journaling = HabitDefinition(
@@ -43,7 +50,8 @@ extension CoreDataManager {
             creationDate: createdAt,
             type: .Deadline,
             frequency: .Weekly,
-            targetTimestamp: 60 * 9
+            targetTimestamp: 60 * 9,
+            data: .Deadline(data: .init(frequency: .Weekly, minutesOfCompletionInFrequency: 60 * 9))
         )
         
         let test = HabitDefinition(
@@ -54,7 +62,8 @@ extension CoreDataManager {
             type: .Amount,
             frequency: .Weekly,
             targetValue: 10,
-            targetValueUnit: .Hours
+            targetValueUnit: .Hours,
+            data: .Amount(data: .init(frequency: .Weekly, amount: 10, unit: .Hours))
         )
                 
         let habits = [yoga,pill,walk,journaling]
@@ -66,14 +75,14 @@ extension CoreDataManager {
         
         // Habit that will break streak if not correct coded :]
         _ = HabitDefinition(
-            id: UUID(),
             name: "Studying",
             icon: "book",
             creationDate: Date(),
             type: .Amount,
             frequency: .Daily,
             targetValue: 90,
-            targetValueUnit: .Minutes
+            targetValueUnit: .Minutes,
+            data: .Amount(data: .init(frequency: .Daily, amount: 90, unit: .Minutes))
         ).toEntity()
         
         save()
@@ -93,22 +102,29 @@ extension CoreDataManager {
                 var timestamp: Int? = nil
                 var value: Float? = nil
 
-                switch habit.type {
-                case .Deadline, .OnTime:
-                    timestamp = habit.targetTimestamp
-                    
-                case .Amount:
-                    if let targetVal = habit.targetValue {
-                        value = targetVal
+                var recordData: HabitRecordData {
+                    switch habit.data {
+                    case .Deadline(let data):
+                        timestamp = data.minutesOfCompletionInFrequency
+                        return .Deadline(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                    case .OnTime(let data):
+                        timestamp = data.minutesOfCompletionInFrequency
+                        return .OnTime(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                    case .Amount(let data):
+                        value = data.amount
+                        return .Amount(data: .init(value: data.amount))
                     }
                 }
+                
+                
 
                 let record = HabitRecord(
                     id: UUID(),
                     date: recordDate,
                     timestamp: timestamp,
                     value: value,
-                    habitDefinition: habit
+                    habitDefinition: habit,
+                    data: recordData
                 )
                 records.append(record)
             }
