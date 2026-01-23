@@ -78,9 +78,13 @@ class WeeklyViewModel: ObservableObject {
     }
 
     func isHabitChecked(habit: HabitDefinition, on date: Date) -> Bool {
-        state.habitRecords.contains {
-            $0.habitDefinition.id == habit.id && Calendar.current.isDate($0.date, inSameDayAs: date)
-        }
+//        state.habitRecords.contains {
+//            $0.habitDefinition.id == habit.id && Calendar.current.isDate($0.date, inSameDayAs: date)
+//        }
+        return state.habitRecords.contains { record in
+                record.habitDefinition.id == habit.id && // <--- YOU LIKELY MISSED THIS
+                Calendar.current.isDate(record.date, inSameDayAs: date)
+            }
     }
 
     func setHabit(_ habit: HabitDefinition, checked: Bool, on date: Date) {
@@ -125,5 +129,20 @@ class WeeklyViewModel: ObservableObject {
             .reduce(0.0) { $0 + ($1.value ?? 0) }
     }
 
-
+    func refreshData() {
+        getWeekHabits()
+        Task {
+            await loadStepData()
+            // Optional: If you want to persist the new step count to your local DB immediately:
+            syncHealthDataToHabits()
+        }
+        self.selectedDates = [:]
+        for habit in self.state.habits where habit.data.details.frequency == .Weekly {
+            // Find if there is ANY record for this habit in the current week
+            if let record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
+                // Restore the state so the UI knows this day is the "chosen" one
+                self.selectedDates[habit.id] = record.date
+            }
+        }
+    }
 }

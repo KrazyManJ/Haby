@@ -1,6 +1,12 @@
 import CoreData
 
 extension CoreDataManager {
+    func getAllHabits() -> [HabitDefinition] {
+        let time = getTimeHabitsForToday() + getTimeHabitsForWeek() // Simplified, or just fetch all entities
+        let amount = getAmountHabitsForToday() + getAmountHabitsForWeek()
+        return time + amount
+    }
+    
     func getTimeHabitsForToday() -> [HabitDefinition] {
         let result: [HabitDefinitionEntity] = getTimeHabitsEntitiesForDate(date: Date())
         return result

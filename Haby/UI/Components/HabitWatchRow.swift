@@ -19,6 +19,8 @@ struct HabitWatchRow: View {
                         Image(systemName: habit.icon).font(.caption2)
                         Text(habit.name)
                             .font(.caption2)
+                            .truncationMode(.tail)
+                            .lineLimit(2)
                     }
                     HStack {
                         // todo if amount dont show type name

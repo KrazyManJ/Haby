@@ -48,13 +48,9 @@ extension CoreDataManager {
             ]
         )
         
-        
-        
         let result: [HabitRecordEntity] = fetch(predicate: predicate)
         return result.map { $0.toModel() }
     }
-
-
     
     func fetchAllRecordsSortedByDate() -> [HabitRecord] {
         let result: [HabitRecordEntity] = fetch(
@@ -79,5 +75,26 @@ extension CoreDataManager {
             print("Cannot fetch data: \(error.localizedDescription)")
         }
         return []
+    }
+    
+    func deleteRecordsBefore(date: Date) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: HabitRecordEntity.self))
+        
+        fetchRequest.predicate = NSPredicate(format: "date < %@", date as NSDate)
+        
+        do {
+            guard let results = try context.fetch(fetchRequest) as? [NSManagedObject] else { return }
+            
+            for object in results {
+                context.delete(object)
+            }
+            
+            if context.hasChanges {
+                try context.save()
+                print("Cleanup: Deleted \(results.count) old records before \(date)")
+            }
+        } catch {
+            print("Failed to delete old records: \(error.localizedDescription)")
+        }
     }
 }

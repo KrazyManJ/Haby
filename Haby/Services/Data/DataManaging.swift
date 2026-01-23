@@ -17,6 +17,7 @@ protocol DataManaging {
     func delete<E: NSManagedObject>(entity: E)
     
     // HabitDefinitionDataManager
+    func getAllHabits() -> [HabitDefinition]
     func getTimeHabitsForToday() -> [HabitDefinition]
     func getAmountHabitsForToday() -> [HabitDefinition]
     func getTimeHabitsForDate(date: Date) -> [HabitDefinition]
@@ -35,5 +36,6 @@ protocol DataManaging {
     func getWeekRecords() -> [HabitRecord]
     func fetchAllRecordsSortedByDate() -> [HabitRecord]
     func fetchDatesWithHabitRecords() -> [Date]
+    func deleteRecordsBefore(date: Date)
     
 }

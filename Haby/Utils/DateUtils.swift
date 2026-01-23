@@ -47,6 +47,7 @@ extension Date {
           formatter.setLocalizedDateFormatFromTemplate("E")
           return formatter.string(from: self)
       }
+    
     var startOfWeek: Date {
         var calendar = Calendar.current
         calendar.firstWeekday = 2 // Monday = 2
@@ -66,6 +67,19 @@ extension Date {
         let formatter = RelativeDateTimeFormatter()
         let relativeDate = formatter.localizedString(for: date, relativeTo: Date.now)
 
+    }
+    
+    func minutesFromStartOfWeek() -> Int {
+        let calendar = Calendar.current
+        let start = self.startOfWeek
+        let components = calendar.dateComponents([.minute], from: start, to: self)
+        return components.minute ?? 0
+    }
+        
+    func minutesFromStartOfDay() -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: self)
+        return (components.hour ?? 0) * 60 + (components.minute ?? 0)
     }
 }
 

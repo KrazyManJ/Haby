@@ -11,6 +11,7 @@ class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging, Ob
             let session = WCSession.default
             session.delegate = self
             session.activate()
+            try? session.updateApplicationContext([:]) 
         }
     }
     
@@ -35,30 +36,7 @@ class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging, Ob
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-//            let calendar = Calendar.current
-//            let now = Date()
-//            let hour = calendar.component(.hour, from: now)
-//            let minute = calendar.component(.minute, from: now)
-//            let currentMinutes = (hour * 60) + minute
-            
-            let dailyTimeHabits = self.dataManager.wrappedValue.getTimeHabitsForToday()
-            let weeklyTimeHabits = self.dataManager.wrappedValue.getTimeHabitsForWeek()
-            let dailyAmountHabits = self.dataManager.wrappedValue.getAmountHabitsForToday()
-            let weeklyAmountHabits =
-            self.dataManager.wrappedValue.getAmountHabitsForWeek()
-            
-            let timeHabits = dailyTimeHabits + weeklyTimeHabits
-            
-//            let upcomingTimeHabits = timeHabits.filter { habit in
-//                guard let targetMinutes = habit.effectiveTimestamp else { return false }
-//                
-//                // grace period
-//                return targetMinutes > (currentMinutes - 60)
-//            }
-            
-//            let allHabits = upcomingTimeHabits + dailyAmountHabits + weeklyAmountHabits
-            
-            let allHabits = timeHabits + dailyAmountHabits + weeklyAmountHabits
+            let allHabits = self.dataManager.wrappedValue.getAllHabits()
             
             let todayRecords = self.dataManager.wrappedValue.getTodayRecords()
             let weekRecords = self.dataManager.wrappedValue.getWeekRecords()
@@ -102,22 +80,26 @@ class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging, Ob
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            // fetch Definitions for reconstruction
-            let dailyTimeHabits = self.dataManager.wrappedValue.getTimeHabitsForToday()
-            let weeklyTimeHabits = self.dataManager.wrappedValue.getTimeHabitsForWeek()
-            let dailyAmountHabits = self.dataManager.wrappedValue.getAmountHabitsForToday()
-            let weeklyAmountHabits =
-            self.dataManager.wrappedValue.getAmountHabitsForWeek()
-            
-            let allHabits = dailyTimeHabits + weeklyTimeHabits + dailyAmountHabits + weeklyAmountHabits
+            let allHabits = self.dataManager.wrappedValue.getAllHabits()
             
             if var newRecord = message.convertToRecord(using: allHabits) {
                 newRecord.date = newRecord.date.onlyDate
                 self.dataManager.wrappedValue.upsert(model: newRecord)
+                notifyUI()
                 print("Received and saved record for: \(newRecord.habitDefinition.name)")
             } else {
                 print("Failed to convert message to record. Missing parent habit?")
             }
+        }
+    }
+    
+    private func notifyUI() {
+        DispatchQueue.main.async {
+            // 1. Tell the App to reload
+            NotificationCenter.default.post(name: .reloadHabits, object: nil)
+
+            // 2. Sync back to watch (so watch stays in sync)
+            self.syncAllHabitsToWatch()
         }
     }
 }

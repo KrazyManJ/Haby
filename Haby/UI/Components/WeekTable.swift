@@ -2,7 +2,8 @@
 import SwiftUI
 
 struct WeekTable: View {
-    @Binding var viewModel: WeeklyViewModel
+    //@Binding var viewModel: WeeklyViewModel
+    @ObservedObject var viewModel: WeeklyViewModel
     @State private var showingConfirmation = false
     @State private var habitToUncheck: HabitDefinition?
     @State private var dateToUncheck: Date?
@@ -46,7 +47,8 @@ struct WeekTable: View {
                             let isChecked = viewModel.isHabitChecked(habit: habit, on: date)
                             let isValid = isHabitValid(habit: habit, date: date)
                             let selectedDate = viewModel.selectedDates[habit.id]
-                            let isDisabled = selectedDate != nil && selectedDate != date
+                            let isSelectedDay = selectedDate != nil && Calendar.current.isDate(selectedDate!, inSameDayAs: date)
+                            let isDisabled = selectedDate != nil && !isSelectedDay
                             
                             CircleCheck(
                                 isOn: Binding<Bool>(
@@ -57,6 +59,7 @@ struct WeekTable: View {
                                             dateToUncheck = date
                                             showingConfirmation = true
                                         } else {
+                                            let cleanDate = Calendar.current.startOfDay(for: date)
                                             viewModel.setHabit(habit, checked: true, on: date)
                                             viewModel.selectedDates[habit.id] = date
                                         }

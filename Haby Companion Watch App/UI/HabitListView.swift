@@ -33,13 +33,30 @@ struct HabitListView: View {
                             $0.data.type == (filterType == .time ? .Deadline : .Amount)
                         }
                         let activeHabits = typeFiltered.filter { habit in
-                            let record = getRecord(for: habit)
-                            let status = HabitStatusHelper(habit: habit, record: record)
-                            return !status.isCompleted
+                       
+                            // 1. Find the record
+                            let record = sessionManager.records.first {
+                                $0.habitDefinition.id == habit.id
+                            }
+                            
+                            // 2. Decide if we should show it
+                            if habit.data.type == .Amount {
+                                // Amount Habits: Keep showing until target is reached
+                                let status = HabitStatusHelper(habit: habit, record: record)
+                                return !status.isCompleted
+                            } else {
+                                // Time Habits (Deadline/OnTime): Hide if ANY record exists.
+                                // Even if it was late (wasDoneCorrectly == false), we don't want it on the "To Do" list.
+                                return record == nil
+                            }
+                        
                         }
                         
                         ForEach(activeHabits) { habit in
                             HabitWatchRow(habit: habit, record: getRecord(for: habit))
+//                            HabitWatchRow(habit: habit, record: sessionManager.records.first {
+//                                $0.habitDefinition.id == habit.id
+//                            })
                                 .onTapGesture { selectedHabit = habit }
                         }
                         

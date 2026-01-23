@@ -8,6 +8,8 @@ struct HabitManagementView: View {
     @State var showAlert = false
     @State private var habitToDelete: HabitDefinition? = nil
     @State private var habitToEdit: HabitDefinition?
+    @ObservedObject var sessionManager = PhoneSessionManager.shared
+    @Environment(\.scenePhase) var scenePhase
     
     init(viewModel: HabitManagementViewModel = HabitManagementViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -47,6 +49,12 @@ struct HabitManagementView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear{
                 viewModel.fetchHabits()
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    print("App returned to foreground. Refreshing data...")
+                    sessionManager.syncAllHabitsToWatch()
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Habits Management")

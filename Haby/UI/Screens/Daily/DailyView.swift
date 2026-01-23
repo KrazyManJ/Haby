@@ -95,6 +95,7 @@ struct DailyView: View {
                     viewModel.updateMood(mood: .Neutral)
                 }
                 refreshData()
+                sessionManager.syncAllHabitsToWatch()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
@@ -107,6 +108,10 @@ struct DailyView: View {
                     print("📤 Habits loaded. Syncing to Watch...")
                     sessionManager.syncAllHabitsToWatch()
                 }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
+                print("🔄 reloading data from Watch update...")
+                viewModel.getTodayHabits()
             }
             .background(Colors.BackgroundPrimary)
             .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {

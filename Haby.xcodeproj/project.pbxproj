@@ -76,6 +76,7 @@
 				DI/Injected.swift,
 				Extensions/HabitDefinitionExtension.swift,
 				Extensions/IntExtension.swift,
+				Extensions/NotificationExtension.swift,
 				Extensions/ViewExtensions.swift,
 				"UI/Resources/Global Assets.xcassets",
 			);

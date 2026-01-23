@@ -23,7 +23,7 @@ struct WeeklyView: View {
                         .font(.title3).bold()
                     if !viewModel.state.habits.filter({ $0.type != .Amount }).isEmpty {
                         
-                        WeekTable(viewModel: $viewModel)
+                        WeekTable(viewModel: viewModel)
                             .padding()
                     }  else {
                         Text("No weekly habits!").italic().foregroundColor(.gray)
@@ -68,13 +68,17 @@ struct WeeklyView: View {
             }
             
             .onAppear {
-                refreshData()
+                viewModel.refreshData()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
-                    refreshData()
+                    viewModel.refreshData()
                 }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
+                print("🔄 reloading data from Watch update...")
+                viewModel.getWeekHabits()
             }
             .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
                 if !newHabits.isEmpty {
@@ -86,14 +90,6 @@ struct WeeklyView: View {
         }
     
     }
-    func refreshData() {
-            viewModel.getWeekHabits()
-            Task {
-                await viewModel.loadStepData()
-                // Optional: If you want to persist the new step count to your local DB immediately:
-                viewModel.syncHealthDataToHabits()
-            }
-        }
 }
 
 

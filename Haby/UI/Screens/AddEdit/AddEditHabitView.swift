@@ -7,6 +7,7 @@ struct AddEditHabitView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var isViewPresented: Bool
     @Bindable var viewModel: AddEditHabitViewModel
+    @ObservedObject var sessionManager = PhoneSessionManager.shared
     
     @State private var isIconPickerPresented = false
     
@@ -231,6 +232,7 @@ struct AddEditHabitView: View {
             data: data
         )
         viewModel.addOrUpdateHabit(habit: newHabit)
+        sessionManager.syncAllHabitsToWatch()
     }
     
     func isGoalAmountInputValid() -> Bool {

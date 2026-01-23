@@ -25,13 +25,13 @@ final class CoreDataManager: DataManaging {
             if let error = error {
                 print("Cannot create persistent store: \(error.localizedDescription)")
             }
-            
-            let coordinator = self.container.persistentStoreCoordinator
-            // Destroy
-            try? coordinator.destroyPersistentStore(at: description.url!, type: .sqlite)
-
-            // Re-create
-            _ =  try? coordinator.addPersistentStore(type: .sqlite, at: description.url!)
+            // mock data
+//            let coordinator = self.container.persistentStoreCoordinator
+//            // Destroy
+//            try? coordinator.destroyPersistentStore(at: description.url!, type: .sqlite)
+//
+//            // Re-create
+//            _ =  try? coordinator.addPersistentStore(type: .sqlite, at: description.url!)
         }
     }
     
