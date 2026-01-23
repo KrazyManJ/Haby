@@ -86,6 +86,7 @@
 				Model/Enum/AmountUnit.swift,
 				Model/Enum/HabitFrequency.swift,
 				Model/Enum/HabitType.swift,
+				Model/Enum/InternalHabitCategory.swift,
 				Model/Enum/Mood.swift,
 				Model/Enum/WeekDay.swift,
 				Model/HabitDefinition.swift,

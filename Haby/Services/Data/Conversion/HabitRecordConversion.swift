@@ -7,20 +7,11 @@ extension HabitRecord : EntityConverting {
         let entity = HabitRecordEntity(context: dataManaging.wrappedValue.context)
         
         entity.id = id
-        entity.date = data.details.date
+        entity.date = self.data.details.date
         
         let encoder = JSONEncoder()
         if let jsonData = try? encoder.encode(self.data) {
             entity.data = jsonData
-        }
-        
-        switch self.data {
-        case .Amount(let data):
-            entity.value = data.value
-        case .Deadline(let data):
-            entity.timestamp = data.minutesOfCompletionInFrequency.int16
-        case .OnTime(let data):
-            entity.timestamp = data.minutesOfCompletionInFrequency.int16
         }
         
         let habit: HabitDefinitionEntity? = dataManaging.wrappedValue.fetchOneById(id: habitDefinition.id)
@@ -32,22 +23,27 @@ extension HabitRecord : EntityConverting {
 
 extension HabitRecordEntity : ModelConverting {
     func toModel() -> HabitRecord {
-        
-        let type: HabitType = HabitType(rawValue: self.habitDefinition!.type)!
-        
-        var data: HabitRecordData! {
-            guard let blob = self.data else {
-                return nil
-            }
-            
+        var data: HabitRecordData {
             let decoder = JSONDecoder()
-            return try! decoder.decode(HabitRecordData.self, from: blob)
+            return try! decoder.decode(HabitRecordData.self, from: self.data!)
+        }
+        
+        var timestamp: Int?
+        var value: Float?
+        
+        switch data {
+        case .Amount(let data):
+            value = data.value
+        case .Deadline(let data):
+            timestamp = data.minutesOfCompletionInFrequency
+        case .OnTime(let data):
+            timestamp = data.minutesOfCompletionInFrequency
         }
         
         return HabitRecord(
             id: id!,
-            date: date!,
-            timestamp: Int(timestamp),
+            date: data.details.date,
+            timestamp: timestamp,
             value: value,
             habitDefinition: habitDefinition!.toModel(),
             data: data
