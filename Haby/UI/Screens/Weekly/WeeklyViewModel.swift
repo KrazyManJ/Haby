@@ -38,7 +38,7 @@ class WeeklyViewModel: ObservableObject {
                     date: Date().onlyDate,
                     value: currentSteps,
                     habitDefinition: habit,
-                    data: .Amount(data: .init(value: currentSteps))
+                    data: .Amount(data: .init(date: Date().onlyDate, value: currentSteps))
                 )
                 dataManaging.wrappedValue.upsert(model: newRecord)
             }
@@ -69,7 +69,7 @@ class WeeklyViewModel: ObservableObject {
                 date: today,
                 value: addedAmount,
                 habitDefinition: habit,
-                data: .Amount(data: .init(value: addedAmount))
+                data: .Amount(data: .init(date: today, value: addedAmount))
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
             print("new record saved")
@@ -91,7 +91,7 @@ class WeeklyViewModel: ObservableObject {
                     date: date.onlyDate,
                     value: 1,
                     habitDefinition: habit,
-                    data: .Amount(data: .init(value: 1))
+                    data: .Amount(data: .init(date: date.onlyDate, value: 1))
                 )
                 dataManaging.wrappedValue.upsert(model: record)
             }

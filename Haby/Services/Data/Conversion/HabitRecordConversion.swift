@@ -7,7 +7,12 @@ extension HabitRecord : EntityConverting {
         let entity = HabitRecordEntity(context: dataManaging.wrappedValue.context)
         
         entity.id = id
-        entity.date = date
+        entity.date = data.details.date
+        
+        let encoder = JSONEncoder()
+        if let jsonData = try? encoder.encode(self.data) {
+            entity.data = jsonData
+        }
         
         switch self.data {
         case .Amount(let data):
@@ -30,15 +35,13 @@ extension HabitRecordEntity : ModelConverting {
         
         let type: HabitType = HabitType(rawValue: self.habitDefinition!.type)!
         
-        var data: HabitRecordData {
-            switch type {
-            case .Amount:
-                return .Amount(data: .init(value: self.value))
-            case .Deadline:
-                return .Deadline(data: .init(minutesOfCompletionInFrequency: self.timestamp.int))
-            case .OnTime:
-                return .OnTime(data: .init(minutesOfCompletionInFrequency: self.timestamp.int))
+        var data: HabitRecordData! {
+            guard let blob = self.data else {
+                return nil
             }
+            
+            let decoder = JSONDecoder()
+            return try! decoder.decode(HabitRecordData.self, from: blob)
         }
         
         return HabitRecord(

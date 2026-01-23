@@ -47,7 +47,7 @@ class DailyViewModel: ObservableObject {
                     date: Date().onlyDate,
                     value: Float(healthValue),
                     habitDefinition: habit,
-                    data: .Amount(data: .init(value: Float(healthValue)))
+                    data: .Amount(data: .init(date: Date().onlyDate, value: Float(healthValue)))
                 )
                 dataManaging.wrappedValue.upsert(model: newRecord)
             }
@@ -131,9 +131,9 @@ class DailyViewModel: ObservableObject {
         else {
             var recordData: HabitRecordData {
                 if habit.data.type == .Deadline {
-                    return .Deadline(data: .init(minutesOfCompletionInFrequency: currentTimestamp))
+                    return .Deadline(data: .init(date: Date().onlyDate, minutesOfCompletionInFrequency: currentTimestamp))
                 } else {
-                    return .OnTime(data: .init(minutesOfCompletionInFrequency: currentTimestamp))
+                    return .OnTime(data: .init(date: Date().onlyDate, minutesOfCompletionInFrequency: currentTimestamp))
                 }
             }
             
@@ -161,7 +161,7 @@ class DailyViewModel: ObservableObject {
                 date: today,
                 value: addedAmount,
                 habitDefinition: habit,
-                data: .Amount(data: .init(value: addedAmount))
+                data: .Amount(data: .init(date: today, value: addedAmount))
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
         }

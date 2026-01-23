@@ -111,13 +111,16 @@ extension CoreDataManager {
                     switch habit.data {
                     case .Deadline(let data):
                         timestamp = data.minutesOfCompletionInFrequency
-                        return .Deadline(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                        return .Deadline(data: .init(
+                            date: recordDate,
+                            minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency)
+                        )
                     case .OnTime(let data):
                         timestamp = data.minutesOfCompletionInFrequency
-                        return .OnTime(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                        return .OnTime(data: .init(date: recordDate, minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
                     case .Amount(let data):
                         value = data.amount
-                        return .Amount(data: .init(value: data.amount))
+                        return .Amount(data: .init(date: recordDate, value: data.amount))
                     }
                 }
                 

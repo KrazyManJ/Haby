@@ -1,5 +1,5 @@
 
-enum HabitFrequency: Int16, CaseIterable, Identifiable {
+enum HabitFrequency: Int16, CaseIterable, Identifiable, Codable {
     var id: Self { self }
     
     case Daily = 1

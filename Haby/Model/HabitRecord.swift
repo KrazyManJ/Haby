@@ -2,7 +2,7 @@ import UIKit
 
 struct HabitRecord : Identifiable {
     var id: UUID = UUID()
-    var date: Date
+    @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var date: Date
     @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var timestamp: Int?
     @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var value: Float?
     
@@ -32,22 +32,4 @@ struct HabitRecord : Identifiable {
     var isSatisfied: Bool {
         return habitDefinition.data.isSatisfied(for: self.data)
     }
-}
-
-struct AmountHabitRecordData {
-    var value: Float
-}
-
-struct DeadlineHabitRecordData {
-    var minutesOfCompletionInFrequency: Int
-}
-
-struct OnTimeHabitRecordData {
-    var minutesOfCompletionInFrequency: Int
-}
-
-enum HabitRecordData {
-    case Amount(data: AmountHabitRecordData)
-    case Deadline(data: DeadlineHabitRecordData)
-    case OnTime(data: OnTimeHabitRecordData)
 }

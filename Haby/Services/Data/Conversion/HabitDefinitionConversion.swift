@@ -13,6 +13,11 @@ extension HabitDefinition : EntityConverting {
         entity.icon = icon
         entity.creationDate = creationDate
         
+        let encoder = JSONEncoder()
+        if let jsonData = try? encoder.encode(self.data) {
+            entity.data = jsonData
+        }
+        
         switch self.data {
         case .Amount(let data):
             entity.targetValue = data.amount
@@ -33,27 +38,14 @@ extension HabitDefinitionEntity : ModelConverting {
         let type: HabitType = HabitType(rawValue: self.type)!
         let frequency = HabitFrequency(rawValue: self.frequency)!
         
-        var data: HabitDefinitionData {
-            switch type {
-            case .Amount:
-                return .Amount(data: .init(
-                    frequency: frequency,
-                    amount: Float(targetValue),
-                    unit: AmountUnit(rawValue: targetValueUnit)!
-                ))
-            case .Deadline:
-                return .Deadline(data: .init(
-                    frequency: frequency,
-                    minutesOfCompletionInFrequency: Int(targetTimestamp))
-                )
-            case .OnTime:
-                return .OnTime(data: .init(
-                    frequency: frequency,
-                    minutesOfCompletionInFrequency: Int(targetTimestamp)
-                ))
+        var data: HabitDefinitionData! {
+            guard let blob = self.data else {
+                return nil
             }
+            
+            let decoder = JSONDecoder()
+            return try! decoder.decode(HabitDefinitionData.self, from: blob)
         }
-        
         
         return HabitDefinition(
             id: id!,

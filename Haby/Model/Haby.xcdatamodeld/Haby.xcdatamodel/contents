@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="24G419" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="HabitDefinitionEntity" representedClassName="HabitDefinitionEntity" syncable="YES" codeGenerationType="class">
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="data" optional="YES" attributeType="Binary"/>
         <attribute name="frequency" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="icon" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
@@ -14,6 +15,7 @@
         <relationship name="habitRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HabitRecordEntity" inverseName="habitDefinition" inverseEntity="HabitRecordEntity"/>
     </entity>
     <entity name="HabitRecordEntity" representedClassName="HabitRecordEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Binary"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="timestamp" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
