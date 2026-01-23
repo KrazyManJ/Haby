@@ -14,88 +14,62 @@ struct HabitManagementView: View {
     }
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                if !viewModel.state.habits.isEmpty {
-                    List {
-                        ForEach(viewModel.state.habits) { habit in
-                            HabitRow(
-                                habit: habit
-                            )
-                            .listRowBackground(Colors.BackgroundSecondary)
-                            .onTapGesture {
-                                habitToEdit = habit
-                            }
-                            .swipeActions {
-                                Button() {
-                                    habitToDelete = habit
-                                    showAlert = true
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
+        VStack{
+            if !viewModel.state.habits.isEmpty {
+                List {
+                    ForEach(viewModel.state.habits) { habit in
+                        HabitRow(
+                            habit: habit
+                        )
+                        .listRowBackground(Colors.BackgroundSecondary)
+                        .onTapGesture {
+                            habitToEdit = habit
+                        }
+                        .swipeActions {
+                            Button() {
+                                habitToDelete = habit
+                                showAlert = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
                             }
                         }
                     }
-                    .scrollContentBackground(.hidden)
                 }
-                else {
-                    Text("You have no defined habits, tap...").italic().foregroundColor(Color.gray).padding(.vertical,16)
-                    Image(systemName: "plus.circle").foregroundStyle(Color.gray).font(.system(size: 64))
-                    Text("...at the top right corner.").italic().foregroundColor(Color.gray).padding(.vertical,16)
-                }
+                .scrollContentBackground(.hidden)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear{
-                viewModel.fetchHabits()
+            else {
+                Text("You have no defined habits, tap...").italic().foregroundColor(Color.gray).padding(.vertical,16)
+                Image(systemName: "plus.circle").foregroundStyle(Color.gray).font(.system(size: 64))
+                Text("...at the top right corner.").italic().foregroundColor(Color.gray).padding(.vertical,16)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Habits Management")
-            .toolbar{
-                ToolbarItemGroup(placement: .topBarTrailing){
-                    Button(action: {
-                        isAddEditHabitViewPresented = true
-                    }) {
-                        Label("New Habit", systemImage: "plus.circle")
-                            .labelStyle(.iconOnly)
-                    }
-                }
-            }
-            .sheet(item: $habitToEdit, onDismiss: {
-                viewModel.fetchHabits()
-            }
-            ) { habit in
-                NavigationStack {
-                    AddEditHabitView(
-                        isViewPresented: .constant(true),
-                        viewModel: AddEditHabitViewModel(habit: habit)
-                    )
-                }
-            }
-            .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: {
-                viewModel.fetchHabits()
-            }) {
-                NavigationStack {
-                    AddEditHabitView(
-                        isViewPresented: .constant(true),
-                        viewModel: AddEditHabitViewModel()
-                    )
-                }
-            }
-
-            .alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text("Delete this habit?"),
-                    message: Text("You will not be able to recover this habit's data after deletion."),
-                    primaryButton: .cancel(Text("Cancel")),
-                    secondaryButton: .destructive(Text("Delete")) {
-                        if let habit = habitToDelete {
-                            viewModel.removeHabit(habit: habit)
-                        }
-                    }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear{
+            viewModel.fetchHabits()
+        }
+        .sheet(item: $habitToEdit, onDismiss: {
+            viewModel.fetchHabits()
+        }) { habit in
+            NavigationStack {
+                AddEditHabitView(
+                    isViewPresented: .constant(true),
+                    viewModel: AddEditHabitViewModel(habit: habit)
                 )
             }
-            .background(Colors.BackgroundPrimary)
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Delete this habit?"),
+                message: Text("You will not be able to recover this habit's data after deletion."),
+                primaryButton: .cancel(Text("Cancel")),
+                secondaryButton: .destructive(Text("Delete")) {
+                    if let habit = habitToDelete {
+                        viewModel.removeHabit(habit: habit)
+                    }
+                }
+            )
+        }
+        .background(Colors.BackgroundPrimary)
     }
 }
 

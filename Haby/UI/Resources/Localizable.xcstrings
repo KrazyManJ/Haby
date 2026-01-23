@@ -53,6 +53,9 @@
     "0" : {
 
     },
+    "12" : {
+
+    },
     "Add Amount" : {
 
     },
@@ -84,9 +87,6 @@
 
     },
     "Daily Time" : {
-
-    },
-    "Daily timeline" : {
 
     },
     "Date" : {
@@ -125,16 +125,10 @@
     "Habits data for: %@" : {
 
     },
-    "Habits Management" : {
-
-    },
     "Kilometers" : {
 
     },
     "km" : {
-
-    },
-    "Mood" : {
 
     },
     "Mood: %@ %@" : {
@@ -153,19 +147,10 @@
     "No goal habits for this week!" : {
 
     },
-    "No goal habits for today!" : {
-
-    },
     "No habits data found" : {
 
     },
-    "No habits in daily timeline for today!" : {
-
-    },
     "No weekly habits!" : {
-
-    },
-    "OK" : {
 
     },
     "Pick Icon" : {
@@ -183,12 +168,6 @@
     "Steps Today: %lld" : {
 
     },
-    "Streak" : {
-
-    },
-    "Unable to load step data from HealthKit" : {
-
-    },
     "Uncheck" : {
 
     },
@@ -199,9 +178,6 @@
 
     },
     "Week Timeline" : {
-
-    },
-    "Weekly Habits" : {
 
     },
     "Weekly Time" : {

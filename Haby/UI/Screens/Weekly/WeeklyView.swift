@@ -12,7 +12,6 @@ struct WeeklyView: View {
     }
     
     var body: some View {
-        NavigationStack{
             VStack{
                 ScrollView {
                     Text("Week Timeline")
@@ -55,17 +54,6 @@ struct WeeklyView: View {
                     }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Weekly Habits")
-            .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing){
-                    NavigationLink(destination: OverviewView()) {
-                        Button("Streak", systemImage: "flame"){}
-                    }
-                    .tint(.orange)
-                }
-            }
-            
             .onAppear {
                 refreshData()
             }
@@ -76,21 +64,12 @@ struct WeeklyView: View {
                 }
             }
             .background(Colors.BackgroundPrimary)
-        }
-    
     }
     func refreshData() {
             viewModel.getWeekHabits()
             Task {
                 await viewModel.loadStepData()
-                // Optional: If you want to persist the new step count to your local DB immediately:
                 viewModel.syncHealthDataToHabits()
             }
         }
-}
-
-
-
-#Preview {
-    //WeeklyView()
 }

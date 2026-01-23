@@ -14,6 +14,14 @@ struct ContentView: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.configureWithDefaultBackground()
+        tabAppearance.backgroundColor = Colors.BackgroundPrimary.ui
+        tabAppearance.shadowColor = nil
+        
+        UITabBar.appearance().standardAppearance = tabAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
     }
     
     var body: some View {
