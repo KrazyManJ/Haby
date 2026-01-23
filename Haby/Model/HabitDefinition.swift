@@ -33,23 +33,51 @@ struct HabitDefinition: Identifiable, Equatable {
 }
 
 protocol HabitDataDefining: Equatable {
+    
     var frequency: HabitFrequency { get set }
+    
 }
 
-struct OnTimeHabitDefinitionData : HabitDataDefining {
+protocol HabitRecordValidating {
+    associatedtype RecordDataType
+    func isSatisfied(by recordData: RecordDataType) -> Bool
+}
+
+
+struct OnTimeHabitDefinitionData : HabitDataDefining, HabitRecordValidating {
     var frequency: HabitFrequency
     var minutesOfCompletionInFrequency: Int
+    
+    static let VALID_TIME_RANGE_IN_MINUTES = 5
+    
+    func isSatisfied(by recordData: OnTimeHabitRecordData) -> Bool {
+        
+        let ON_TIME_HABIT_MINUTES_TIME_RANGE = 5
+        
+        let startRange = self.minutesOfCompletionInFrequency - ON_TIME_HABIT_MINUTES_TIME_RANGE
+        let endRange = self.minutesOfCompletionInFrequency + ON_TIME_HABIT_MINUTES_TIME_RANGE
+        
+        return (startRange...endRange).contains(recordData.minutesOfCompletionInFrequency)
+    }
 }
 
-struct DeadlineHabitDefinitionData : HabitDataDefining {
+struct DeadlineHabitDefinitionData : HabitDataDefining, HabitRecordValidating {
     var frequency: HabitFrequency
     var minutesOfCompletionInFrequency: Int
+    
+    func isSatisfied(by recordData: DeadlineHabitRecordData) -> Bool {
+        return self.minutesOfCompletionInFrequency >= recordData.minutesOfCompletionInFrequency
+    }
 }
 
-struct AmountHabitDefinitionData : HabitDataDefining {
+struct AmountHabitDefinitionData : HabitDataDefining, HabitRecordValidating {
     var frequency: HabitFrequency
     var amount: Float
     var unit: AmountUnit
+    
+    func isSatisfied(by recordData: AmountHabitRecordData) -> Bool {
+        return self.amount <= recordData.value
+    }
 }
 
 enum HabitDefinitionData: Equatable {
@@ -78,5 +106,16 @@ enum HabitDefinitionData: Equatable {
             fatalError("Type Mismatch! You tried to force '\(T.self)' but the enum contains '\(Swift.type(of: self.details))'")
         }
         return data
+    }
+}
+
+extension HabitDefinitionData {
+    func isSatisfied(for recordData: HabitRecordData) -> Bool {
+        switch (self, recordData) {
+        case (.Amount(let def), .Amount(let rec)): return def.isSatisfied(by: rec)
+        case (.Deadline(let def), .Deadline(let rec)): return def.isSatisfied(by: rec)
+        case (.OnTime(let def), .OnTime(let rec)): return def.isSatisfied(by: rec)
+        default: return false
+        }
     }
 }

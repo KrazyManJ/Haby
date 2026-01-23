@@ -106,6 +106,8 @@
 				Services/Data/MoodDataManager.swift,
 				Services/Health/HealthManager.swift,
 				Services/Health/HealthManaging.swift,
+				Services/Notification/NotificationManager.swift,
+				Services/Notification/NotificationManaging.swift,
 				UI/Components/Card.swift,
 				UI/Components/HabitWatchRow.swift,
 				UI/Resources/Assets.xcassets,

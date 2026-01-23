@@ -1,28 +1,44 @@
 import UserNotifications
 
 extension HabitDefinition {
-    func toNotificationDateComponent() -> DateComponents {
-        var component = DateComponents()
-        if self.type == .Amount {
-            component.hour = 20
-            component.minute = 0
+    func getNotificationDateComponents() -> DateComponents {
+        var components = DateComponents()
+        
+        switch data {
+        case .Amount:
+            components.hour = 17
+            components.minute = 0
+            
+        case .Deadline(let habitData):
+            let targetMinutes = habitData.minutesOfCompletionInFrequency - 60
+            applyTime(from: targetMinutes, frequency: habitData.frequency, to: &components)
+            
+        case .OnTime(let habitData):
+            let targetMinutes = habitData.minutesOfCompletionInFrequency - OnTimeHabitDefinitionData.VALID_TIME_RANGE_IN_MINUTES
+            applyTime(from: targetMinutes, frequency: habitData.frequency, to: &components)
         }
-        if let timestamp = targetTimestamp {
-            let hour = Int(timestamp / 60)
-            let minutes = timestamp % 60
-            if self.type == .OnTime {
-                component.hour = hour
-                component.minute = minutes - 5
-            }
-            else if self.type == .Deadline {
-                component.hour = hour - 1
-                component.minute = minutes
-            }
-            if self.frequency == .Weekly {
-                component.weekday = ((timestamp / 1440 + 1) % 7) + 1
-            }
+        
+        return components
+    }
+    
+    private func applyTime(from totalMinutes: Int, frequency: HabitFrequency, to components: inout DateComponents) {
+        let minutesInDay = 1440
+        let minutesInWeek = 10080
+        
+        if frequency == .Weekly {
+            let normalizedMinutes = (totalMinutes % minutesInWeek + minutesInWeek) % minutesInWeek
+            
+            let dayIndexFromMonday = normalizedMinutes / minutesInDay
+            components.weekday = dayIndexFromMonday == 6 ? 1 : dayIndexFromMonday + 2
+            
+            let dayMinutes = normalizedMinutes % minutesInDay
+            components.hour = dayMinutes / 60
+            components.minute = dayMinutes % 60
+        } else {
+            let normalizedMinutes = (totalMinutes % minutesInDay + minutesInDay) % minutesInDay
+            components.hour = normalizedMinutes / 60
+            components.minute = normalizedMinutes % 60
         }
-        return component
     }
 }
 
@@ -55,7 +71,7 @@ class NotificationManager : NotificationManaging {
     
     func scheduleNotificationForHabit(habit: HabitDefinition) {
         
-        let dateComponents = habit.toNotificationDateComponent()
+        let dateComponents = habit.getNotificationDateComponents()
         
         let content = UNMutableNotificationContent()
         content.title = "Do not forget on \(habit.name)!"

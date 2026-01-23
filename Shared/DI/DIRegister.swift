@@ -7,10 +7,8 @@ internal extension DIContainer {
         register(HealthManaging.self) {
             HealthManager()
         }
-        #if os(iOS)
         register(NotificationManaging.self) {
             NotificationManager()
         }
-        #endif
     }
 }

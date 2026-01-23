@@ -4,6 +4,7 @@ extension CoreDataManager {
     func insertMockupData() {
         
         let createdAt = Date().onlyDate.daysAgo(5)
+        let notificationManager: Injected<NotificationManaging> = .init()
         
         let yoga = HabitDefinition(
             name: "Yoga",
@@ -67,6 +68,10 @@ extension CoreDataManager {
         )
                 
         let habits = [yoga,pill,walk,journaling]
+        
+        for habit in habits {
+            notificationManager.wrappedValue.scheduleNotificationForHabit(habit: habit)
+        }
         
         _ = habits.map { $0.toEntity()}
         _ = createMockHabitRecords(for: habits).map { $0.toEntity()}
