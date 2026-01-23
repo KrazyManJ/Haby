@@ -62,15 +62,15 @@ extension Dictionary where Key == String {
         switch typeString {
         case "amount":
             let val = self["value"] as? Float ?? 0.0
-            recordData = .Amount(data: AmountHabitRecordData(value: val))
+            recordData = .Amount(data: AmountHabitRecordData(date: date, value: val))
             
         case "deadline":
             let mins = self["minutes"] as? Int ?? 0
-            recordData = .Deadline(data: DeadlineHabitRecordData(minutesOfCompletionInFrequency: mins))
+            recordData = .Deadline(data: DeadlineHabitRecordData(date: date, minutesOfCompletionInFrequency: mins))
             
         case "ontime":
             let mins = self["minutes"] as? Int ?? 0
-            recordData = .OnTime(data: OnTimeHabitRecordData(minutesOfCompletionInFrequency: mins))
+            recordData = .OnTime(data: OnTimeHabitRecordData(date: date, minutesOfCompletionInFrequency: mins))
             
         default:
             return nil

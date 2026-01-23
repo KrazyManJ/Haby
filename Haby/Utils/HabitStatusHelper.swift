@@ -10,7 +10,7 @@ struct HabitStatusHelper {
     
     init(habit: HabitDefinition, record: HabitRecord?) {
         // Default state
-        self.isCompleted = record != nil && (record?.wasDoneCorrectly ?? false) // Assuming you have this logic or similar
+        self.isCompleted = record != nil && (record?.isSatisfied ?? false) // Assuming you have this logic or similar
         
         // --- 1. AMOUNT HABITS ---
         if case .Amount(let data) = habit.data {

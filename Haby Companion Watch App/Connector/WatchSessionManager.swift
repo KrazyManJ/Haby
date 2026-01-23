@@ -86,7 +86,7 @@ class WatchSessionManager: NSObject, WCSessionDelegate, WatchSessionManaging, Ob
         // --- UPDATE EXISTING ---
                 if case .Amount(let data) = records[index].data {
                     let newValue = data.value + amount
-                    records[index].data = .Amount(data: .init(value: newValue))
+                    records[index].data = .Amount(data: .init(date: records[index].data.details.date ,value: newValue))
                     
                     // Sync updated record
                     syncRecordToPhone(records[index])
@@ -97,7 +97,7 @@ class WatchSessionManager: NSObject, WCSessionDelegate, WatchSessionManaging, Ob
                     id: UUID(),
                     date: targetDate, // ⚠️ Normalized Date
                     habitDefinition: habit,
-                    data: .Amount(data: .init(value: amount))
+                    data: .Amount(data: .init(date: targetDate, value: amount))
                 )
                 records.append(newRecord)
                 syncRecordToPhone(newRecord)
@@ -126,8 +126,8 @@ class WatchSessionManager: NSObject, WCSessionDelegate, WatchSessionManaging, Ob
         
         // 3. Create Data
         let recordData: HabitRecordData = (habit.data.type == .Deadline)
-            ? .Deadline(data: .init(minutesOfCompletionInFrequency: minutesValue))
-            : .OnTime(data: .init(minutesOfCompletionInFrequency: minutesValue))
+        ? .Deadline(data: .init(date: recordDate, minutesOfCompletionInFrequency: minutesValue))
+            : .OnTime(data: .init(date: recordDate, minutesOfCompletionInFrequency: minutesValue))
         
         // 4. Create Record
         let newRecord = HabitRecord(
