@@ -7,11 +7,11 @@ extension HabitDefinition : EntityConverting {
         
         entity.id = id
         entity.name = name
-        entity.type = data.type.rawValue
-        entity.frequency = data.details.frequency.rawValue
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
         entity.creationDate = creationDate
+        entity.type = self.data.type.rawValue
+        entity.frequency = self.data.details.frequency.rawValue
         
         switch self.data {
         case .Amount(let data):
@@ -23,36 +23,36 @@ extension HabitDefinition : EntityConverting {
             entity.targetTimestamp = data.minutesOfCompletionInFrequency.int16
         }
         
+        let encoder = JSONEncoder()
+        if let jsonData = try? encoder.encode(self.data) {
+            entity.data = jsonData
+        }
+        
         return entity
     }
 }
 
 extension HabitDefinitionEntity : ModelConverting {
     func toModel() -> HabitDefinition {
-        
-        let type: HabitType = HabitType(rawValue: self.type)!
-        let frequency = HabitFrequency(rawValue: self.frequency)!
-        
         var data: HabitDefinitionData {
-            switch type {
-            case .Amount:
-                return .Amount(data: .init(
-                    frequency: frequency,
-                    amount: Float(targetValue),
-                    unit: AmountUnit(rawValue: targetValueUnit)!
-                ))
-            case .Deadline:
-                return .Deadline(data: .init(
-                    frequency: frequency,
-                    minutesOfCompletionInFrequency: Int(targetTimestamp))
-                )
-            case .OnTime:
-                return .OnTime(data: .init(
-                    frequency: frequency,
-                    minutesOfCompletionInFrequency: Int(targetTimestamp)
-                ))
-            }
+            let decoder = JSONDecoder()
+            return try! decoder.decode(HabitDefinitionData.self, from: self.data!)
         }
+        
+        var targetTimestamp: Int?
+        var targetValue: Float?
+        var targetValueUnit: AmountUnit?
+        
+        switch data {
+        case .Amount(let data):
+            targetValue = data.amount
+            targetValueUnit = data.unit
+        case .Deadline(let data):
+            targetTimestamp = data.minutesOfCompletionInFrequency
+        case .OnTime(let data):
+            targetTimestamp = data.minutesOfCompletionInFrequency
+        }
+        
         
         
         return HabitDefinition(
@@ -60,11 +60,11 @@ extension HabitDefinitionEntity : ModelConverting {
             name: name!,
             icon: icon ?? "",
             creationDate: creationDate!,
-            type: type,
-            frequency: frequency,
-            targetTimestamp: targetTimestamp == -1 ? nil : Int(targetTimestamp),
-            targetValue: targetValue == -1 ? nil : Float(targetValue),
-            targetValueUnit: AmountUnit(rawValue: targetValueUnit) ?? .None,
+            type: data.type,
+            frequency: data.details.frequency,
+            targetTimestamp: targetTimestamp,
+            targetValue: targetValue,
+            targetValueUnit: targetValueUnit,
             isUsingHealthData: isUsingHealthData,
             data: data
         )

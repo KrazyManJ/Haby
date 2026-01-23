@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-enum AmountUnit: Int16, CaseIterable, Identifiable {
+enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
     var id: Self { self }
     
     case None = 1

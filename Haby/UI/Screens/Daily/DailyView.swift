@@ -24,101 +24,103 @@ struct DailyView: View {
         )
     }
     
+    var dailyHabits: some View {
+        LazyVStack {
+            ForEach(viewModel.state.habits.filter { $0.data.type != .Amount } ) { habit in
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+                TimerHabitRow(habit: habit, isChecked: true, isValid: true) {}
+            }
+        }
+        .padding()
+    }
+    
     var body: some View {
-        NavigationStack{
-            VStack(spacing: 0) {
-                ScrollView {
-                    Text("Daily timeline")
-                        .padding(.horizontal, 32)
-                        .padding([.top], 16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title3).bold()
-                    LazyVStack(spacing: 0) {
-                        ForEach(viewModel.state.habits.filter { $0.type != .Amount}) { habit in
-                            DailyHabitRow(
-                                viewModel: $viewModel, habit: habit
-                            )
-                        }
-                        if viewModel.state.habits.filter({ $0.type != .Amount}).isEmpty {
-                            Text("No habits in daily timeline for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
-                        }
-                        Spacer(minLength: 0)
-                    }.padding()
-                    
-                    Text("Goals")
-                        .padding(.horizontal, 32)
-                        .padding([.top], 16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title3).bold()
-                    if !viewModel.state.amountHabits.isEmpty {
-                        Card {
-                            LazyVStack(spacing: 0) {
-                                ForEach(viewModel.state.amountHabits) { habit in
-                                    DailyGoalProgressBar(
-                                        viewModel: $viewModel, habit: habit
-                                    )
-                                    .padding(8)
-                                }
-                            }.padding()
-                        }
-                        .frame(minHeight: 100)
-                        .padding()
-                    } else {
-                        Text("No goal habits for today!")
-                            .italic()
-                            .foregroundColor(Color.gray)
-                            .padding(.vertical,32)
-                    }
-                }
-                Text("Mood")
+        VStack(spacing: 0) {
+            ScrollView {
+                Text("Daily timeline")
                     .padding(.horizontal, 32)
                     .padding([.top], 16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title3).bold()
-                MoodPickerView(selectedMood: mood).padding()
-               
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Daily Habits")
-            .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing){
-                    NavigationLink(destination: OverviewView()) {
-                        Button("Streak", systemImage: "flame"){
-                            
-                        }
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.state.habits.filter { $0.type != .Amount}) { habit in
+                        DailyHabitRow(
+                            viewModel: $viewModel, habit: habit
+                        )
                     }
-                    .tint(Color.orange)
+                    if viewModel.state.habits.filter({ $0.type != .Amount}).isEmpty {
+                        Text("No habits in daily timeline for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
+                    }
+                    Spacer(minLength: 0)
+                }.padding()
+                
+                Text("Goals")
+                    .padding(.horizontal, 32)
+                    .padding([.top], 16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.title3).bold()
+                if !viewModel.state.amountHabits.isEmpty {
+                    Card {
+                        LazyVStack(spacing: 0) {
+                            ForEach(viewModel.state.amountHabits) { habit in
+                                DailyGoalProgressBar(
+                                    viewModel: $viewModel, habit: habit
+                                )
+                                .padding(8)
+                            }
+                        }.padding()
+                    }
+                    .frame(minHeight: 100)
+                    .padding()
+                } else {
+                    Text("No goal habits for today!")
+                        .italic()
+                        .foregroundColor(Color.gray)
+                        .padding(.vertical,32)
                 }
             }
-            .onAppear {
-                if !viewModel.isTodayMoodSaved() {
-                    viewModel.updateMood(mood: .Neutral)
-                }
+            Text("Mood")
+                .padding(.horizontal, 32)
+                .padding([.top], 16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.title3).bold()
+            MoodPickerView(selectedMood: mood).padding()
+        }
+        .onAppear {
+            if !viewModel.isTodayMoodSaved() {
+                viewModel.updateMood(mood: .Neutral)
+            }
+            refreshData()
+            sessionManager.syncAllHabitsToWatch()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                print("App returned to foreground. Refreshing data...")
                 refreshData()
-                sessionManager.syncAllHabitsToWatch()
-            }
-            .onChange(of: scenePhase) { _, newPhase in
-                if newPhase == .active {
-                    print("App returned to foreground. Refreshing data...")
-                    refreshData()
-                }
-            }
-            .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
-                if !newHabits.isEmpty {
-                    print("📤 Habits loaded. Syncing to Watch...")
-                    sessionManager.syncAllHabitsToWatch()
-                }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
-                print("🔄 reloading data from Watch update...")
-                viewModel.getTodayHabits()
-            }
-            .background(Colors.BackgroundPrimary)
-            .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
-                Button("OK", role: .cancel) {}
             }
         }
+        .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
+            if !newHabits.isEmpty {
+                print("📤 Habits loaded. Syncing to Watch...")
+                sessionManager.syncAllHabitsToWatch()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
+            print("🔄 reloading data from Watch update...")
+            viewModel.getTodayHabits()
+        }
+        .background(Colors.BackgroundPrimary)
+        .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
+            Button("OK", role: .cancel) {}
+        }
     }
+    
     func refreshData() {
             viewModel.getTodayHabits()
             Task {

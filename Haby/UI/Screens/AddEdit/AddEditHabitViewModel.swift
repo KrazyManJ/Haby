@@ -5,24 +5,25 @@ import HealthKit
 class AddEditHabitViewModel {
     var state: AddEditHabitViewState = AddEditHabitViewState()
 
-    private var dataManager: Injected<DataManaging> = .init()
-    private var healthManager: Injected<HealthManaging> = .init()
-        
+    @ObservationIgnored @Injected private var notificationManager: NotificationManaging
+    @ObservationIgnored @Injected private var healthManager: HealthManaging
+    @ObservationIgnored @Injected private var dataManager: DataManaging
+    
     init(habit: HabitDefinition? = nil) {
         state.habitToEdit = habit
     }
 
     func addOrUpdateHabit(habit: HabitDefinition) {
-        print(habit)
-        dataManager.wrappedValue.upsert(model: habit)
+        dataManager.upsert(model: habit)
+        notificationManager.scheduleNotificationForHabit(habit: habit)
     }
     
     func requestHealthAuthorization() {
-        if healthManager.wrappedValue.hasAskedForPermission() {
+        if healthManager.hasAskedForPermission() {
             return
         }
         Task {
-            _ = await healthManager.wrappedValue.requestPermission()
+            _ = await healthManager.requestPermission()
         }
     }
 }

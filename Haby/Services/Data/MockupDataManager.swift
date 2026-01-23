@@ -4,6 +4,7 @@ extension CoreDataManager {
     func insertMockupData() {
         
         let createdAt = Date().onlyDate.daysAgo(5)
+        let notificationManager: Injected<NotificationManaging> = .init()
         
         let yoga = HabitDefinition(
             name: "Yoga",
@@ -81,6 +82,10 @@ extension CoreDataManager {
                 
         let habits = [yoga,yoga2,pill,walk,journaling]
         
+        for habit in habits {
+            notificationManager.wrappedValue.scheduleNotificationForHabit(habit: habit)
+        }
+        
         _ = habits.map { $0.toEntity()}
         _ = createMockHabitRecords(for: habits).map { $0.toEntity()}
         _ = test.toEntity()
@@ -119,13 +124,16 @@ extension CoreDataManager {
                     switch habit.data {
                     case .Deadline(let data):
                         timestamp = data.minutesOfCompletionInFrequency
-                        return .Deadline(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                        return .Deadline(data: .init(
+                            date: recordDate,
+                            minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency)
+                        )
                     case .OnTime(let data):
                         timestamp = data.minutesOfCompletionInFrequency
-                        return .OnTime(data: .init(minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
+                        return .OnTime(data: .init(date: recordDate, minutesOfCompletionInFrequency: data.minutesOfCompletionInFrequency))
                     case .Amount(let data):
                         value = data.amount
-                        return .Amount(data: .init(value: data.amount))
+                        return .Amount(data: .init(date: recordDate, value: data.amount))
                     }
                 }
                 
