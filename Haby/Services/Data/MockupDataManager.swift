@@ -91,7 +91,7 @@ extension CoreDataManager {
         _ = test.toEntity()
         _ = createMockMoodRecords().map({ $0.toEntity() })
         
-        // Habit that will break streak if not correct coded :]
+//         Habit that will break streak if not correct coded :]
         _ = HabitDefinition(
             name: "Studying",
             icon: "book",
@@ -137,10 +137,8 @@ extension CoreDataManager {
                     }
                 }
                 
-                
 
                 let record = HabitRecord(
-                    id: UUID(),
                     date: recordDate,
                     timestamp: timestamp,
                     value: value,
@@ -150,7 +148,6 @@ extension CoreDataManager {
                 records.append(record)
             }
         }
-        
         return records
     }
     

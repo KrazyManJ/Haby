@@ -5,8 +5,10 @@ import HealthKit
 @Observable
 class DailyViewModel: ObservableObject {
     var state: DailyViewState = DailyViewState()
-    var dataManaging: Injected<DataManaging> = .init()
-    var healthKitManager: Injected<HealthManaging> = .init()
+    
+    @ObservationIgnored @Injected var dataManaging: DataManaging
+    @ObservationIgnored @Injected var healthKitManager: HealthManaging
+    @ObservationIgnored @Injected var habitManager: HabitManaging
     
     var showHealthKitError: Bool = false
     
@@ -14,10 +16,10 @@ class DailyViewModel: ObservableObject {
 
     // fix - data based on chosen values in popup
     func loadHealthDataForToday() async {
-        async let steps = healthKitManager.wrappedValue.fetchTodaySteps()
-        async let calories = healthKitManager.wrappedValue.fetchTodayCalories()
-        async let distance = healthKitManager.wrappedValue.fetchTodayDistance()
-        async let workoutTime = healthKitManager.wrappedValue.fetchTodayWorkoutTime()
+        async let steps = healthKitManager.fetchTodaySteps()
+        async let calories = healthKitManager.fetchTodayCalories()
+        async let distance = healthKitManager.fetchTodayDistance()
+        async let workoutTime = healthKitManager.fetchTodayWorkoutTime()
         
         let fetchedSteps = await steps
         let fetchedCalories = await calories
@@ -40,7 +42,7 @@ class DailyViewModel: ObservableObject {
             if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
                 var updatedRecord = existing
                 updatedRecord.value = Float(healthValue)
-                dataManaging.wrappedValue.upsert(model: updatedRecord)
+                dataManaging.upsert(model: updatedRecord)
             } else {
                 let newRecord = HabitRecord(
                     id: UUID(),
@@ -49,32 +51,32 @@ class DailyViewModel: ObservableObject {
                     habitDefinition: habit,
                     data: .Amount(data: .init(date: Date().onlyDate, value: Float(healthValue)))
                 )
-                dataManaging.wrappedValue.upsert(model: newRecord)
+                dataManaging.upsert(model: newRecord)
             }
         }
         
-        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+        state.habitRecords = dataManaging.getTodayRecords()
     }
     
     func updateMood(mood: Mood) {
-        dataManaging.wrappedValue.upsert(model: state.todayMoodData)
+        dataManaging.upsert(model: state.todayMoodData)
     }
     
     func getTodayMood() {
-        if let todayMoodDataEntity = dataManaging.wrappedValue.getMoodRecordByDate(date: Date().onlyDate) {
+        if let todayMoodDataEntity = dataManaging.getMoodRecordByDate(date: Date().onlyDate) {
             state.todayMoodData = todayMoodDataEntity.toModel()
         }
     }
     
     func isTodayMoodSaved() -> Bool {
-        let moodSavedFromDate = dataManaging.wrappedValue.getMoodRecordByDate(date: Date().onlyDate)
+        let moodSavedFromDate = dataManaging.getMoodRecordByDate(date: Date().onlyDate)
         return moodSavedFromDate != nil
     }
     
     func getTodayHabits() {
-        state.habits = dataManaging.wrappedValue.getTimeHabitsForToday()
-        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
-        state.amountHabits = dataManaging.wrappedValue.getAmountHabitsForToday()
+        state.habits = dataManaging.getTimeHabitsForToday()
+        state.habitRecords = dataManaging.getTodayRecords()
+        state.amountHabits = dataManaging.getAmountHabitsForToday()
     }
     
     
@@ -90,8 +92,8 @@ class DailyViewModel: ObservableObject {
         
         
         if let record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
-            if let entity: HabitRecordEntity = dataManaging.wrappedValue.fetchOneById(id: record.id) {
-                dataManaging.wrappedValue.delete(entity: entity)
+            if let entity: HabitRecordEntity = dataManaging.fetchOneById(id: record.id) {
+                dataManaging.delete(entity: entity)
             }
         }
         else {
@@ -103,7 +105,7 @@ class DailyViewModel: ObservableObject {
                 }
             }
             
-            dataManaging.wrappedValue.upsert(model: HabitRecord(
+            dataManaging.upsert(model: HabitRecord(
                 date: Date().onlyDate,
                 timestamp: currentTimestamp,
                 habitDefinition: habit,
@@ -120,7 +122,7 @@ class DailyViewModel: ObservableObject {
 
         if var record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
             record.value = (record.value ?? 0) + addedAmount
-            dataManaging.wrappedValue.upsert(model: record)
+            dataManaging.upsert(model: record)
             
         } else {
             let newRecord = HabitRecord(
@@ -130,7 +132,7 @@ class DailyViewModel: ObservableObject {
                 habitDefinition: habit,
                 data: .Amount(data: .init(date: today, value: addedAmount))
             )
-            dataManaging.wrappedValue.upsert(model: newRecord)
+            dataManaging.upsert(model: newRecord)
             
             PhoneSessionManager.shared.syncAllHabitsToWatch()
         }

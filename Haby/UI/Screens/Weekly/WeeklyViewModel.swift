@@ -62,7 +62,6 @@ class WeeklyViewModel: ObservableObject {
         }) {
             record.value = (record.value ?? 0) + addedAmount
             dataManaging.wrappedValue.upsert(model: record)
-            print("record updated")
         } else {
             let newRecord = HabitRecord(
                 id: UUID(),
@@ -72,7 +71,6 @@ class WeeklyViewModel: ObservableObject {
                 data: .Amount(data: .init(date: today, value: addedAmount))
             )
             dataManaging.wrappedValue.upsert(model: newRecord)
-            print("new record saved")
         }
         self.getWeekHabits()
     }

@@ -111,6 +111,8 @@
 				Services/Data/HabitRecordDataManager.swift,
 				Services/Data/MockupDataManager.swift,
 				Services/Data/MoodDataManager.swift,
+				Services/Habit/HabitManager.swift,
+				Services/Habit/HabitManaging.swift,
 				Services/Health/HealthManager.swift,
 				Services/Health/HealthManaging.swift,
 				Services/Notification/NotificationManager.swift,

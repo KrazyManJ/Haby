@@ -59,13 +59,14 @@ extension CoreDataManager {
         let today: WeekDay = WeekDay(from: date)
         return fetch(
             predicate: NSPredicate(
-                format:"type != %d AND ((frequency == %d) OR (frequency == %d AND targetTimestamp >= %d AND targetTimestamp <= %d))",
+                format:"type != %d AND ((frequency == %d) OR (frequency == %d AND targetTimestamp >= %d AND targetTimestamp <= %d)) AND creationDate < %@",
                 argumentArray: [
                     HabitType.Amount.rawValue,
                     HabitFrequency.Daily.rawValue,
                     HabitFrequency.Weekly.rawValue,
                     today.toTimestamp,
-                    today.nextDay().toTimestamp
+                    today.nextDay().toTimestamp,
+                    date as NSDate
                 ]
             )
         )
@@ -88,10 +89,11 @@ extension CoreDataManager {
         return fetch(
             predicate: NSPredicate(
 //                format: "type == %d AND ((frequency == %d) OR (frequency == %d AND targetTimestamp >= %d AND targetTimestamp <= %d))",
-                format: "type == %d AND frequency == %d",
+                format: "type == %d AND frequency == %d AND creationDate < %@",
                 argumentArray: [
                     HabitType.Amount.rawValue,
                     HabitFrequency.Daily.rawValue,
+                    date as NSDate
 //                    HabitFrequency.Weekly.rawValue, // delete
 //                    today.toTimestamp,
 //                    today.nextDay().toTimestamp

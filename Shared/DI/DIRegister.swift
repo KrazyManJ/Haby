@@ -10,5 +10,8 @@ internal extension DIContainer {
         register(NotificationManaging.self) {
             NotificationManager()
         }
+        register(HabitManaging.self) {
+            HabitManager()
+        }
     }
 }

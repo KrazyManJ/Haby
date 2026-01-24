@@ -37,5 +37,4 @@ protocol DataManaging {
     func fetchAllRecordsSortedByDate() -> [HabitRecord]
     func fetchDatesWithHabitRecords() -> [Date]
     func deleteRecordsBefore(date: Date)
-    
 }

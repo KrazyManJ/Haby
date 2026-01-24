@@ -45,8 +45,21 @@ fileprivate let TAB_INFO: [TabInfo] = [
     )
 ]
 
+private struct MainTabViewRefreshKey: EnvironmentKey {
+    static let defaultValue: () -> Void = { }
+}
+
+extension EnvironmentValues {
+    var mainTabViewRefresh: () -> Void {
+        get { self[MainTabViewRefreshKey.self] }
+        set { self[MainTabViewRefreshKey.self] = newValue }
+    }
+}
+
 
 struct MainTabView : View {
+    
+    @State private var viewModel: MainTabViewModel
     
     @State var isAddEditHabitViewPresented = false
     
@@ -55,7 +68,9 @@ struct MainTabView : View {
     
     private var selectedTabInfo: TabInfo { TAB_INFO[selectedTab] }
     
-    init() {
+    init(viewModel: MainTabViewModel = MainTabViewModel()) {
+        self.viewModel = viewModel
+        
         UITabBar.appearance().unselectedItemTintColor = Colors.TextSecondary.ui
     }
     
@@ -75,7 +90,7 @@ struct MainTabView : View {
             .toolbar {
                 switch selectedTabInfo.leadingIcon {
                 case .Streak:
-                    StreakToolbarItem()
+                    StreakToolbarItem(streak: viewModel.state.streak)
                 case .AddHabit:
                     AddHabitToolbarItem(isAddEditHabitViewPresented: $isAddEditHabitViewPresented)
                 }
@@ -91,5 +106,16 @@ struct MainTabView : View {
                 }
             }
         }
+        .onAppear {
+            performRefresh()
+        }
+        .onChange(of: selectedTab) {
+            performRefresh()
+        }
+        .environment(\.mainTabViewRefresh, performRefresh)
+    }
+    
+    private func performRefresh() {
+        viewModel.fetchStreak()
     }
 }

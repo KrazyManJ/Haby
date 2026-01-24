@@ -12,13 +12,13 @@
         <attribute name="targetValue" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="targetValueUnit" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="habitRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HabitRecordEntity" inverseName="habitDefinition" inverseEntity="HabitRecordEntity"/>
+        <relationship name="habitRecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HabitRecordEntity" inverseName="habitDefinition" inverseEntity="HabitRecordEntity"/>
     </entity>
     <entity name="HabitRecordEntity" representedClassName="HabitRecordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="data" attributeType="Binary"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="habitDefinition" maxCount="1" deletionRule="Nullify" destinationEntity="HabitDefinitionEntity" inverseName="habitRecord" inverseEntity="HabitDefinitionEntity"/>
+        <relationship name="habitDefinition" maxCount="1" deletionRule="Nullify" destinationEntity="HabitDefinitionEntity" inverseName="habitRecords" inverseEntity="HabitDefinitionEntity"/>
     </entity>
     <entity name="MoodRecordEntity" representedClassName="MoodRecordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

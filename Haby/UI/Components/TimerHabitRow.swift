@@ -58,6 +58,11 @@ struct TimerHabitRow : View {
         }
         .foregroundStyle(.textPrimary)
         .frame(height: 60)
+        .if(isChecked) {
+            $0.onTapGesture {
+                onCheck()
+            }
+        }
         .if(!isChecked) {
             $0.onLongPressGesture(minimumDuration: holdDuration) {
                 onCheck()
