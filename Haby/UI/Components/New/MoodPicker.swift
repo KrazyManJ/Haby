@@ -14,24 +14,18 @@ struct MoodPickerView: View {
                             .resizable()
                             .renderingMode(.template)
                             .aspectRatio(contentMode: .fit)
-                            .frame(height: 32)
+                            .frame(height: 24)
                             .foregroundStyle(Colors.TextPrimary)
                             .frame(maxWidth: .infinity)
                             .padding(16)
                             .if(selectedMood == mood) {
-                                $0.background(Colors.TextSecondary)
+                                $0.background(.textOnPrimary)
                             }
-//                        Text(mood.emoji)
-//                            .font(.system(size: 32))
-//                            .frame(height: 64)
-//                            .frame(maxWidth: .infinity)
-//                            .if(selectedMood == mood) { $0.background(Colors.TextSecondary) }
-                            
                     }
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
-            .padding(8)
+            .padding(4)
         }
     }
 }
@@ -39,5 +33,7 @@ struct MoodPickerView: View {
 #Preview {
     @Previewable @State var mood: Mood = .Neutral
     
-    MoodPickerView(selectedMood: $mood).padding()
+    MoodPickerView(selectedMood: $mood)
+        .preferredColorScheme(.dark)
+        .padding()
 }

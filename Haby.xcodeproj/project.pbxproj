@@ -74,6 +74,7 @@
 				DI/DIManager.swift,
 				DI/DIRegister.swift,
 				DI/Injected.swift,
+				Extensions/FloatExtension.swift,
 				Extensions/HabitDefinitionExtension.swift,
 				Extensions/IntExtension.swift,
 				Extensions/NotificationExtension.swift,

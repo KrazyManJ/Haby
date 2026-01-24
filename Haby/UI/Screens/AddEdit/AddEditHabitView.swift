@@ -185,6 +185,7 @@ struct AddEditHabitView: View {
                 }
             }
             Button{
+                print("Saving")
                 saveHabit()
                 dismiss()
             } label: {

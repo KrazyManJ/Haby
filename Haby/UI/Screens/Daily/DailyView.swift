@@ -25,10 +25,10 @@ struct DailyView: View {
         )
     }
     
-    var dailyHabits: some View {
-        LazyVStack {
+    private var timerHabits: some View {
+        LazyVStack(alignment: .leading, spacing: 0) {
+            Timeline(variant: .FadeIn)
             ForEach(viewModel.state.habits.filter { $0.data.type != .Amount } ) { habit in
-                
                 let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
                 
                 TimerHabitRow(
@@ -41,6 +41,34 @@ struct DailyView: View {
                     performMainTabViewRefresh()
                 }
             }
+            Timeline(variant: .FadeOut)
+        }
+        .padding([.horizontal])
+    }
+    
+    private var goalHabits: some View {
+        Card {
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.state.amountHabits) { habit in
+                    let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
+                    
+                    var amount: Float {
+                        switch record?.data {
+                        case .Amount(let data): data.value
+                        default: 0.0
+                        }
+                    }
+                    
+                    GoalHabitRow(
+                        habit: habit,
+                        currentAmount: amount
+                    ) { addValue in
+                        viewModel.addToAmountHabit(habit: habit, addedAmount: addValue)
+                        performMainTabViewRefresh()
+                    }
+                }
+            }
+            .padding()
         }
         .padding()
     }
@@ -48,100 +76,51 @@ struct DailyView: View {
     var body: some View {
         VStack {
             ScrollView {
-                dailyHabits
+                Subtitle("Daily timeline")
+                timerHabits
+                Subtitle("Goals")
+                goalHabits
+            }
+            VStack {
+                Subtitle("Hod did you feel?")
+                MoodPickerView(selectedMood: mood)
+                    .padding([.horizontal])
+                    .padding([.bottom], 32)
             }
         }
             .background(Colors.BackgroundPrimary)
             .onAppear {
+                if !viewModel.isTodayMoodSaved() {
+                    viewModel.updateMood(mood: .Neutral)
+                }
                 refreshData()
+                sessionManager.syncAllHabitsToWatch()
             }
-//        VStack(spacing: 0) {
-//            ScrollView {
-//                Text("Daily timeline")
-//                    .padding(.horizontal, 32)
-//                    .padding([.top], 16)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .font(.title3).bold()
-//                LazyVStack(spacing: 0) {
-//                    ForEach(viewModel.state.habits.filter { $0.type != .Amount}) { habit in
-//                        DailyHabitRow(
-//                            viewModel: $viewModel, habit: habit
-//                        )
-//                    }
-//                    if viewModel.state.habits.filter({ $0.type != .Amount}).isEmpty {
-//                        Text("No habits in daily timeline for today!").italic().foregroundColor(Color.gray).padding(.vertical,32)
-//                    }
-//                    Spacer(minLength: 0)
-//                }.padding()
-//                
-//                Text("Goals")
-//                    .padding(.horizontal, 32)
-//                    .padding([.top], 16)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .font(.title3).bold()
-//                if !viewModel.state.amountHabits.isEmpty {
-//                    Card {
-//                        LazyVStack(spacing: 0) {
-//                            ForEach(viewModel.state.amountHabits) { habit in
-//                                DailyGoalProgressBar(
-//                                    viewModel: $viewModel, habit: habit
-//                                )
-//                                .padding(8)
-//                            }
-//                        }.padding()
-//                    }
-//                    .frame(minHeight: 100)
-//                    .padding()
-//                } else {
-//                    Text("No goal habits for today!")
-//                        .italic()
-//                        .foregroundColor(Color.gray)
-//                        .padding(.vertical,32)
-//                }
-//            }
-//            Text("Mood")
-//                .padding(.horizontal, 32)
-//                .padding([.top], 16)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//                .font(.title3).bold()
-//            MoodPickerView(selectedMood: mood).padding()
-//        }
-//        .onAppear {
-//            if !viewModel.isTodayMoodSaved() {
-//                viewModel.updateMood(mood: .Neutral)
-//            }
-//            refreshData()
-//            sessionManager.syncAllHabitsToWatch()
-//        }
-//        .onChange(of: scenePhase) { _, newPhase in
-//            if newPhase == .active {
-//                print("App returned to foreground. Refreshing data...")
-//                refreshData()
-//            }
-//        }
-//        .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
-//            if !newHabits.isEmpty {
-//                print("📤 Habits loaded. Syncing to Watch...")
-//                sessionManager.syncAllHabitsToWatch()
-//            }
-//        }
-//        .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
-//            print("🔄 reloading data from Watch update...")
-//            viewModel.getTodayHabits()
-//        }
-//        .background(Colors.BackgroundPrimary)
-//        .alert("Unable to load step data from HealthKit", isPresented: $viewModel.showHealthKitError) {
-//            Button("OK", role: .cancel) {}
-//        }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    print("App returned to foreground. Refreshing data...")
+                    refreshData()
+                }
+            }
+            .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
+                if !newHabits.isEmpty {
+                    print("📤 Habits loaded. Syncing to Watch...")
+                    sessionManager.syncAllHabitsToWatch()
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
+                print("🔄 reloading data from Watch update...")
+                viewModel.getTodayHabits()
+            }
     }
     
     func refreshData() {
-            viewModel.getTodayHabits()
-            Task {
-                await viewModel.loadHealthDataForToday()
-                viewModel.syncHealthDataToHabits()
-            }
+        viewModel.getTodayHabits()
+        Task {
+            await viewModel.loadHealthDataForToday()
+            viewModel.syncHealthDataToHabits()
         }
+    }
 }
 
 #Preview {

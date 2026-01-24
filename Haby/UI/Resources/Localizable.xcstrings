@@ -53,6 +53,9 @@
     "0" : {
 
     },
+    "Add" : {
+
+    },
     "Add Amount" : {
 
     },
@@ -89,6 +92,9 @@
     "Day of the Week" : {
 
     },
+    "Decrease" : {
+
+    },
     "Delete" : {
 
     },
@@ -117,6 +123,9 @@
 
     },
     "Habits data for: %@" : {
+
+    },
+    "Increase" : {
 
     },
     "Kilometers" : {

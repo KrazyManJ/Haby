@@ -121,9 +121,15 @@ class DailyViewModel: ObservableObject {
         let today = Date().onlyDate
 
         if var record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
-            record.value = (record.value ?? 0) + addedAmount
-            dataManaging.upsert(model: record)
-            
+            switch record.data {
+            case .Amount(var data):
+                data.value += addedAmount
+                record.data = .Amount(data: data)
+                record.value = (record.value ?? 0) + addedAmount
+                dataManaging.upsert(model: record)
+            default:
+                break
+            }
         } else {
             let newRecord = HabitRecord(
                 id: UUID(),

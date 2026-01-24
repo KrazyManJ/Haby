@@ -23,6 +23,13 @@ struct TimerHabitRow : View {
     }
     
     var body: some View {
+        HStack(spacing: 0) {
+            Timeline()
+            habitDetails
+        }
+    }
+    
+    var habitDetails: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle().fill(Colors.BackgroundSecondary)
@@ -57,7 +64,7 @@ struct TimerHabitRow : View {
             $0.foregroundStyle(.brandPrimary)
         }
         .foregroundStyle(.textPrimary)
-        .frame(height: 60)
+        .frame(height: 48)
         .if(isChecked) {
             $0.onTapGesture {
                 onCheck()
@@ -97,7 +104,7 @@ struct TimerHabitRow : View {
         frequency: .Daily,
         data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: 60*12))
     )
-    VStack {
+    VStack(spacing: 0) {
         TimerHabitRow(habit: habit, isChecked: isCheckedFirst, isValid: true) {
             isCheckedFirst = true
         }
