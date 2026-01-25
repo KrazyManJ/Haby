@@ -9,7 +9,7 @@ extension HabitDefinition : EntityConverting {
         entity.name = name
         entity.isUsingHealthData = isUsingHealthData
         entity.icon = icon
-        entity.creationDate = creationDate
+        entity.creationDate = creationDate.onlyDate
         entity.type = self.data.type.rawValue
         entity.frequency = self.data.details.frequency.rawValue
         

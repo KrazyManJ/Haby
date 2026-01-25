@@ -3,7 +3,8 @@ import SwiftUI
 extension CoreDataManager {
     func insertMockupData() {
         
-        let createdAt = Date().onlyDate.daysAgo(5)
+        let createdAt = Date().onlyDate.daysAgo(50)
+        print("Data created at", createdAt)
         let notificationManager: Injected<NotificationManaging> = .init()
         
         let yoga = HabitDefinition(
@@ -95,7 +96,7 @@ extension CoreDataManager {
         _ = HabitDefinition(
             name: "Studying",
             icon: "book",
-            creationDate: Date(),
+            creationDate: Date().onlyDate,
             type: .Amount,
             frequency: .Daily,
             targetValue: 90,
@@ -110,7 +111,7 @@ extension CoreDataManager {
         var records = [HabitRecord]()
         let today = Date().onlyDate
 
-        let validDaysOffsets = [0, 1, 2, 5]
+        let validDaysOffsets = (0...48)+[50]
         
 
         for habit in habits {

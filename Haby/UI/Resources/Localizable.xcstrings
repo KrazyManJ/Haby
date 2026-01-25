@@ -122,9 +122,6 @@
     "Habit type" : {
 
     },
-    "Habits data for: %@" : {
-
-    },
     "Increase" : {
 
     },
@@ -134,23 +131,10 @@
     "km" : {
 
     },
-    "Mood: %@ %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Mood: %1$@ %2$@"
-          }
-        }
-      }
-    },
     "New Habit" : {
 
     },
     "No goal habits for this week!" : {
-
-    },
-    "No habits data found" : {
 
     },
     "No weekly habits!" : {
@@ -195,7 +179,7 @@
     "Your Goal" : {
 
     },
-    "Your streak is" : {
+    "Your streak is..." : {
 
     }
   },

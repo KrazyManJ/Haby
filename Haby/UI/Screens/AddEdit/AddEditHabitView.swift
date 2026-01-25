@@ -185,7 +185,6 @@ struct AddEditHabitView: View {
                 }
             }
             Button{
-                print("Saving")
                 saveHabit()
                 dismiss()
             } label: {
@@ -223,7 +222,7 @@ struct AddEditHabitView: View {
             id: viewModel.state.habitToEdit?.id ?? UUID(),
             name: habitName,
             icon: selectedIcon,
-            creationDate: Date(),
+            creationDate: Date().onlyDate,
             type: selectedHabitType,
             frequency: selectedFrequency,
             targetTimestamp: timestamp,

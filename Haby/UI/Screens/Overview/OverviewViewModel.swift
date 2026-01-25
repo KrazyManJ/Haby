@@ -7,26 +7,23 @@ import HealthKit
 class OverviewViewModel: ObservableObject {
     var state = OverviewViewState()
     
-    private let healthStore = HKHealthStore()
-    private let dataManaging: Injected<DataManaging> = .init()
-    private let healthManaging: Injected<HealthManaging> = .init()
-    
-    init() {
-        state.moodRecords = dataManaging.wrappedValue.fetch()
-    }
+    @ObservationIgnored @Injected private var dataManager: DataManaging
+    @ObservationIgnored @Injected private var healthManager: HealthManaging
+    @ObservationIgnored @Injected private var habitManager: HabitManaging
     
     func loadStepData() async {
-        state.stepsToday = await Int(healthManaging.wrappedValue.fetchTodaySteps())
-        state.monthlySteps =  await healthManaging.wrappedValue.fetchCurrentMonthStepData()
+        state.stepsToday = Int(await healthManager.fetchTodaySteps())
+        print(state.stepsToday)
+        state.monthlySteps =  await healthManager.fetchCurrentMonthStepData()
     }
     
     func selectDate(date: Date?) {
         if let date = date {
             state.selectedDateData = SelectedDateData(
                 date: date,
-                mood: dataManaging.wrappedValue.getMoodRecordByDate(date: date)?.toModel().mood,
-                habitRecords: dataManaging.wrappedValue.getRecordsByDate(date: date),
-                habitsForDate: dataManaging.wrappedValue.getHabitsForDate(date: date).filter { date.nextDay > $0.creationDate }
+                mood: dataManager.getMoodRecordByDate(date: date)?.toModel().mood,
+                habitRecords: dataManager.getRecordsByDate(date: date),
+                habitsForDate: dataManager.getHabitsForDate(date: date).filter { date.nextDay > $0.creationDate }
             )
         }
         else {
@@ -35,23 +32,23 @@ class OverviewViewModel: ObservableObject {
     }
     
     internal func wasHabitRecorded(habit: HabitDefinition, date: Date) -> Bool {
-        let habitsRecords: [HabitRecord] = dataManaging.wrappedValue.getRecordsByDate(date: date)
+        let habitsRecords: [HabitRecord] = dataManager.getRecordsByDate(date: date)
         return habitsRecords.contains{ r in r.habitDefinition.id == habit.id }
     }
     
     internal func hasCompletedHabit(habit: HabitDefinition, date: Date) -> Bool {
-        let habitsRecords: [HabitRecord] = dataManaging.wrappedValue.getRecordsByDate(date: date)
+        let habitsRecords: [HabitRecord] = dataManager.getRecordsByDate(date: date)
         
         if let record = habitsRecords.first(where: { r in
             r.habitDefinition.id == habit.id
         }) {
-            return record.isCompleted
+            return record.isSatisfied
         }
         return false
     }
     
     internal func hasAllHabitsInDay(date: Date) -> Bool {
-        let habits = dataManaging.wrappedValue.getHabitsForDate(date: date)
+        let habits = dataManager.getHabitsForDate(date: date)
         
         return habits
             .filter { date.nextDay > $0.creationDate }
@@ -60,27 +57,13 @@ class OverviewViewModel: ObservableObject {
     
     func loadCompletedDates() {
         state.completedDates.removeAll()
-        dataManaging.wrappedValue.fetchDatesWithHabitRecords().forEach { date in
-            if hasAllHabitsInDay(date: date) {
-                state.completedDates.insert(date)
+        state.moodRecords = dataManager.fetch()
+        state.completedDates = Set(habitManager.getDatesWithAllSatisfiedHabits())
+        state.streak = habitManager.calculateCurrentStreak()
+        DispatchQueue.main.async {
+        Task {
+                await self.loadStepData()
             }
         }
-        state.streak = calculateStreak()
-    }
-    
-    private func calculateStreak() -> Int {
-        var streak = 0
-        if state.completedDates.contains(Date().onlyDate) {
-            streak += 1
-        }
-        
-        var currentDate = Date().onlyDate.daysAgo(1)
-        
-        while state.completedDates.contains(currentDate) {
-            streak += 1
-            currentDate = currentDate.daysAgo(1)
-        }
-        
-        return streak
     }
 }

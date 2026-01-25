@@ -1,7 +1,8 @@
 
 import SwiftUI
 
-struct SelectedDateData {
+struct SelectedDateData: Identifiable {
+    var id: UUID = UUID()
     var date: Date
     var mood: Mood?
     var habitRecords: [HabitRecord]

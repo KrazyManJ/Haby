@@ -42,7 +42,7 @@ extension CoreDataManager {
     }
     
     func getTimeHabitsForDate(date: Date) -> [HabitDefinition] {
-        let result: [HabitDefinitionEntity] = getTimeHabitsEntitiesForDate(date: Date())
+        let result: [HabitDefinitionEntity] = getTimeHabitsEntitiesForDate(date: date)
         return result.map { $0.toModel() }
     }
     
