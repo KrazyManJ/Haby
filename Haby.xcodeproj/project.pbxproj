@@ -89,7 +89,6 @@
 			membershipExceptions = (
 				Model/Enum/AmountUnit.swift,
 				Model/Enum/HabitFrequency.swift,
-				Model/Enum/HabitType.swift,
 				Model/Enum/InternalHabitCategory.swift,
 				Model/Enum/Mood.swift,
 				Model/Enum/WeekDay.swift,
@@ -123,6 +122,7 @@
 				UI/Components/HabitWatchRow.swift,
 				UI/Resources/Assets.xcassets,
 				UI/Resources/Colors.swift,
+				UI/Resources/Styles.swift,
 				Utils/DateUtils.swift,
 				Utils/HabitStatusHelper.swift,
 			);

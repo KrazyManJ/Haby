@@ -100,7 +100,6 @@ struct MainTabView : View {
             .sheet(isPresented: $isAddEditHabitViewPresented, onDismiss: { habitsRefreshID = UUID() }) {
                 NavigationStack {
                     AddEditHabitView(
-                        isViewPresented: .constant(true),
                         viewModel: AddEditHabitViewModel()
                     )
                 }

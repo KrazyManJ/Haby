@@ -37,5 +37,12 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
             return ""
         }
     }
+    
+    var isHealthData: Bool {
+        switch self {
+        case .Steps, .Kilometers, .ExerciseTime, .Calories: return true
+        default: return false
+        }
+    }
 }
 

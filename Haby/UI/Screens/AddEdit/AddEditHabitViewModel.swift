@@ -2,7 +2,7 @@
 import SwiftUI
 import HealthKit
 @Observable
-class AddEditHabitViewModel {
+class AddEditHabitViewModel: ObservableObject {
     var state: AddEditHabitViewState = AddEditHabitViewState()
 
     @ObservationIgnored @Injected private var notificationManager: NotificationManaging
@@ -10,10 +10,35 @@ class AddEditHabitViewModel {
     @ObservationIgnored @Injected private var dataManager: DataManaging
     
     init(habit: HabitDefinition? = nil) {
-        state.habitToEdit = habit
+        if let habit = habit {
+            state.habit = habit
+            
+            state.selectedHabitType = habit.data.type
+            state.selectedFrequency = habit.data.details.frequency
+            state.healthData = habit.isUsingHealthData
+            
+            switch habit.data {
+            case .OnTime(let data):
+                state.selectedTime = Date.fromMinutesTimestamp(timestamp: data.minutesOfCompletionInFrequency)
+                if data.frequency == .Weekly {
+                    state.selectedDay = WeekDay(from: data.minutesOfCompletionInFrequency)
+                }
+            case .Deadline(let data):
+                state.selectedTime = Date.fromMinutesTimestamp(timestamp: data.minutesOfCompletionInFrequency)
+                if data.frequency == .Weekly {
+                    state.selectedDay = WeekDay(from: data.minutesOfCompletionInFrequency)
+                }
+            case .Amount(let data):
+                state.amountInput = data.amount
+                state.selectedAmountType = data.unit
+            }
+            
+            state.isEdit = true
+        }
     }
 
-    func addOrUpdateHabit(habit: HabitDefinition) {
+    func addOrUpdateHabit() {
+        let habit = state.finalHabit
         dataManager.upsert(model: habit)
         notificationManager.scheduleNotificationForHabit(habit: habit)
     }

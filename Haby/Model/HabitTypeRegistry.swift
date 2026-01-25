@@ -10,6 +10,17 @@ enum HabitType: Int16, CaseIterable, Identifiable  {
     var name: String {
         String(describing: self)
     }
+    
+    var description: String {
+        switch self {
+        case .OnTime:
+            "Habit that needs to be completed in range of 5 minutes of selected time, like taking a pills."
+        case .Deadline:
+            "Habit that can be completed anytime before selected time (deadline), like doing a house chores."
+        case .Amount:
+            "Habit tracking countable completion, like walking 10 kilometers, or exercising for 2 hours."
+        }
+    }
 }
 
 enum HabitDefinitionData: Equatable, Codable {

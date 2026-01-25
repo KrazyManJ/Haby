@@ -60,7 +60,6 @@ struct HabitManagementView: View {
         }) { habit in
             NavigationStack {
                 AddEditHabitView(
-                    isViewPresented: .constant(true),
                     viewModel: AddEditHabitViewModel(habit: habit)
                 )
             }

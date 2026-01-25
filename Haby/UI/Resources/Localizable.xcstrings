@@ -104,6 +104,12 @@
     "Edit Habit" : {
 
     },
+    "Enter a habit name..." : {
+
+    },
+    "Enter decimal" : {
+
+    },
     "goal" : {
 
     },
@@ -113,10 +119,13 @@
     "Goals" : {
 
     },
+    "Habit description" : {
+
+    },
     "habit name" : {
 
     },
-    "Habit Name" : {
+    "Habit settings" : {
 
     },
     "Habit type" : {
@@ -138,9 +147,6 @@
 
     },
     "No weekly habits!" : {
-
-    },
-    "Pick Icon" : {
 
     },
     "Repetition" : {

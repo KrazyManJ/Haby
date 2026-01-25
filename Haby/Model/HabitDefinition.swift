@@ -4,7 +4,7 @@ struct HabitDefinition: Identifiable, Equatable {
     var id: UUID = .init()
     var name: String
     var icon: String
-    var creationDate: Date = Date()
+    var creationDate: Date = Date().onlyDate
     
     @available(*, deprecated, message: "Use `data: HabyData` instead") var type: HabitType
     @available(*, deprecated, message: "Use `data: HabyData` instead") var frequency: HabitFrequency
