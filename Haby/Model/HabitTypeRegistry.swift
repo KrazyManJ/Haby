@@ -1,6 +1,6 @@
 import Foundation
 
-enum HabitType: Int16, CaseIterable, Identifiable  {
+enum HabitType: Int16, CaseIterable, Identifiable, Codable {
     var id: Self { self }
     
     case OnTime = 1

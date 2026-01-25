@@ -1,6 +1,6 @@
 import UIKit
 
-struct HabitRecord : Identifiable {
+struct HabitRecord : Identifiable, Codable {
     var id: UUID = UUID()
     @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var date: Date
     @available(*, deprecated, message: "Use `data: HabitRecordData` instead") var timestamp: Int?
