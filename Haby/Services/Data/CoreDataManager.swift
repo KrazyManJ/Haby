@@ -25,11 +25,11 @@ final class CoreDataManager: DataManaging {
             if let error = error {
                 print("Cannot create persistent store: \(error.localizedDescription)")
             }
-            self.reCreate(description: description)
+//            self.reCreate(description: description)
         }
     }
     
-    func reCreate(description: NSPersistentStoreDescription) {
+    private func reCreate(description: NSPersistentStoreDescription) {
         // mock data
         let coordinator = self.container.persistentStoreCoordinator
         // Destroy
