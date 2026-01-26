@@ -7,7 +7,8 @@ struct HabitManagementView: View {
     @State var isAddEditHabitViewPresented = false
     @State var showAlert = false
     @State private var habitToDelete: HabitDefinition? = nil
-    @State private var habitToEdit: HabitDefinition?
+    @State private var habitToOpen: HabitDefinition?
+    @State private var showDetail: Bool = false
     @ObservedObject var sessionManager = PhoneSessionManager.shared
     @Environment(\.scenePhase) var scenePhase
     
@@ -18,26 +19,45 @@ struct HabitManagementView: View {
     var body: some View {
         VStack{
             if !viewModel.state.habits.isEmpty {
-                List {
-                    ForEach(viewModel.state.habits) { habit in
-                        HabitRow(
-                            habit: habit
-                        )
-                        .listRowBackground(Colors.BackgroundSecondary)
-                        .onTapGesture {
-                            habitToEdit = habit
-                        }
-                        .swipeActions {
-                            Button() {
-                                habitToDelete = habit
-                                showAlert = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
+                NavigationStack {
+                    List {
+                        ForEach(viewModel.state.habits) { habit in
+//                            NavigationLink(value: habit) {
+                                HabitRow(
+                                    habit: habit
+                                )
+//                            }
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Colors.BackgroundSecondary)
+                            .onTapGesture {
+                                habitToOpen = habit
+                                showDetail = true
+                            }
+                            .swipeActions {
+                                Button() {
+                                    habitToDelete = habit
+                                    showAlert = true
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
                             }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+//                    .navigationDestination(for: HabitDefinition.self) { habit in
+//                        DetailView(habit: habit, /*record: nil*/)
+//                    }
+//                    .navigationDestination(isPresented: $isIconPickerPresented) {
+//                        DetailView(
+//                            habit: habit,
+//                        )
+//                    }
+                    .navigationDestination(isPresented: $showDetail) {
+                        if let habit = habitToOpen {
+                            DetailView(viewModel: DetailViewModel(habit: habit))
+                        }
+                    }
                 }
-                .scrollContentBackground(.hidden)
             }
             else {
                 Text("You have no defined habits, tap...").italic().foregroundColor(Color.gray).padding(.vertical,16)
@@ -55,15 +75,6 @@ struct HabitManagementView: View {
                     sessionManager.syncAllHabitsToWatch()
                 }
             }
-        .sheet(item: $habitToEdit, onDismiss: {
-            viewModel.fetchHabits()
-        }) { habit in
-            NavigationStack {
-                AddEditHabitView(
-                    viewModel: AddEditHabitViewModel(habit: habit)
-                )
-            }
-        }
         .alert(isPresented: $showAlert) {
             Alert(
                 title: Text("Delete this habit?"),

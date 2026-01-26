@@ -59,7 +59,6 @@ class DailyViewModel: ObservableObject {
                 dataManaging.upsert(model: newRecord)
             }
         }
-        
         state.habitRecords = dataManaging.getTodayRecords()
     }
     

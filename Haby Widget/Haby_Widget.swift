@@ -62,11 +62,11 @@ struct Provider: TimelineProvider {
 
         
         let firstEntry = HabyEntry(
-                date: currentDate,
-                habits: allUpcomingHabits,
-                streak: streak,
-                next: allUpcomingHabits.first
-            )
+            date: currentDate,
+            habits: allUpcomingHabits,
+            streak: streak,
+            next: allUpcomingHabits.first
+        )
         entries.append(firstEntry)
             
         

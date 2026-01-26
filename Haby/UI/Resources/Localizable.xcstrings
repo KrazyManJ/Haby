@@ -62,6 +62,9 @@
     "Add Habit" : {
 
     },
+    "Add to progress" : {
+
+    },
     "Amount type" : {
 
     },
@@ -77,10 +80,16 @@
     "Cancel" : {
 
     },
+    "Check habit" : {
+
+    },
     "Close" : {
 
     },
     "Confirm" : {
+
+    },
+    "current value / requirement string" : {
 
     },
     "Daily Time" : {
@@ -99,6 +108,9 @@
 
     },
     "Delete this habit?" : {
+
+    },
+    "Edit" : {
 
     },
     "Edit Habit" : {
@@ -149,10 +161,19 @@
     "New Habit" : {
 
     },
+    "Next completion in: " : {
+
+    },
     "No goal habits for this week!" : {
 
     },
     "No weekly habits!" : {
+
+    },
+    "placeholder" : {
+
+    },
+    "Progress:" : {
 
     },
     "Repetition" : {
