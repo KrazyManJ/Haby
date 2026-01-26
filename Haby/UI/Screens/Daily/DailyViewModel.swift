@@ -6,9 +6,10 @@ import HealthKit
 class DailyViewModel: ObservableObject {
     var state: DailyViewState = DailyViewState()
     
-    @ObservationIgnored @Injected var dataManaging: DataManaging
-    @ObservationIgnored @Injected var healthKitManager: HealthManaging
-    @ObservationIgnored @Injected var habitManager: HabitManaging
+    @ObservationIgnored @Injected private var dataManaging: DataManaging
+    @ObservationIgnored @Injected private var healthKitManager: HealthManaging
+    @ObservationIgnored @Injected private var habitManager: HabitManaging
+    @ObservationIgnored @Injected private var notificationManager: NotificationManaging
     
     var showHealthKitError: Bool = false
     
@@ -30,6 +31,10 @@ class DailyViewModel: ObservableObject {
         healthData[.Calories] = fetchedCalories
         healthData[.Kilometers] = fetchedDistance
         healthData[.ExerciseTime] = fetchedWorkoutTime
+    }
+    
+    func askForNotificationPermission() {
+        notificationManager.requestPermission() { _ in }
     }
     
     func syncHealthDataToHabits() {

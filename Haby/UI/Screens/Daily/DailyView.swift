@@ -95,6 +95,7 @@ struct DailyView: View {
                 }
                 refreshData()
                 sessionManager.syncAllHabitsToWatch()
+                viewModel.askForNotificationPermission()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {

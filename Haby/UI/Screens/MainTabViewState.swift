@@ -1,7 +1,8 @@
 
-import Foundation
+import SwiftUI
 
 @Observable
-final class MainTabViewState: ObservableObject {
+final class MainTabViewState {
     var streak: Int = 0
+    var navigationPath = NavigationPath()
 }

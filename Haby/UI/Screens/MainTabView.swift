@@ -59,7 +59,7 @@ extension EnvironmentValues {
 
 struct MainTabView : View {
     
-    @State private var viewModel: MainTabViewModel
+    @State private var viewModel: MainTabViewModel = MainTabViewModel()
     
     @State var isAddEditHabitViewPresented = false
     
@@ -68,14 +68,12 @@ struct MainTabView : View {
     
     private var selectedTabInfo: TabInfo { TAB_INFO[selectedTab] }
     
-    init(viewModel: MainTabViewModel = MainTabViewModel()) {
-        self.viewModel = viewModel
-        
+    init() {
         UITabBar.appearance().unselectedItemTintColor = Colors.TextSecondary.ui
     }
     
     var body : some View {
-        NavigationStack {
+        NavigationStack(path: $viewModel.state.navigationPath) {
             TabView(selection: $selectedTab){
                 ForEach(TAB_INFO) { tabInfo in
                     tabInfo.content()
@@ -102,6 +100,13 @@ struct MainTabView : View {
                     AddEditHabitView(
                         viewModel: AddEditHabitViewModel()
                     )
+                }
+            }
+            .navigationDestination(for: UUID.self) { habitId in
+                // Replace this with your actual Habit Detail View
+                VStack {
+                    Text("Habit Detail Screen")
+                    Text("ID: \(habitId.uuidString)")
                 }
             }
         }

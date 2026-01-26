@@ -1,4 +1,91 @@
 import UserNotifications
+import Combine
+
+class NotificationManager : NSObject, NotificationManaging, UNUserNotificationCenterDelegate {
+    
+    private let center = UNUserNotificationCenter.current()
+    
+    var selectedHabitId = CurrentValueSubject<String?, Never>(nil)
+    
+    override init() {
+        super.init()
+        center.delegate = self
+    }
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let habitId = userInfo["habitId"] as? String {
+            selectedHabitId.send(habitId)
+        }
+        
+        completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+    
+    
+    func requestPermission(completion: @escaping (Bool) -> Void) {
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("There was an error requestion notification permission: \(error)")
+                    completion(false)
+                } else {
+                    completion(granted)
+                }
+            }
+        }
+    }
+    
+    func checkPermissionStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+        center.getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus)
+            }
+        }
+    }
+    
+    func scheduleNotificationForHabit(habit: HabitDefinition) {
+        
+        let dateComponents = habit.getNotificationDateComponents()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Do not forget on \(habit.name)!"
+        content.body = "Body"
+        content.sound = .default
+        
+        content.userInfo = ["habitId": habit.id.uuidString]
+        
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: dateComponents,
+            repeats: true
+        )
+        let request = UNNotificationRequest(
+            identifier: habit.id.uuidString,
+            content: content,
+            trigger: trigger
+        )
+        
+        center.add(request)
+        print("Set notification to \(habit.id.uuidString)")
+    }
+    
+    func removeNotificationForHabit(habit: HabitDefinition) {
+        center.removePendingNotificationRequests(withIdentifiers: [habit.id.uuidString])
+    }
+    
+    func removeAllReminders() {
+        center.removeAllDeliveredNotifications()
+    }
+}
+
 
 extension HabitDefinition {
     func getNotificationDateComponents() -> DateComponents {
@@ -39,63 +126,5 @@ extension HabitDefinition {
             components.hour = normalizedMinutes / 60
             components.minute = normalizedMinutes % 60
         }
-    }
-}
-
-
-class NotificationManager : NotificationManaging {
-    
-    private let center = UNUserNotificationCenter.current()
-    
-    
-    func requestPermission(completion: @escaping (Bool) -> Void) {
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("There was an error requestion notification permission: \(error)")
-                    completion(false)
-                } else {
-                    completion(granted)
-                }
-            }
-        }
-    }
-    
-    func checkPermissionStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
-        center.getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                completion(settings.authorizationStatus)
-            }
-        }
-    }
-    
-    func scheduleNotificationForHabit(habit: HabitDefinition) {
-        
-        let dateComponents = habit.getNotificationDateComponents()
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Do not forget on \(habit.name)!"
-        content.body = "Body"
-        content.sound = .default
-        
-        let trigger = UNCalendarNotificationTrigger(
-            dateMatching: dateComponents,
-            repeats: true
-        )
-        let request = UNNotificationRequest(
-            identifier: habit.id.uuidString,
-            content: content,
-            trigger: trigger
-        )
-        
-        center.add(request)
-    }
-    
-    func removeNotificationForHabit(habit: HabitDefinition) {
-        center.removePendingNotificationRequests(withIdentifiers: [habit.id.uuidString])
-    }
-    
-    func removeAllReminders() {
-        center.removeAllDeliveredNotifications()
     }
 }

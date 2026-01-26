@@ -12,6 +12,8 @@ class AddEditHabitViewModel: ObservableObject {
     init(habit: HabitDefinition? = nil) {
         if let habit = habit {
             state.habit = habit
+            print("Changed")
+            print(habit.id)
             
             state.selectedHabitType = habit.data.type
             state.selectedFrequency = habit.data.details.frequency
@@ -39,6 +41,7 @@ class AddEditHabitViewModel: ObservableObject {
 
     func addOrUpdateHabit() {
         let habit = state.finalHabit
+        print("add",habit.id)
         dataManager.upsert(model: habit)
         notificationManager.scheduleNotificationForHabit(habit: habit)
     }

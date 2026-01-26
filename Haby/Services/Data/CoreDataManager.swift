@@ -73,12 +73,6 @@ final class CoreDataManager: DataManaging {
                 fetchedEntity.setValue(entity.value(forKey: key), forKey: key)
             }
             
-            let relationshipKeys: [String] = if let relations = description?.relationshipsByName { Array(relations.keys) } else { [] }
-            
-            for key in relationshipKeys {
-                fetchedEntity.setValue(entity.value(forKey: key), forKey: key)
-            }
-            
             if (entity.objectID != fetchedEntity.objectID) {
                 context.delete(entity)
             }

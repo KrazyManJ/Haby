@@ -4,11 +4,14 @@ import SwiftUI
 @main
 struct HabyApp: App {
     
-    var dataManaging: Injected<DataManaging> = .init()
+    @Injected private var dataManager: DataManaging
+    
+    @Injected private var notificationManager: NotificationManaging
     
     init() {
-        if dataManaging.wrappedValue.isEmpty {
-            dataManaging.wrappedValue.insertMockupData()
+        _ = notificationManager
+        if dataManager.isEmpty {
+            dataManager.insertMockupData()
         }
     }
     
