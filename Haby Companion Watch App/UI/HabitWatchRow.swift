@@ -26,10 +26,12 @@ struct HabitWatchRow: View {
                         // todo if amount dont show type name
                         if (habit.data.type != .Amount){
                             Text("\(habit.data.details.frequency.name) • \(habit.data.type.name)")
-                                .font(.footnote)
+                                .font(.caption2)
+                                .foregroundStyle(.textSecondary)
                         } else {
                             Text(habit.data.details.frequency.name)
-                                .font(.footnote)
+                                .font(.caption2)
+                                .foregroundStyle(.textSecondary)
                         }
                     }
                 }

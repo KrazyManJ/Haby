@@ -15,6 +15,7 @@ protocol DataManaging {
     
     func upsert<E: NSManagedObject ,M: EntityConverting<E>>(model: M) where M:Identifiable<UUID>
     func delete<E: NSManagedObject>(entity: E)
+    func deleteAll<T: NSManagedObject>(_ of: T.Type)
     
     // HabitDefinitionDataManager
     func getAllHabits() -> [HabitDefinition]

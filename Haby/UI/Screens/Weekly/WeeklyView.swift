@@ -6,7 +6,7 @@ struct WeeklyView: View {
     @State private var viewModel: WeeklyViewModel
     
     @Environment(\.scenePhase) var scenePhase
-    @ObservedObject var sessionManager = PhoneSessionManager.shared
+//    @ObservedObject var sessionManager = PhoneSessionManager.shared
     
     init(viewModel: WeeklyViewModel = WeeklyViewModel()) {
         self.viewModel = viewModel
@@ -71,7 +71,7 @@ struct WeeklyView: View {
         .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
             if !newHabits.isEmpty {
                 print("📤 Habits loaded. Syncing to Watch...")
-                sessionManager.syncAllHabitsToWatch()
+//                sessionManager.syncAllHabitsToWatch()
             }
         }
         .background(Colors.BackgroundPrimary)

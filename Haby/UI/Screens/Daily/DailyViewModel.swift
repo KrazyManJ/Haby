@@ -10,6 +10,7 @@ class DailyViewModel: ObservableObject {
     @ObservationIgnored @Injected private var healthKitManager: HealthManaging
     @ObservationIgnored @Injected private var habitManager: HabitManaging
     @ObservationIgnored @Injected private var notificationManager: NotificationManaging
+    @ObservationIgnored @Injected private var phoneSessionManager: PhoneSessionManaging
     
     var showHealthKitError: Bool = false
     
@@ -115,9 +116,8 @@ class DailyViewModel: ObservableObject {
                 habitDefinition: habit,
                 data: recordData
             ))
-            PhoneSessionManager.shared.syncAllHabitsToWatch()
         }
-
+        phoneSessionManager.syncAllHabitsToWatch()
         getTodayHabits()
     }
     
@@ -144,7 +144,7 @@ class DailyViewModel: ObservableObject {
             )
             dataManaging.upsert(model: newRecord)
             
-            PhoneSessionManager.shared.syncAllHabitsToWatch()
+            phoneSessionManager.syncAllHabitsToWatch()
         }
 
         getTodayHabits()

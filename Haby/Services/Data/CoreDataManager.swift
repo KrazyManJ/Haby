@@ -125,6 +125,18 @@ final class CoreDataManager: DataManaging {
         context.delete(entity)
         save()
     }
+    
+    func deleteAll<T: NSManagedObject>(_ of: T.Type){
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: of))
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+        do {
+            try context.execute(deleteRequest)
+            save()
+        } catch {
+            print("Error deleting records: \(error)")
+        }
+    }
 }
 
 internal extension CoreDataManager {

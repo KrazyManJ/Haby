@@ -1,104 +1,91 @@
 import WatchConnectivity
 
-class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging, ObservableObject {
+class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging {
     
-    static let shared = PhoneSessionManager()
-    private var dataManager: Injected<DataManaging> = .init()
+    private var session: WCSession
     
-    override init() {
+    @Injected private var dataManager: DataManaging
+    
+    init(session: WCSession = .default) {
+        self.session = session
         super.init()
-        if WCSession.isSupported() {
-            let session = WCSession.default
-            session.delegate = self
-            session.activate()
-            try? session.updateApplicationContext([:]) 
-        }
+        self.session.delegate = self
+        self.session.activate()
+        try? self.session.updateApplicationContext([:])
     }
     
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
-        DispatchQueue.main.async {
-            print("Phone session Activated: \(activationState == .activated)")
-        }
-        
-        if activationState == .activated {
-            print("Phone session active, performing initial cold-start sync...")
-            self.syncAllHabitsToWatch()
-        }
-    }
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {}
     
     func sessionDidBecomeInactive(_ session: WCSession) {}
     
     func sessionDidDeactivate(_ session: WCSession) { session.activate() }
     
-    // does not sync only upcoming - it messes with records
     func syncAllHabitsToWatch() {
-        // Run on background thread to avoid freezing UI during fetch
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-            let allHabits = self.dataManager.wrappedValue.getAllHabits()
+            let allHabits = dataManager.getAllHabits()
             
-            let todayRecords = self.dataManager.wrappedValue.getTodayRecords()
-            let weekRecords = self.dataManager.wrappedValue.getWeekRecords()
+            let todayRecords = dataManager.getTodayRecords()
+            let weekRecords = dataManager.getWeekRecords()
             
             let allRecords = todayRecords + weekRecords
             
+            let encoder = JSONEncoder()
+            
+            let message: [String: Any] = [
+                "action": "sync",
+                "habits": try! encoder.encode(allHabits),
+                "records": try! encoder.encode(allRecords)
+            ]
+            
+            
             print("Syncing to Watch: \(allHabits.count) habits, \(allRecords.count) records")
             
-            self.sendDataToWatch(habits: allHabits, records: allRecords)
-        }
-    }
-    
-    func sendDataToWatch(habits: [HabitDefinition]? = nil, records: [HabitRecord]? = nil) {
-        var payload: [String: Any] = [:]
-        guard WCSession.default.activationState == .activated else {
-            WCSession.default.activate()
-            return
-        }
-        
-        if let habits = habits {
-            payload["habitList"] = habits.map { $0.convertToWatchData() }
-        }
-        
-        if let records = records {
-            payload["habitRecords"] = records.map { $0.convertToWatchData() }
-        }
-        
-        guard !payload.isEmpty else { return }
-        
-        do {
-            // updateApplciationContext overwrites the previous content -> safer to send everything
-            try WCSession.default.updateApplicationContext(payload)
-        } catch {
-            print("Global Sync Error: \(error.localizedDescription)")
+            do {
+                try session.updateApplicationContext(message)
+            } catch {
+                print("Sync error: \(error.localizedDescription)")
+            }
         }
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        guard let action = message["action"] as? String, action == "saveRecord" else { return }
+        guard let action = message["action"] as? String else {
+            return
+        }
         
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            let allHabits = self.dataManager.wrappedValue.getAllHabits()
-            
-            if var newRecord = message.convertToRecord(using: allHabits) {
-                newRecord.date = newRecord.date.onlyDate
-                self.dataManager.wrappedValue.upsert(model: newRecord)
-                notifyUI()
-                print("Received and saved record for: \(newRecord.habitDefinition.name)")
-            } else {
-                print("Failed to convert message to record. Missing parent habit?")
+        let decoder = JSONDecoder()
+        
+        if action == "recordUpdate" {
+            guard
+                let recordData = message["record"] as? Data,
+                let record = try? decoder.decode(HabitRecord.self, from: recordData)
+            else {
+                fatalError("Nono encode bade")
             }
+            
+            self.dataManager.upsert(model: record)
+            notifyUI()
+            syncAllHabitsToWatch()
+        }
+        else if action == "recordDelete" {
+            guard
+                let recordId = message["recordId"] as? String,
+                let recordUUID = UUID(uuidString: recordId)
+            else {
+                fatalError("Cannot decode recordDelete action")
+            }
+            
+            self.dataManager.delete(entity: dataManager.fetchOneById(id: recordUUID)!)
+            notifyUI()
+            syncAllHabitsToWatch()
         }
     }
     
     private func notifyUI() {
         DispatchQueue.main.async {
-            // 1. Tell the App to reload
             NotificationCenter.default.post(name: .reloadHabits, object: nil)
-
-            // 2. Sync back to watch (so watch stays in sync)
             self.syncAllHabitsToWatch()
         }
     }
