@@ -9,10 +9,20 @@
 /* Begin PBXBuildFile section */
 		44D51C472E04471400309324 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 44D51C462E04471400309324 /* FSCalendar */; };
 		A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */ = {isa = PBXBuildFile; productRef = A003D61F2DFAE65400A5B0C0 /* SFSymbolsPicker */; };
+		BB03A9922F277B9E004BD874 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB03A9912F277B9E004BD874 /* WidgetKit.framework */; };
+		BB03A9942F277B9E004BD874 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB03A9932F277B9E004BD874 /* SwiftUI.framework */; };
+		BB03A99F2F277BA1004BD874 /* Haby WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BB2C2B772F20D5120030CF44 /* Haby Companion Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BB03A99D2F277BA1004BD874 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB03A98E2F277B9E004BD874;
+			remoteInfo = "Haby WidgetExtension";
+		};
 		BB2C2B752F20D5120030CF44 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
@@ -23,6 +33,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		BB03A9A02F277BA1004BD874 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BB03A99F2F277BA1004BD874 /* Haby WidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB2C2B612F20D1DA0030CF44 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -39,6 +60,9 @@
 /* Begin PBXFileReference section */
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C79B44A2F1F1B9300CA4B0C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Haby WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB03A9912F277B9E004BD874 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		BB03A9932F277B9E004BD874 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Haby Companion Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,6 +79,9 @@
 				"Targets/Watch/Watch-Base.xcconfig",
 				"Targets/Watch/Watch-Debug.xcconfig",
 				"Targets/Watch/Watch-Release.xcconfig",
+				"Targets/Widget/Widget-Base.xcconfig",
+				"Targets/Widget/Widget-Debug.xcconfig",
+				"Targets/Widget/Widget-Release.xcconfig",
 				User.xcconfig,
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
@@ -65,6 +92,63 @@
 				Info.plist,
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
+		BB03A9A42F277BA1004BD874 /* Exceptions for "Haby Widget" folder in "Haby WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
+		};
+		BB03A9AD2F277D5B004BD874 /* Exceptions for "Haby" folder in "Haby WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Model/Enum/AmountUnit.swift,
+				Model/Enum/HabitFrequency.swift,
+				Model/Enum/Mood.swift,
+				Model/Enum/WeekDay.swift,
+				Model/HabitDefinition.swift,
+				Model/HabitRecord.swift,
+				Model/HabitTypeRegistry.swift,
+				Model/HabitTypes/AmountHabit.swift,
+				Model/HabitTypes/DeadlineHabit.swift,
+				Model/HabitTypes/OnTimeHabit.swift,
+				Model/Haby.xcdatamodeld,
+				Model/HealthDataPoint.swift,
+				Model/MoodRecord.swift,
+				Services/Data/Conversion/HabitDefinitionConversion.swift,
+				Services/Data/Conversion/HabitRecordConversion.swift,
+				Services/Data/Conversion/MoodRecordConversion.swift,
+				Services/Data/Conversion/Protocols/EntityConverting.swift,
+				Services/Data/Conversion/Protocols/ModelConverting.swift,
+				Services/Data/CoreDataManager.swift,
+				Services/Data/DataManaging.swift,
+				Services/Data/HabitDefinitionDataManager.swift,
+				Services/Data/HabitRecordDataManager.swift,
+				Services/Data/MockupDataManager.swift,
+				Services/Data/MoodDataManager.swift,
+				Services/Habit/HabitManager.swift,
+				Services/Habit/HabitManaging.swift,
+				Services/Health/HealthManager.swift,
+				Services/Health/HealthManaging.swift,
+				Services/Notification/NotificationManager.swift,
+				Services/Notification/NotificationManaging.swift,
+				UI/Components/Card.swift,
+				UI/Resources/Colors.swift,
+				Utils/DateUtils.swift,
+			);
+			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
+		};
+		BB03A9B42F277DBB004BD874 /* Exceptions for "Shared" folder in "Haby WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DI/DIManager.swift,
+				DI/DIRegister.swift,
+				DI/Injected.swift,
+				Extensions/IntExtension.swift,
+				"UI/Resources/Global Assets.xcassets",
+			);
+			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
 		};
 		BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -143,6 +227,7 @@
 			exceptions = (
 				A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */,
 				BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */,
+				BB03A9AD2F277D5B004BD874 /* Exceptions for "Haby" folder in "Haby WidgetExtension" target */,
 			);
 			path = Haby;
 			sourceTree = "<group>";
@@ -159,8 +244,17 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */,
+				BB03A9B42F277DBB004BD874 /* Exceptions for "Shared" folder in "Haby WidgetExtension" target */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		BB03A9952F277B9E004BD874 /* Haby Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BB03A9A42F277BA1004BD874 /* Exceptions for "Haby Widget" folder in "Haby WidgetExtension" target */,
+			);
+			path = "Haby Widget";
 			sourceTree = "<group>";
 		};
 		BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */ = {
@@ -183,6 +277,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB03A98C2F277B9E004BD874 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB03A9942F277B9E004BD874 /* SwiftUI.framework in Frameworks */,
+				BB03A9922F277B9E004BD874 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB2C2B6A2F20D5110030CF44 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -201,6 +304,8 @@
 				5C79B5952F20426A00CA4B0C /* Shared */,
 				44B063EA2DDDC4D000252D85 /* Haby */,
 				BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */,
+				BB03A9952F277B9E004BD874 /* Haby Widget */,
+				BB03A9902F277B9E004BD874 /* Frameworks */,
 				44B063E92DDDC4D000252D85 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -210,8 +315,18 @@
 			children = (
 				44B063E82DDDC4D000252D85 /* Haby.app */,
 				BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */,
+				BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BB03A9902F277B9E004BD874 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB03A9912F277B9E004BD874 /* WidgetKit.framework */,
+				BB03A9932F277B9E004BD874 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,11 +340,13 @@
 				44B063E52DDDC4D000252D85 /* Frameworks */,
 				44B063E62DDDC4D000252D85 /* Resources */,
 				BB2C2B612F20D1DA0030CF44 /* Embed Watch Content */,
+				BB03A9A02F277BA1004BD874 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				BB2C2B762F20D5120030CF44 /* PBXTargetDependency */,
+				BB03A99E2F277BA1004BD874 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				44B063EA2DDDC4D000252D85 /* Haby */,
@@ -244,6 +361,28 @@
 			productName = Haby;
 			productReference = 44B063E82DDDC4D000252D85 /* Haby.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB03A9A32F277BA1004BD874 /* Build configuration list for PBXNativeTarget "Haby WidgetExtension" */;
+			buildPhases = (
+				BB03A98B2F277B9E004BD874 /* Sources */,
+				BB03A98C2F277B9E004BD874 /* Frameworks */,
+				BB03A98D2F277B9E004BD874 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BB03A9952F277B9E004BD874 /* Haby Widget */,
+			);
+			name = "Haby WidgetExtension";
+			packageProductDependencies = (
+			);
+			productName = "Haby WidgetExtension";
+			productReference = BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */ = {
 			isa = PBXNativeTarget;
@@ -280,6 +419,9 @@
 					44B063E72DDDC4D000252D85 = {
 						CreatedOnToolsVersion = 16.2;
 					};
+					BB03A98E2F277B9E004BD874 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					BB2C2B6C2F20D5110030CF44 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -305,12 +447,20 @@
 			targets = (
 				44B063E72DDDC4D000252D85 /* Haby */,
 				BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */,
+				BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		44B063E62DDDC4D000252D85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB03A98D2F277B9E004BD874 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -334,6 +484,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB03A98B2F277B9E004BD874 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB2C2B692F20D5110030CF44 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -344,6 +501,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BB03A99E2F277BA1004BD874 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
+			targetProxy = BB03A99D2F277BA1004BD874 /* PBXContainerItemProxy */;
+		};
 		BB2C2B762F20D5120030CF44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
@@ -389,6 +551,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -456,6 +619,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SK8659UQX8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -547,6 +711,69 @@
 			};
 			name = Release;
 		};
+		BB03A9A12F277BA1004BD874 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Widget/Widget-Debug.xcconfig";
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Haby Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Haby Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BB03A9A22F277BA1004BD874 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Widget/Widget-Release.xcconfig";
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Haby Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Haby Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		BB2C2B792F20D5120030CF44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
@@ -629,6 +856,15 @@
 			buildConfigurations = (
 				44B063F72DDDC4D100252D85 /* Debug */,
 				44B063F82DDDC4D100252D85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB03A9A32F277BA1004BD874 /* Build configuration list for PBXNativeTarget "Haby WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB03A9A12F277BA1004BD874 /* Debug */,
+				BB03A9A22F277BA1004BD874 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
