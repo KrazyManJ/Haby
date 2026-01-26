@@ -8,6 +8,7 @@ class AddEditHabitViewModel: ObservableObject {
     @ObservationIgnored @Injected private var notificationManager: NotificationManaging
     @ObservationIgnored @Injected private var healthManager: HealthManaging
     @ObservationIgnored @Injected private var dataManager: DataManaging
+    @ObservationIgnored @Injected private var phoneSessionManager: PhoneSessionManaging
     
     init(habit: HabitDefinition? = nil) {
         if let habit = habit {
@@ -44,6 +45,7 @@ class AddEditHabitViewModel: ObservableObject {
         print("add",habit.id)
         dataManager.upsert(model: habit)
         notificationManager.scheduleNotificationForHabit(habit: habit)
+        phoneSessionManager.syncAllHabitsToWatch()
     }
     
     func requestHealthAuthorization() {

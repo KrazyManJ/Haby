@@ -6,8 +6,6 @@ struct DailyView: View {
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
     
-    @ObservedObject var sessionManager = PhoneSessionManager.shared
-    
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.mainTabViewRefresh) var performMainTabViewRefresh
     
@@ -94,19 +92,12 @@ struct DailyView: View {
                     viewModel.updateMood(mood: .Neutral)
                 }
                 refreshData()
-                sessionManager.syncAllHabitsToWatch()
                 viewModel.askForNotificationPermission()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
                     refreshData()
-                }
-            }
-            .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
-                if !newHabits.isEmpty {
-                    print("📤 Habits loaded. Syncing to Watch...")
-                    sessionManager.syncAllHabitsToWatch()
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in

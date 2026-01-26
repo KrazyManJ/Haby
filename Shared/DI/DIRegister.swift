@@ -13,5 +13,15 @@ internal extension DIContainer {
         register(HabitManaging.self) {
             HabitManager()
         }
+        #if os(iOS)
+        register(PhoneSessionManaging.self) {
+            PhoneSessionManager()
+        }
+        #endif
+        #if os(watchOS)
+        register(WatchSessionManaging.self) {
+            WatchSessionManager()
+        }
+        #endif
     }
 }

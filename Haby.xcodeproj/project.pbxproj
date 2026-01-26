@@ -69,8 +69,6 @@
 		BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Convertors/PhoneConvertor.swift,
-				Convertors/WatchConvertor.swift,
 				DI/DIManager.swift,
 				DI/DIRegister.swift,
 				DI/Injected.swift,
@@ -119,7 +117,6 @@
 				Services/Notification/NotificationManager.swift,
 				Services/Notification/NotificationManaging.swift,
 				UI/Components/Card.swift,
-				UI/Components/HabitWatchRow.swift,
 				UI/Resources/Assets.xcassets,
 				UI/Resources/Colors.swift,
 				UI/Resources/Styles.swift,
@@ -558,8 +555,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "dev.krazymanj.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -591,8 +590,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "dev.krazymanj.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

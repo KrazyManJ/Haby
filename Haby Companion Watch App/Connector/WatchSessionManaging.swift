@@ -1,6 +1,7 @@
 import WatchConnectivity
 
 protocol WatchSessionManaging {
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any])
+    func sendRecordData(record: HabitRecord)
+    func sendRecordRemoval(recordId: UUID)
 }
 

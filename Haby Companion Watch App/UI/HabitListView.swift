@@ -1,66 +1,68 @@
 import SwiftUI
 
-enum HabitFilterType {
-    case time
-    case amount
-}
-
 struct HabitListView: View {
-    let filterType: HabitFilterType
-    @ObservedObject var sessionManager = WatchSessionManager.shared
+    
+    @State private var viewModel: HabitListViewModel
+    
+    init(filterType: InternalHabitCategory) {
+        self.viewModel = .init(filterType: filterType)
+    }
+    
+    var title: String {
+        switch viewModel.state.filterType {
+        case .Numeric:
+            "Goal habits"
+        case .Timer:
+            "Upcoming habits"
+        }
+    }
+    
+    var todayMinutes = Date().hourAndMinutesToMinutesTimestamp
+    
+    var habitsToDo: [HabitDefinition] {
+        viewModel.state.habits.filter { habit in
+            let isExpired = switch habit.data {
+            case .Deadline(let data): todayMinutes >= data.minutesOfCompletionInFrequency
+            case .OnTime(let data): todayMinutes >= data.minutesOfCompletionInFrequency
+            default: true
+            }
+            
+            let record = viewModel.state.records.first { $0.habitDefinition.id == habit.id }
+            if let record = record {
+                return !record.isSatisfied && !isExpired
+            }
+            
+            else {
+                return !isExpired
+            }
+        }
+    }
+    
     @State private var selectedHabit: HabitDefinition?
     
     func getRecord(for habit: HabitDefinition) -> HabitRecord? {
-        // Assuming your records are already filtered for "Today" on the phone side
-        // or you filter by date here:
-        return sessionManager.records.first { $0.habitDefinition.id == habit.id }
+        return viewModel.state.records.first { $0.habitDefinition.id == habit.id }
     }
     
     var body: some View {
         NavigationStack {
-            Text(filterType == .time ? "Upcoming habits" : "Goal habits")
+            Text(title)
                 .font(.subheadline)
-            .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .center)
             ScrollView {
                 VStack {
-                    if sessionManager.habits.isEmpty {
+                    if viewModel.state.habits.isEmpty {
                         Text("No habits received yet. \nOpen iPhone app to sync")
                             .multilineTextAlignment(.center)
                             .font(.caption)
                             .foregroundColor(.gray)
                     } else {
-                        let typeFiltered = sessionManager.habits.filter {
-                            $0.data.type == (filterType == .time ? .Deadline : .Amount)
-                        }
-                        let activeHabits = typeFiltered.filter { habit in
-                       
-                            // 1. Find the record
-                            let record = sessionManager.records.first {
-                                $0.habitDefinition.id == habit.id
-                            }
-                            
-                            // 2. Decide if we should show it
-                            if habit.data.type == .Amount {
-                                // Amount Habits: Keep showing until target is reached
-                                let status = HabitStatusHelper(habit: habit, record: record)
-                                return !status.isCompleted
-                            } else {
-                                // Time Habits (Deadline/OnTime): Hide if ANY record exists.
-                                // Even if it was late (wasDoneCorrectly == false), we don't want it on the "To Do" list.
-                                return record == nil
-                            }
-                        
-                        }
-                        
-                        ForEach(activeHabits) { habit in
+                        ForEach(habitsToDo) { habit in
                             HabitWatchRow(habit: habit, record: getRecord(for: habit))
-//                            HabitWatchRow(habit: habit, record: sessionManager.records.first {
-//                                $0.habitDefinition.id == habit.id
-//                            })
                                 .onTapGesture { selectedHabit = habit }
                         }
                         
-                        if activeHabits.isEmpty {
+                        if habitsToDo.isEmpty {
                             Text("All done for now!")
                                 .font(.caption)
                                 .foregroundColor(.gray)
@@ -71,17 +73,26 @@ struct HabitListView: View {
                 .sheet(item: $selectedHabit) { habit in
                     NavigationStack {
                         if case .Amount = habit.data {
-                            AmountHabitDetailView(habit: habit)
+                            AmountHabitDetailView(viewModel: $viewModel, habit: habit)
                         } else {
-                            TimeHabitDetailView(habit: habit)
+                            TimeHabitDetailView(viewModel: $viewModel, habit: habit)
                         }
                     }
                 }
             }
         }
+        .padding([.horizontal])
+        .background(.backgroundPrimary)
+        .onAppear {
+            viewModel.fetchHabits()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
+            print("🔄 reloading data from Watch update...")
+            viewModel.fetchHabits()
+        }
     }
 }
 
 #Preview {
-    HabitListView(filterType: .time)
+    HabitListView(filterType: .Timer)
 }

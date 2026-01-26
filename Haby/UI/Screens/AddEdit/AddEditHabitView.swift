@@ -17,8 +17,6 @@ struct AddEditHabitView: View {
     @State private var isIconPickerPresented = false
     
     @StateObject var viewModel: AddEditHabitViewModel
-    
-    @ObservedObject var sessionManager = PhoneSessionManager.shared
         
     var habitDescriptionSection: some View {
         Section {

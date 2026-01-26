@@ -3,21 +3,32 @@ import SwiftUI
 import SwiftUI
 
 struct AmountHabitDetailView: View {
+    @Binding var viewModel: HabitListViewModel
+    
     let habit: HabitDefinition
-    @ObservedObject var sessionManager = WatchSessionManager.shared
+    
+    var goal: Double {
+        switch habit.data {
+        case .Amount(let data): Double(data.amount)
+        default: 1
+        }
+    }
+    
+    var step: Double {
+        switch habit.data {
+        case .Amount(let data): Double(data.amount/20)
+        default: 1
+        }
+    }
     
     @State private var isInputMode = false
     @State private var amountToAdd: Double = 0.0
     
-    var record: HabitRecord? { sessionManager.records.first(where: { $0.habitDefinition.id == habit.id }) }
+    var record: HabitRecord? { viewModel.state.records.first(where: { $0.habitDefinition.id == habit.id }) }
     var status: HabitStatusHelper { HabitStatusHelper(habit: habit, record: record) }
     
     var amountData: (current: Float, target: Float, unit: String) {
-        // 1. Unwrap the Habit Definition data
         if case .Amount(let defData) = habit.data {
-            
-            // 2. Safely Unwrap the Record data
-            // We check if record exists AND if its data matches .Amount
             var current: Float = 0
             if let r = record, case .Amount(let recordData) = r.data {
                 current = recordData.value
@@ -26,7 +37,6 @@ struct AmountHabitDetailView: View {
             return (current, defData.amount, defData.unit.abbreviation)
         }
         
-        // Fallback (Should never happen for this view)
         return (0, 1, "")
     }
     
@@ -38,7 +48,9 @@ struct AmountHabitDetailView: View {
                 overviewModeView
             }
         }
+        .frame(maxWidth: .infinity)
         .animation(.easeInOut, value: isInputMode)
+        .background(.backgroundPrimary)
     }
     
     var overviewModeView: some View {
@@ -69,9 +81,9 @@ struct AmountHabitDetailView: View {
                 .digitalCrownRotation(
                     $amountToAdd,
                     from: 0,
-                    through: 10000,
-                    by: 10,
-                    sensitivity: .high,
+                    through: goal,
+                    by: step,
+                    sensitivity: .medium,
                     isContinuous: false,
                     isHapticFeedbackEnabled: true
                 )
@@ -85,6 +97,7 @@ struct AmountHabitDetailView: View {
             .tint(Colors.Primary)
             
         }
+        .frame(maxWidth: .infinity)
     }
     
     func saveProgress() {
@@ -93,7 +106,7 @@ struct AmountHabitDetailView: View {
             return
         }
         
-        WatchSessionManager.shared.addAmount(to: habit, amount: Float(amountToAdd))
+        viewModel.addToAmountHabit(habit: habit, addedAmount: Float(amountToAdd))
         
         amountToAdd = 0
         isInputMode = false

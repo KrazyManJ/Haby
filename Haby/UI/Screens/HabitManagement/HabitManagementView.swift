@@ -8,7 +8,6 @@ struct HabitManagementView: View {
     @State var showAlert = false
     @State private var habitToDelete: HabitDefinition? = nil
     @State private var habitToEdit: HabitDefinition?
-    @ObservedObject var sessionManager = PhoneSessionManager.shared
     @Environment(\.scenePhase) var scenePhase
     
     init(viewModel: HabitManagementViewModel = HabitManagementViewModel()) {
@@ -52,7 +51,7 @@ struct HabitManagementView: View {
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
-                    sessionManager.syncAllHabitsToWatch()
+//                    sessionManager.syncAllHabitsToWatch()
                 }
             }
         .sheet(item: $habitToEdit, onDismiss: {
