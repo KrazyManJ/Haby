@@ -80,16 +80,16 @@
     "Cancel" : {
 
     },
-    "Check habit" : {
+    "Check Habit" : {
 
     },
     "Close" : {
 
     },
-    "Confirm" : {
+    "Completed" : {
 
     },
-    "current value / requirement string" : {
+    "Confirm" : {
 
     },
     "Daily Time" : {
@@ -168,9 +168,6 @@
 
     },
     "No weekly habits!" : {
-
-    },
-    "placeholder" : {
 
     },
     "Progress:" : {

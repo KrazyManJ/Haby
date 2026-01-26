@@ -793,7 +793,7 @@
 				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "dev.krazymanj.krazymanj-katapl.Haby";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.katapl.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -828,7 +828,7 @@
 				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "dev.krazymanj.krazymanj-katapl.Haby";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.katapl.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
