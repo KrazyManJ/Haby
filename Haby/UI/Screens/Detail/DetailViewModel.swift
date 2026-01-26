@@ -85,4 +85,10 @@ class DetailViewModel {
             phoneSessionManager.syncAllHabitsToWatch()
         }
     }
+    func refreshHabit() {
+        if let freshEntity: HabitDefinitionEntity = dataManaging.fetchOneById(id: state.habit.id) {
+            state.habit = freshEntity.toModel()
+        }
+        getHabitRecord()
+    }
 }

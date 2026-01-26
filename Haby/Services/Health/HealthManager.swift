@@ -62,8 +62,13 @@ class HealthManager: HealthManaging {
                     return
                 }
                 
-                let value = quantity.doubleValue(for: unit)
-                continuation.resume(returning: value)
+                if quantity.is(compatibleWith: unit) {
+                        let value = quantity.doubleValue(for: unit)
+                        continuation.resume(returning: value)
+                    } else {
+                        print("❌ Unit Mismatch! Data is in \(quantity) but requested \(unit.unitString)")
+                        continuation.resume(returning: 0.0)
+                    }
             }
             
             healthStore.execute(query)

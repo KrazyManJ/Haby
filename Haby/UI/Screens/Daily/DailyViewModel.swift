@@ -32,6 +32,7 @@ class DailyViewModel: ObservableObject {
         healthData[.Calories] = fetchedCalories
         healthData[.Kilometers] = fetchedDistance
         healthData[.ExerciseTime] = fetchedWorkoutTime
+        print("🫀 DEBUG: Fetched Steps: \(fetchedSteps)")
     }
     
     func askForNotificationPermission() {

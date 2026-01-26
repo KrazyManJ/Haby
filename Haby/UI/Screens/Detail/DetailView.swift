@@ -124,7 +124,12 @@ struct DetailView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
-        .sheet(isPresented: $isAddEditHabitSheetPresented) {
+        .sheet(
+            isPresented: $isAddEditHabitSheetPresented,
+            onDismiss: {
+                viewModel.refreshHabit()
+            }
+        ) {
             NavigationStack {
                 AddEditHabitView(viewModel: AddEditHabitViewModel(habit: habit))
             }
@@ -141,7 +146,7 @@ struct DetailView: View {
             )
         }
         .onAppear(){
-            viewModel.getHabitRecord()
+            viewModel.refreshHabit()
         }
     }
 }
