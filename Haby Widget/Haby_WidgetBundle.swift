@@ -27,7 +27,7 @@ struct UpcomingWidget: Widget {
     let kind: String = "UpcomingWidget"
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            UpcomingHabitView(habits: entry.habits)
+            UpcomingHabitView(habit: entry.next)
                 .containerBackground(.backgroundPrimary, for: .widget)
                 .preferredColorScheme(.dark)
         }

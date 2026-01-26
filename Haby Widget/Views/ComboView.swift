@@ -11,6 +11,7 @@ struct ComboView: View {
                     Text("You have no upcoming habits")
                         .foregroundStyle(.textPrimary)
                         .font(.caption)
+                        .multilineTextAlignment(.center)
                 } else {
                     ForEach(habits.prefix(3)) { habit in
                         Card {
@@ -30,9 +31,9 @@ struct ComboView: View {
                         .background(.backgroundSecondary)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
-                    if habits.count != 3 {
+                    if habits.count < 3 {
                             Spacer()
-                        }
+                    }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

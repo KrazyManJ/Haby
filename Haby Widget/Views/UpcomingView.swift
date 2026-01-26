@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct UpcomingHabitView: View {
-    let habits: [HabitDefinition]
+    let habit: HabitDefinition?
     var body: some View {
         ZStack{
             RadialGradient(
@@ -11,11 +11,11 @@ struct UpcomingHabitView: View {
                endRadius: 65
            )
             VStack {
-                if let next = habits.first {
-                    Image(systemName: next.icon)
+                if (habit != nil) {
+                    Image(systemName: habit?.icon ?? "star.fill")
                         .font(.system(size: 55))
                         .foregroundStyle(.textPrimary)
-                    Text(next.name)
+                    Text(habit?.name ?? "Cannot load habit name")
                         .font(.title)
                         .foregroundStyle(.textPrimary)
                         .lineLimit(1)

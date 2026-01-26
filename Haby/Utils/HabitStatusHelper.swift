@@ -1,7 +1,5 @@
 import Foundation
 
-import Foundation
-
 struct HabitStatusHelper {
     let requirementString: String
     let isOverdue: Bool

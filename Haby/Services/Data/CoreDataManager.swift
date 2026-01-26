@@ -63,7 +63,7 @@ final class CoreDataManager: DataManaging {
         }
         
         // Ensure the context updates automatically if the Widget changes data
-       // container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
     private func reCreate(description: NSPersistentStoreDescription) {
