@@ -6,7 +6,7 @@ struct ComboView: View {
     var body: some View {
         HStack{
             StreakView(streak: streak).frame(maxWidth: .infinity)
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .center, spacing: 8) {
                 if (habits.isEmpty){
                     Text("You have no upcoming habits")
                         .foregroundStyle(.textPrimary)
@@ -28,8 +28,11 @@ struct ComboView: View {
                         }
                         .padding(8)
                         .background(.backgroundSecondary)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
+                    if habits.count != 3 {
+                            Spacer()
+                        }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

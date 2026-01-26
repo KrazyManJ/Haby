@@ -29,3 +29,4 @@ DEVELOPMENT_TEAM =
 //
 PRODUCT_BUNDLE_IDENTIFIER = $(BUNDLE_ID_PREFIX).krazymanj-katapl.Haby$(BUNDLE_ID_SUFFIX)
 ROOT_IDENTIFIER = $(BUNDLE_ID_PREFIX).krazymanj-katapl.Haby
+APP_GROUP_ID = group.com.krazymanj-katapl.haby

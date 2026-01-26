@@ -4,5 +4,7 @@
 <dict>
 	<key>UIDesignRequiresCompatibility</key>
 	<true/>
+	<key>AppGroupId</key>
+	<string>$(APP_GROUP_ID)</string>
 </dict>
 </plist>

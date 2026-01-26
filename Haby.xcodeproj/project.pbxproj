@@ -63,6 +63,7 @@
 		BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Haby WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB03A9912F277B9E004BD874 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		BB03A9932F277B9E004BD874 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		BB03AB5C2F27856C004BD874 /* Haby WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Haby WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Haby Companion Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +137,7 @@
 				UI/Components/Card.swift,
 				UI/Resources/Colors.swift,
 				Utils/DateUtils.swift,
+				Utils/HabitStatusHelper.swift,
 			);
 			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
 		};
@@ -299,6 +301,7 @@
 		44B063DF2DDDC4D000252D85 = {
 			isa = PBXGroup;
 			children = (
+				BB03AB5C2F27856C004BD874 /* Haby WidgetExtension.entitlements */,
 				5C79B45A2F1F203400CA4B0C /* Config */,
 				5C79B44A2F1F1B9300CA4B0C /* .gitignore */,
 				5C79B5952F20426A00CA4B0C /* Shared */,
@@ -718,6 +721,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Haby WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -749,6 +753,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Haby WidgetExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

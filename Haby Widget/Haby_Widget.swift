@@ -2,7 +2,8 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-    private var dataManager: Injected<DataManaging> = .init()
+    @Injected private var dataManager: DataManaging
+    @Injected private var habitManager: HabitManaging
     
     func placeholder(in context: Context) -> HabyEntry {
         HabyEntry(
@@ -22,13 +23,26 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<HabyEntry>) -> ()) {
         var entries: [HabyEntry] = []
-        let habits = dataManager.wrappedValue.getTimeHabitsForToday()
+        let timeHabits = dataManager.getTimeHabitsForToday()
+        let amountHabits = dataManager.getAmountHabitsForToday()
+        let habits = timeHabits + amountHabits
+        let records = dataManager.getTodayRecords()
+        let upcomingHabits = habits.filter { habit in
+            let record = records.first {
+                $0.habitDefinition.id == habit.id
+            }
+            let status = HabitStatusHelper(habit: habit, record: record)
+            return !status.isCompleted
+        }
+            
+        print("got habits \(upcomingHabits.count)")
         // todo get calculcate streak method
-        let streak = 1
+        let streak = habitManager.calculateCurrentStreak()
+        print("got streak \(streak)")
         
         let entry = HabyEntry(
                 date: Date(),
-                habits: habits,
+                habits: upcomingHabits,
                 streak: streak
             )
             
