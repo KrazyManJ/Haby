@@ -6,6 +6,8 @@ struct DailyView: View {
     @State private var checked: Bool = false
     private var mood: Binding<Mood>
     
+    @State private var animateContent: Bool = false
+    
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.mainTabViewRefresh) var performMainTabViewRefresh
     
@@ -26,7 +28,8 @@ struct DailyView: View {
     private var timerHabits: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             Timeline(variant: .FadeIn)
-            ForEach(viewModel.state.habits.filter { $0.data.type != .Amount } ) { habit in
+            let filteredHabits = Array(viewModel.state.habits.filter { $0.data.type != .Amount }.enumerated())
+            ForEach(filteredHabits, id: \.element.id) { index, habit in
                 let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
                 
                 TimerHabitRow(
@@ -38,6 +41,12 @@ struct DailyView: View {
                     refreshData()
                     performMainTabViewRefresh()
                 }
+                .offset(y: animateContent ? 0 : -50)
+                .opacity(animateContent ? 1 : 0)
+                .animation(
+                    .bouncy(duration: 0.2).delay(Double(index) * 0.05),
+                    value: animateContent
+                )
             }
             Timeline(variant: .FadeOut)
         }
@@ -47,7 +56,9 @@ struct DailyView: View {
     private var goalHabits: some View {
         Card {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.state.amountHabits) { habit in
+                let indexedGoals = Array(viewModel.state.amountHabits.enumerated())
+                            
+                ForEach(indexedGoals, id: \.element.id) { index, habit in
                     let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
                     
                     var amount: Float {
@@ -64,11 +75,18 @@ struct DailyView: View {
                         viewModel.addToAmountHabit(habit: habit, addedAmount: addValue)
                         performMainTabViewRefresh()
                     }
+                    .offset(y: animateContent ? 0 : -50)
+                    .opacity(animateContent ? 1 : 0)
+                    .animation(
+                        .easeOut(duration: 0.2).delay(0.2 + (Double(index) * 0.05)), // Starts 0.3s later
+                        value: animateContent
+                    )
                 }
             }
             .padding()
         }
         .padding()
+        .offset(y: animateContent ? 0 : -50)
     }
     
     var body: some View {
@@ -89,6 +107,9 @@ struct DailyView: View {
             .background(Colors.BackgroundPrimary)
             .onAppear {
                 // move to VM
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    animateContent = true
+                }
                 viewModel.getTodayHabits()
                 viewModel.askForNotificationPermission()
                 if !viewModel.isTodayMoodSaved() {
