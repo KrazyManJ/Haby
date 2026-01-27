@@ -20,16 +20,6 @@
     "%@" : {
 
     },
-    "%@ / %@ %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ / %2$@ %3$@"
-          }
-        }
-      }
-    },
     "%@ • %@" : {
       "localizations" : {
         "en" : {
@@ -73,13 +63,7 @@
         }
       }
     },
-    "0" : {
-
-    },
     "Add" : {
-
-    },
-    "Add Amount" : {
 
     },
     "Add Habit" : {
@@ -92,12 +76,6 @@
 
     },
     "Are you sure you want to uncheck this habit? This action loses your current stage of habit." : {
-
-    },
-    "avg" : {
-
-    },
-    "avg %@" : {
 
     },
     "Cancel" : {
@@ -115,13 +93,7 @@
     "Completed" : {
 
     },
-    "Confirm" : {
-
-    },
     "Daily Time" : {
-
-    },
-    "Date" : {
 
     },
     "Day of the Week" : {
@@ -148,16 +120,7 @@
     "Enter decimal" : {
 
     },
-    "goal" : {
-
-    },
-    "goal %@" : {
-
-    },
     "Habit description" : {
-
-    },
-    "habit name" : {
 
     },
     "Habit settings" : {
@@ -170,12 +133,6 @@
 
     },
     "Increase" : {
-
-    },
-    "Kilometers" : {
-
-    },
-    "km" : {
 
     },
     "New Habit" : {
@@ -208,9 +165,6 @@
     "Select..." : {
 
     },
-    "Steps" : {
-
-    },
     "Uncheck" : {
 
     },
@@ -224,12 +178,6 @@
 
     },
     "You will not be able to recover this habit's data after deletion." : {
-
-    },
-    "Your Average" : {
-
-    },
-    "Your Goal" : {
 
     },
     "Your streak is..." : {

@@ -17,18 +17,4 @@ struct HabitDefinition: Identifiable, Equatable, Codable, Hashable {
     var isUsingHealthData: Bool = false
     
     var data: HabitDefinitionData
-    
-    func canBeCheckedInTimestamp(timestamp: Int) -> Bool {
-        if let definitionTimestamp = targetTimestamp {
-            if type == .OnTime {
-                let lowerBound = definitionTimestamp - HabitRecord.ON_TIME_HABIT_VALID_RANGE
-                let higherBound = definitionTimestamp + HabitRecord.ON_TIME_HABIT_VALID_RANGE
-                return (lowerBound...higherBound).contains(timestamp)
-            }
-            else if type == .Deadline {
-                return timestamp <= definitionTimestamp
-            }
-        }
-        return false
-    }
 }

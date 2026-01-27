@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct HabitRow: View {
+struct HabitDefinitionRow: View {
     var habit: HabitDefinition
     
     var requirementString: String

@@ -87,6 +87,13 @@
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
 		};
+		5C83E3E32F2914130040CF9A /* Exceptions for "Haby Companion Watch App" folder in "Haby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				HabitStatusHelper.swift,
+			);
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
 		5CF1FE6B2F28D9D800CFDD83 /* Exceptions for "Haby Companion Watch App" folder in "Haby WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -111,41 +118,12 @@
 		BB03A9AD2F277D5B004BD874 /* Exceptions for "Haby" folder in "Haby WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Model/Enum/AmountUnit.swift,
-				Model/Enum/HabitCategory.swift,
-				Model/Enum/HabitFrequency.swift,
-				Model/Enum/Mood.swift,
-				Model/Enum/WeekDay.swift,
-				Model/HabitDefinition.swift,
-				Model/HabitRecord.swift,
-				Model/HabitTypeRegistry.swift,
-				Model/HabitTypes/AmountHabit.swift,
-				Model/HabitTypes/DeadlineHabit.swift,
-				Model/HabitTypes/OnTimeHabit.swift,
-				Model/Haby.xcdatamodeld,
-				Model/HealthDataPoint.swift,
-				Model/MoodRecord.swift,
 				Services/Category/CategoryManager.swift,
 				Services/Category/CategoryManaging.swift,
 				Services/Connector/PhoneSessionManager.swift,
 				Services/Connector/PhoneSessionManaging.swift,
-				Services/Data/Conversion/HabitDefinitionConversion.swift,
-				Services/Data/Conversion/HabitRecordConversion.swift,
-				Services/Data/Conversion/MoodRecordConversion.swift,
-				Services/Data/Conversion/Protocols/EntityConverting.swift,
-				Services/Data/Conversion/Protocols/ModelConverting.swift,
-				Services/Data/CoreDataManager.swift,
-				Services/Data/DataManaging.swift,
-				Services/Data/HabitDefinitionDataManager.swift,
-				Services/Data/HabitRecordDataManager.swift,
-				Services/Data/MockupDataManager.swift,
-				Services/Data/MoodDataManager.swift,
-				Services/Habit/HabitManager.swift,
-				Services/Habit/HabitManaging.swift,
 				Services/Health/HealthManager.swift,
 				Services/Health/HealthManaging.swift,
-				Services/Notification/NotificationManager.swift,
-				Services/Notification/NotificationManaging.swift,
 				UI/Components/Card.swift,
 				UI/Resources/Colors.swift,
 			);
@@ -161,6 +139,35 @@
 				Extensions/DateExtension.swift,
 				Extensions/IntExtension.swift,
 				Extensions/NotificationExtension.swift,
+				Model/Enum/AmountUnit.swift,
+				Model/Enum/HabitCategory.swift,
+				Model/Enum/HabitFrequency.swift,
+				Model/Enum/Mood.swift,
+				Model/Enum/WeekDay.swift,
+				Model/HabitDefinition.swift,
+				Model/HabitRecord.swift,
+				Model/HabitTypeRegistry.swift,
+				Model/HabitTypes/AmountHabit.swift,
+				Model/HabitTypes/DeadlineHabit.swift,
+				Model/HabitTypes/OnTimeHabit.swift,
+				Model/Haby.xcdatamodeld,
+				Model/HealthDataPoint.swift,
+				Model/MoodRecord.swift,
+				Services/Data/Conversion/HabitDefinitionConversion.swift,
+				Services/Data/Conversion/HabitRecordConversion.swift,
+				Services/Data/Conversion/MoodRecordConversion.swift,
+				Services/Data/Conversion/Protocols/EntityConverting.swift,
+				Services/Data/Conversion/Protocols/ModelConverting.swift,
+				Services/Data/CoreDataManager.swift,
+				Services/Data/DataManaging.swift,
+				Services/Data/HabitDefinitionDataManager.swift,
+				Services/Data/HabitRecordDataManager.swift,
+				Services/Data/MockupDataManager.swift,
+				Services/Data/MoodDataManager.swift,
+				Services/Habit/HabitManager.swift,
+				Services/Habit/HabitManaging.swift,
+				Services/Notification/NotificationManager.swift,
+				Services/Notification/NotificationManaging.swift,
 				"UI/Resources/Global Assets.xcassets",
 			);
 			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
@@ -178,13 +185,6 @@
 				Extensions/IntExtension.swift,
 				Extensions/NotificationExtension.swift,
 				Extensions/ViewExtensions.swift,
-				"UI/Resources/Global Assets.xcassets",
-			);
-			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
-		};
-		BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
 				Model/Enum/AmountUnit.swift,
 				Model/Enum/HabitCategory.swift,
 				Model/Enum/HabitFrequency.swift,
@@ -200,8 +200,6 @@
 				Model/Haby.xcdatamodeld,
 				Model/HealthDataPoint.swift,
 				Model/MoodRecord.swift,
-				Services/Category/CategoryManager.swift,
-				Services/Category/CategoryManaging.swift,
 				Services/Data/Conversion/HabitDefinitionConversion.swift,
 				Services/Data/Conversion/HabitRecordConversion.swift,
 				Services/Data/Conversion/MoodRecordConversion.swift,
@@ -215,10 +213,19 @@
 				Services/Data/MoodDataManager.swift,
 				Services/Habit/HabitManager.swift,
 				Services/Habit/HabitManaging.swift,
-				Services/Health/HealthManager.swift,
-				Services/Health/HealthManaging.swift,
 				Services/Notification/NotificationManager.swift,
 				Services/Notification/NotificationManaging.swift,
+				"UI/Resources/Global Assets.xcassets",
+			);
+			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
+		};
+		BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Services/Category/CategoryManager.swift,
+				Services/Category/CategoryManaging.swift,
+				Services/Health/HealthManager.swift,
+				Services/Health/HealthManaging.swift,
 				UI/Components/Card.swift,
 				UI/Resources/Colors.swift,
 				UI/Resources/Styles.swift,
@@ -266,6 +273,7 @@
 		BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				5C83E3E32F2914130040CF9A /* Exceptions for "Haby Companion Watch App" folder in "Haby" target */,
 				5CF1FE6B2F28D9D800CFDD83 /* Exceptions for "Haby Companion Watch App" folder in "Haby WidgetExtension" target */,
 			);
 			path = "Haby Companion Watch App";
@@ -797,7 +805,6 @@
 				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.katapl.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -832,7 +839,6 @@
 				INFOPLIST_FILE = "Haby-Companion-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Haby;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.katapl.krazymanj-katapl.Haby";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

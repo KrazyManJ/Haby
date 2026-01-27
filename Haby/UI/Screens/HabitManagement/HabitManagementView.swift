@@ -28,7 +28,7 @@ struct HabitManagementView: View {
                                     .textCase(nil)
                             ) {
                                 ForEach(group.habits) { habit in
-                                    HabitRow(habit: habit)
+                                    HabitDefinitionRow(habit: habit)
                                         .listRowSeparator(.hidden)
                                         .listRowBackground(Colors.BackgroundSecondary)
                                         .onTapGesture {

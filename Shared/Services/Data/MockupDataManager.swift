@@ -93,6 +93,7 @@ extension CoreDataManager {
             name: "Cleaning",
             icon: "brush",
             creationDate: createdAt,
+            category: "Household",
             type: .Amount,
             frequency: .Weekly,
             targetTimestamp: 60 * 15 + 60 * 24 * 5,
