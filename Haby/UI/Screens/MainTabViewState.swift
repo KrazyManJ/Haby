@@ -4,5 +4,5 @@ import SwiftUI
 @Observable
 final class MainTabViewState {
     var streak: Int = 0
-    var navigationPath = NavigationPath()
+    var habitToShowOnNavigation: HabitDefinition?
 }

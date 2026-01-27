@@ -1,6 +1,6 @@
 import Foundation
 
-struct AmountHabitDefinitionData : HabitDataDefining, HabitRecordValidating {
+struct AmountHabitDefinitionData : HabitDataDefining, HabitRecordValidating, Hashable {
     var frequency: HabitFrequency
     var amount: Float
     var unit: AmountUnit

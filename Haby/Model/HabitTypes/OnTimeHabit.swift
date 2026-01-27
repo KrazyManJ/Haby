@@ -1,6 +1,6 @@
 import Foundation
 
-struct OnTimeHabitDefinitionData : HabitDataDefining, HabitRecordValidating {
+struct OnTimeHabitDefinitionData : HabitDataDefining, HabitRecordValidating, Hashable {
     var frequency: HabitFrequency
     var minutesOfCompletionInFrequency: Int
     
