@@ -2,13 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIDesignRequiresCompatibility</key>
-	<true/>
 	<key>AppGroupId</key>
 	<string>$(APP_GROUP_ID)</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>We need your steps and activity data to track your daily goals.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>We save your workout data to keep your progress in sync.</string>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 </dict>
 </plist>

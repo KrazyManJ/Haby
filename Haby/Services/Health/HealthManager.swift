@@ -1,40 +1,117 @@
 
 import HealthKit
-
+// todo add protocol back
 class HealthManager: HealthManaging {
     
     private let healthStore = HKHealthStore()
     
+    private var activeQueries: [HKQuery] = []
+    
     private let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
     private let activeEnergyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
-    private let workoutTimeType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!
     private let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
     
-    func hasAskedForPermission() -> Bool {
-        // use this to show "connect to health" onboarding button
-        // check for one type to see if the prompt was ever shown
-        // if connected but 0 results, show "no data available" in UI
-        // .notDetermined - user was not asked yet
-        // .sharingAuthorized, .sharingDenied - prompt has appeared
-        
-        // requestPermission function requests all types -> we can check only one here
-        let status = healthStore.authorizationStatus(for: stepType)
-        return status != .notDetermined
+    func getQuantityType(for unit: AmountUnit) -> HKQuantityType? {
+        switch unit {
+        case .Steps: return stepType
+        case .Calories: return activeEnergyType
+        case .Kilometers: return distanceType
+        default: return nil
+        }
     }
     
-    func requestPermission() async {
-            guard HKHealthStore.isHealthDataAvailable() else { return }
-            
-            let types: Set = [stepType, activeEnergyType, workoutTimeType, distanceType]
-            
-            do {
-                try await healthStore.requestAuthorization(toShare: [], read: types)
-                print("HealthKit request presented")
-            } catch {
-                print("Error requesting HealthKit: \(error.localizedDescription)")
+    func needsAuthorization(for unit: AmountUnit) -> Bool {
+        guard let type = getQuantityType(for: unit) else { return false }
+        let status = healthStore.authorizationStatus(for: type)
+        return status == .notDetermined
+    }
+    
+    func requestAuthorization(for unit: AmountUnit) async {
+        guard let type = getQuantityType(for: unit) else { return }
+        await requestPermission(type: type)
+    }
+    
+    
+    func requestPermission(type: HKQuantityType) async {
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        
+        let types: Set = [type]
+        
+        do {
+            try await healthStore.requestAuthorization(toShare: [], read: types)
+            print("HealthKit request presented")
+        } catch {
+            print("Error requesting HealthKit: \(error.localizedDescription)")
+        }
+    }
+    
+    internal func startObserver(type: HKQuantityType, fetcher: @escaping () async -> Double, onChange: @escaping (Double) -> Void) {
+        healthStore.enableBackgroundDelivery(for: type, frequency: .immediate) { success, error in
+            if let error = error {
+                print("⚠️ Failed to enable background delivery for \(type): \(error.localizedDescription)")
+            } else {
+                print("✅ Background delivery enabled for \(type)")
             }
         }
+        
+        let observerQuery = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] query, completion, error in
+            guard self != nil else { return }
+            
+            if let error = error {
+                print("❌ Observer Error: \(error.localizedDescription)")
+                completion()
+                return
+            }
+            
+            Task {
+                try? await Task.sleep(for: .seconds(0.5))
+                let newTotal = await fetcher()
+                await MainActor.run {
+                    onChange(newTotal)
+                }
+                completion()
+            }
+        }
+        
+        healthStore.execute(observerQuery)
+        activeQueries.append(observerQuery)
+    }
     
+    func stopListening() {
+        for query in activeQueries {
+            healthStore.stop(query)
+        }
+        activeQueries.removeAll()
+    }
+    
+    func startObservingSteps(onChange: @escaping (Double) -> Void) {
+        startObserver(type: stepType) { [weak self] in
+            guard let self = self else { return 0.0 }
+            return await self.fetchTodaySteps()
+        } onChange: { val in
+            onChange(val)
+        }
+    }
+    
+    func startObservingCalories(onChange: @escaping (Double) -> Void) {
+        startObserver(type: activeEnergyType) { [weak self] in
+            guard let self = self else { return 0.0 }
+            return await self.fetchTodayCalories()
+        } onChange: { val in
+            onChange(val)
+        }
+    }
+    
+    func startObservingDistance(onChange: @escaping (Double) -> Void) {
+        startObserver(type: distanceType) { [weak self] in
+            guard let self = self else { return 0.0 }
+            return await self.fetchTodayDistance()
+        } onChange: { val in
+            onChange(val)
+        }
+    }
+    
+
     // returns single value for time range (day, week, month)
     func fetchStatistics(
         type: HKQuantityType,
@@ -110,7 +187,8 @@ class HealthManager: HealthManaging {
         }
     }
 }
-
+/*
+     */
 extension HealthManager {
     
     // todo make sure week starts on monday
@@ -169,7 +247,7 @@ extension HealthManager {
     func fetchTodayDistance() async -> Double {
         return await fetchStatistics(
             type: distanceType,
-            unit: .count(),
+            unit: .meterUnit(with: .kilo),
             startDate: Calendar.current.startOfDay(for: Date())
         )
     }
@@ -177,7 +255,7 @@ extension HealthManager {
     func fetchWeekDistance() async -> Double {
         return await fetchStatistics(
             type: distanceType,
-            unit: .count(),
+            unit: .meterUnit(with: .kilo),
             startDate: getStartOf(component: .weekOfYear),
             endDate: .now
         )
@@ -190,38 +268,7 @@ extension HealthManager {
         interval.day = 1
         return await fetchHistoricalData(
             type: distanceType,
-            unit: .count(),
-            interval: interval,
-            startDate: getStartOf(component: .month)
-        )
-    }
-    
-    // workout - daily + weekly view
-    func fetchTodayWorkoutTime() async -> Double {
-        return await fetchStatistics(
-            type: workoutTimeType,
-            unit: .count(),
-            startDate: Calendar.current.startOfDay(for: Date())
-        )
-    }
-    
-    func fetchWeekWorkoutTime() async -> Double {
-        return await fetchStatistics(
-            type: workoutTimeType,
-            unit: .count(),
-            startDate: getStartOf(component: .weekOfYear),
-            endDate: .now
-        )
-    }
-    
-    // workout - graph
-    
-    func fetchCurrentMonthWorkoutTimeData() async -> [HealthDataPoint] {
-        var interval = DateComponents()
-        interval.day = 1
-        return await fetchHistoricalData(
-            type: workoutTimeType,
-            unit: .count(),
+            unit: .meterUnit(with: .kilo),
             interval: interval,
             startDate: getStartOf(component: .month)
         )
@@ -267,5 +314,39 @@ extension HealthManager {
             startDate: getStartOf(component: .month)
         )
     }
+
+    // call in onAppear
+    func debugHealthKit() async {
+        let type = HKQuantityType(.stepCount)
+        let status = healthStore.authorizationStatus(for: type)
+        
+        print("🫀 Authorization Status: \(status.rawValue)")
+        // 0 = notDetermined, 1 = sharingDenied, 2 = sharingAuthorized
+        
+        // Attempt to fetch raw samples (not statistics)
+        let predicate = HKQuery.predicateForSamples(withStart: Date().addingTimeInterval(-86400), end: Date(), options: .strictStartDate)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+        
+        let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: 10, sortDescriptors: [sortDescriptor]) { _, samples, error in
+            
+            if let error = error {
+                print("❌ Query Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let samples = samples as? [HKQuantitySample], !samples.isEmpty else {
+                print("⚠️ Query Success, but Returned 0 Samples. (Permission issue or No Data)")
+                return
+            }
+            
+            for sample in samples {
+                let val = sample.quantity.doubleValue(for: .count())
+                print("✅ Found Sample: \(val) steps at \(sample.startDate)")
+            }
+        }
+        
+        healthStore.execute(query)
+    }
+    
 }
     

@@ -11,7 +11,6 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
     case Hours = 5
     case Minutes = 6
     case Calories = 7
-    case ExerciseTime = 8
     
     var name: String {
         String(describing: self)
@@ -31,8 +30,6 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
             return "min"
         case .Calories:
             return "kcal"
-        case .ExerciseTime:
-            return "min"
         case .None:
             return ""
         }
@@ -40,7 +37,7 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
     
     var isHealthData: Bool {
         switch self {
-        case .Steps, .Kilometers, .ExerciseTime, .Calories: return true
+        case .Steps, .Kilometers, .Calories: return true
         default: return false
         }
     }

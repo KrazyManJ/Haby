@@ -80,7 +80,7 @@ struct DailyView: View {
                 goalHabits
             }
             VStack {
-                Subtitle("Hod did you feel?")
+                Subtitle("How did you feel today?")
                 MoodPickerView(selectedMood: mood)
                     .padding([.horizontal])
                     .padding([.bottom], 32)
@@ -88,11 +88,26 @@ struct DailyView: View {
         }
             .background(Colors.BackgroundPrimary)
             .onAppear {
+                // move to VM
+                viewModel.getTodayHabits()
+                viewModel.askForNotificationPermission()
                 if !viewModel.isTodayMoodSaved() {
                     viewModel.updateMood(mood: .Neutral)
                 }
-                refreshData()
-                viewModel.askForNotificationPermission()
+                Task {
+                    print("🔐 Requesting HealthKit access...")
+                    await viewModel.requestMissingPermissions()
+                    
+                    print("👂 Starting HealthKit listeners...")
+                    viewModel.startListeningToHealthKit()
+                    
+                    print("📥 performing initial data load...")
+                    await viewModel.loadHealthDataForToday()
+                    await MainActor.run {
+                        viewModel.syncHealthDataToHabits()
+                    }
+                    
+                }
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
@@ -103,6 +118,7 @@ struct DailyView: View {
             .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
                 print("🔄 reloading data from Watch update...")
                 viewModel.getTodayHabits()
+                viewModel.startListeningToHealthKit()
             }
     }
     
@@ -116,5 +132,5 @@ struct DailyView: View {
 }
 
 #Preview {
-    DailyView(viewModel: DailyViewModel())
+    //DailyView(viewModel: DailyViewModel())
 }

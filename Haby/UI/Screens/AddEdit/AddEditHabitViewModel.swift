@@ -39,6 +39,27 @@ class AddEditHabitViewModel: ObservableObject {
             state.isEdit = true
         }
     }
+    
+    func checkHealthAuthForSelection() {
+        guard state.healthData else { return }
+        
+        if healthManager.needsAuthorization(for: state.selectedAmountType) {
+            print("🆕 User picked \(state.selectedAmountType), but permission is unknown. Asking now...")
+            Task {
+                await healthManager.requestAuthorization(for: state.selectedAmountType)
+            }
+        }
+    }
+    
+    func updateUnitSelection(_ newUnit: AmountUnit) {
+        state.selectedAmountType = newUnit
+        
+        if [.Steps, .Calories, .Kilometers].contains(newUnit) {
+            state.healthData = true
+            checkHealthAuthForSelection()
+        }
+    }
+
 
     func addOrUpdateHabit() {
         let habit = state.finalHabit
@@ -46,14 +67,5 @@ class AddEditHabitViewModel: ObservableObject {
         dataManager.upsert(model: habit)
         notificationManager.scheduleNotificationForHabit(habit: habit)
         phoneSessionManager.syncAllHabitsToWatch()
-    }
-    
-    func requestHealthAuthorization() {
-        if healthManager.hasAskedForPermission() {
-            return
-        }
-        Task {
-            _ = await healthManager.requestPermission()
-        }
     }
 }

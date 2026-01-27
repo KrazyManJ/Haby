@@ -38,6 +38,7 @@ struct DetailView: View {
                     Text("\(habit.data.type.name) • \(habit.data.details.frequency.name)")
                         .foregroundStyle(.textSecondary)
                 }
+                .padding(.top, 150)
             }
         }
     }

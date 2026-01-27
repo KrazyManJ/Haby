@@ -3,10 +3,25 @@ import HealthKit
 
 protocol HealthManaging {
     
-    func hasAskedForPermission() -> Bool
+    func debugHealthKit() async
+        
+    // auth
+    func stopListening()
+    func requestAuthorization(for unit: AmountUnit) async
+    func needsAuthorization(for unit: AmountUnit) -> Bool
+    func getQuantityType(for unit: AmountUnit) -> HKQuantityType?
+    func requestPermission(type: HKQuantityType) async
     
-    func requestPermission() async
+    //observing
+    func startObserver(type: HKQuantityType, fetcher: @escaping () async -> Double, onChange: @escaping (Double) -> Void)
     
+    func startObservingSteps(onChange: @escaping (Double) -> Void)
+    
+    func startObservingDistance(onChange: @escaping (Double) -> Void)
+    
+    func startObservingCalories(onChange: @escaping (Double) -> Void)
+    
+    //fetching
     func fetchStatistics(type: HKQuantityType, unit: HKUnit, startDate: Date, endDate: Date) async -> Double
     
     func fetchHistoricalData(type: HKQuantityType, unit: HKUnit, interval: DateComponents, startDate: Date, endDate: Date) async -> [HealthDataPoint]
@@ -26,12 +41,6 @@ protocol HealthManaging {
     func fetchWeekDistance() async -> Double
     
     func fetchCurrentMonthDistanceData() async -> [HealthDataPoint]
-    
-    func fetchTodayWorkoutTime() async -> Double
-    
-    func fetchWeekWorkoutTime() async -> Double
-    
-    func fetchCurrentMonthWorkoutTimeData() async -> [HealthDataPoint]
     
     func fetchTodayCalories() async -> Double
     

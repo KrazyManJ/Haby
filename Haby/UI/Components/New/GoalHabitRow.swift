@@ -43,10 +43,12 @@ struct GoalHabitRow: View {
                 Text("\(currentAmount.cleanString) / \(goalAmount.cleanString) \(goalUnit)")
                     .font(.caption2)
                     .foregroundStyle(.textSecondary)
-                Button(action: {
-                    isAddingSheetPresented = true
-                }) {
-                    Image(systemName: "plus")
+                if (!habit.isUsingHealthData){
+                    Button(action: {
+                        isAddingSheetPresented = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
             .padding([.horizontal], 8)

@@ -60,16 +60,19 @@ struct AddEditHabitView: View {
                 .pickerStyle(.menu)
                 .labelsHidden()
                 .foregroundStyle(Colors.TextPrimary)
+                .onChange(of: viewModel.state.selectedAmountType) { _, newUnit in
+                    viewModel.updateUnitSelection(newUnit)
+                }
             }
             .listRowBackground(Colors.BackgroundSecondary)
             if viewModel.state.selectedAmountType.isHealthData {
                 Toggle("Use Health Data", isOn: $viewModel.state.healthData)
                     .onChange(of: viewModel.state.healthData) { old, new in
-                        if new {
-                            viewModel.requestHealthAuthorization()
-                        }
+                    if new {
+                        viewModel.checkHealthAuthForSelection()
                     }
-                    .listRowBackground(Colors.BackgroundSecondary)
+                }
+                .listRowBackground(Colors.BackgroundSecondary)
             }
         }
         
