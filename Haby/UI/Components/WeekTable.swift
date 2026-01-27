@@ -2,80 +2,137 @@
 import SwiftUI
 
 struct WeekTable: View {
-    //@Binding var viewModel: WeeklyViewModel
-    @ObservedObject var viewModel: WeeklyViewModel
+    @Binding var viewModel: WeeklyViewModel
+    
     @State private var showingConfirmation = false
     @State private var habitToUncheck: HabitDefinition?
     @State private var dateToUncheck: Date?
     
-    private let weekDates = Calendar.current.currentWeekDates()
+    private let weekDates = Calendar.currentWithMondayAsSWeekStartDay.currentWeekDates()
     
-    func isHabitValid(habit: HabitDefinition, date: Date) -> Bool {
-        var timestamp = date.hourAndMinutesToMinutesTimestamp
-        if habit.frequency == .Weekly {
-            timestamp += WeekDay(from: date).toTimestamp
+    private var tableHeader: some View {
+        HStack {
+            Color.clear.frame(width: 30)
+            ForEach(weekDates, id: \.self) { date in
+                VStack {
+                    Text(date.shortWeekday.uppercased())
+                        .font(.caption)
+                        .if(Date().weekday == date.weekday) {
+                            $0
+                                .foregroundStyle(.brandPrimary)
+                                .bold()
+                        }
+                    Text("\(Calendar.current.component(.day, from: date))")
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
+                .frame(width: 35)
+            }
         }
-        return habit.canBeCheckedInTimestamp(timestamp: timestamp)
+        .font(.headline)
+        .padding(.bottom, 4)
     }
     
+    private var tableBody: some View {
+        
+        ForEach(viewModel.state.habits) { habit in
+            HStack {
+                Image(systemName: habit.icon)
+                    .frame(width: 30, alignment: .leading)
+                
+                ForEach(weekDates, id: \.self) { date in
+                    
+                    let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
+                    var checked: Bool {
+                        if let record = record {
+                            return record.data.details.date.weekday == date.weekday
+                        }
+                        return false
+                    }
+                    var enabled: Bool {
+                        return date.onlyDate == Date().onlyDate || checked
+                    }
+                    var isValid: Bool {
+                        
+                        var timestamp: Int?
+                        switch habit.data {
+                        case .Deadline(let data):
+                            timestamp = data.minutesOfCompletionInFrequency
+                        case .OnTime(let data):
+                            timestamp = data.minutesOfCompletionInFrequency
+                        default:
+                            break
+                        }
+                        
+                        var canCompleteThatDay: Bool {
+                            if Date().weekday == date.weekday {
+                                return Date().minutesFromStartOfWeek() <= (timestamp ?? 0)
+                            }
+                            return date.minutesFromStartOfWeek() <= (timestamp ?? 0)
+                        }
+                        if let record = record {
+                            return record.data.details.date.weekday == date.weekday ? record.isSatisfied : canCompleteThatDay
+                        }
+                        
+                        return canCompleteThatDay
+                    }
+        
+                    
+                    let checkBinding = Binding<Bool>(
+                        get: { checked },
+                        set: { newValue in
+                            if checked {
+                                habitToUncheck = habit
+                                dateToUncheck = date
+                                showingConfirmation = true
+                            }
+                            else if record == nil {
+                                viewModel.setHabit(habit, checked: true, on: Date())
+                            }
+                        }
+                    )
+                    
+                    CircleCheck(isOn: checkBinding, isInvalid: !isValid)
+                        .frame(width: 35, alignment: .center)
+                        .disabled(!enabled)
+//                            let isChecked = viewModel.isHabitChecked(habit: habit, on: date)
+//                            let isValid = isHabitValid(habit: habit, date: date)
+//                            let selectedDate = viewModel.selectedDates[habit.id]
+//                            let isSelectedDay = selectedDate != nil && Calendar.current.isDate(selectedDate!, inSameDayAs: date)
+//                            let isDisabled = selectedDate != nil && !isSelectedDay
+//
+//                            CircleCheck(
+//                                isOn: Binding<Bool>(
+//                                    get: { isChecked },
+//                                    set: { newValue in
+//                                        if isChecked {
+//                                            habitToUncheck = habit
+//                                            dateToUncheck = date
+//                                            showingConfirmation = true
+//                                        } else {
+//                                            viewModel.setHabit(habit, checked: true, on: date)
+//                                            viewModel.selectedDates[habit.id] = date
+//                                        }
+//                                    }
+//                                ),
+//                                isInvalid: !isValid || isDisabled
+//                            )
+//                            .frame(width: 35, alignment: .center)
+//                            .disabled(isDisabled)
+//                            .if(isChecked) {
+//                                $0.foregroundStyle(isValid ? Colors.Primary : Colors.Destructive)
+//                            }
+                }
+            }
+            .padding(.top, 10)
+        }
+    }
     
     var body: some View {
         Card {
             VStack(alignment: .center, spacing: 8) {
-                HStack {
-                    Color.clear.frame(width: 30)
-                    ForEach(weekDates, id: \.self) { date in
-                        VStack {
-                            Text(date.shortWeekday.uppercased())
-                                .font(.caption)
-                            Text("\(Calendar.current.component(.day, from: date))")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                        .frame(width: 35)
-                    }
-                }
-                .font(.headline)
-                .padding(.bottom, 4)
-                
-                ForEach(viewModel.state.habits) { habit in
-                    HStack {
-                        Image(systemName: habit.icon)
-                            .frame(width: 30, alignment: .leading)
-                        
-                        ForEach(weekDates, id: \.self) { date in
-                            let isChecked = viewModel.isHabitChecked(habit: habit, on: date)
-                            let isValid = isHabitValid(habit: habit, date: date)
-                            let selectedDate = viewModel.selectedDates[habit.id]
-                            let isSelectedDay = selectedDate != nil && Calendar.current.isDate(selectedDate!, inSameDayAs: date)
-                            let isDisabled = selectedDate != nil && !isSelectedDay
-                            
-                            CircleCheck(
-                                isOn: Binding<Bool>(
-                                    get: { isChecked },
-                                    set: { newValue in
-                                        if isChecked {
-                                            habitToUncheck = habit
-                                            dateToUncheck = date
-                                            showingConfirmation = true
-                                        } else {
-                                            let cleanDate = Calendar.current.startOfDay(for: date)
-                                            viewModel.setHabit(habit, checked: true, on: date)
-                                            viewModel.selectedDates[habit.id] = date
-                                        }
-                                    }
-                                ),
-                                isInvalid: !isValid || isDisabled
-                            )
-                            .frame(width: 35, alignment: .center)
-                            .disabled(isDisabled)
-                            .if(isChecked) {
-                                $0.foregroundStyle(isValid ? Colors.Primary : Colors.Destructive)
-                            }
-                        }
-                    }
-                    .padding(.top, 10)
-                }
+                tableHeader
+                tableBody
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -88,7 +145,6 @@ struct WeekTable: View {
             Button("Uncheck", role: .destructive) {
                 if let habit = habitToUncheck, let date = dateToUncheck {
                     viewModel.setHabit(habit, checked: false, on: date)
-                    viewModel.selectedDates[habit.id] = nil
                 }
             }
             Button("Cancel", role: .cancel) {}
@@ -97,5 +153,6 @@ struct WeekTable: View {
 }
 
 #Preview {
-//    WeekTable(viewModel: WeeklyViewModel(), showingConfirmation: false, habitToUncheck: <#T##HabitDefinition?#>, dateToUncheck: <#T##Date?#>)
+    WeeklyView()
+        .preferredColorScheme(.dark)
 }

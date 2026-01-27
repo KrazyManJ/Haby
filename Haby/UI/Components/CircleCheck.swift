@@ -2,7 +2,11 @@
 import SwiftUI
 
 struct CircleToggleStyle: ToggleStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    
     var isInvalid: Bool
+    
+    var col: Color { isInvalid ? .destructive : .textPrimary }
     
     func makeBody(configuration: Configuration) -> some View {
         HStack {
@@ -10,10 +14,10 @@ struct CircleToggleStyle: ToggleStyle {
                 if configuration.isOn {
                     Image(systemName: isInvalid ? "xmark" : "checkmark")
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(isInvalid ? .red : .primary)
+                        .foregroundColor(isInvalid ? .destructive : .brandSecondary)
                 } else {
                     Circle()
-                        .stroke(lineWidth: 3)
+                        .stroke(isEnabled ? col : col.opacity(0.5) ,  lineWidth: 2)
                         .frame(width: 16, height: 16)
                 }
             }

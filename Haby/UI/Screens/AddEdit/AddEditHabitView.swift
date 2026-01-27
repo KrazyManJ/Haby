@@ -33,6 +33,7 @@ struct AddEditHabitView: View {
                             .font(.caption)
                     }
                 }
+                .buttonStyle(.borderless)
                 TextField(
                     "",
                     text: $viewModel.state.habit.name,

@@ -56,7 +56,7 @@ final class CoreDataManager: DataManaging {
             }
             
             #if os(iOS)
-//            self.reCreate(description: description)
+            self.reCreate(description: description)
             #endif
         }
         

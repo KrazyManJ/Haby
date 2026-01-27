@@ -4,6 +4,16 @@
     "" : {
 
     },
+    " / %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : " / %1$@ %2$@"
+          }
+        }
+      }
+    },
     "...at the top right corner." : {
 
     },
@@ -141,9 +151,6 @@
     "goal %@" : {
 
     },
-    "Goals" : {
-
-    },
     "Habit description" : {
 
     },
@@ -177,6 +184,9 @@
     "No goal habits for this week!" : {
 
     },
+    "No habits for this day to complete" : {
+
+    },
     "No weekly habits!" : {
 
     },
@@ -199,9 +209,6 @@
 
     },
     "Use Health Data" : {
-
-    },
-    "Week Timeline" : {
 
     },
     "Weekly Time" : {

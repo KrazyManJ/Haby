@@ -82,6 +82,16 @@ extension CoreDataManager {
             targetValueUnit: .Hours,
             data: .Amount(data: .init(frequency: .Weekly, amount: 10, unit: .Hours))
         )
+        
+        let weeklyTest = HabitDefinition(
+            name: "Cleaning",
+            icon: "brush",
+            creationDate: createdAt,
+            type: .Amount,
+            frequency: .Weekly,
+            targetTimestamp: 60 * 15 + 60 * 24 * 5,
+            data: .Deadline(data: .init(frequency: .Weekly, minutesOfCompletionInFrequency: 60 * 15 + 60 * 24 * 5))
+        )
                 
         let habits = [yoga,yoga2,pill,walk,journaling]
         
@@ -92,6 +102,7 @@ extension CoreDataManager {
         _ = habits.map { $0.toEntity()}
         _ = createMockHabitRecords(for: habits).map { $0.toEntity()}
         _ = test.toEntity()
+        _ = weeklyTest.toEntity()
         _ = createMockMoodRecords().map({ $0.toEntity() })
         
 //         Habit that will break streak if not correct coded :]
@@ -113,7 +124,6 @@ extension CoreDataManager {
         var records = [HabitRecord]()
         let today = Date().onlyDate
 
-        // Excluding today include 48
         let validDaysOffsets = []+(1...8)+(12...16)+[18]+(22...48)+[50]
         
 

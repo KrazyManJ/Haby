@@ -6,49 +6,55 @@ struct WeeklyView: View {
     @State private var viewModel: WeeklyViewModel
     
     @Environment(\.scenePhase) var scenePhase
-//    @ObservedObject var sessionManager = PhoneSessionManager.shared
+    @Environment(\.mainTabViewRefresh) var performMainTabViewRefresh
     
     init(viewModel: WeeklyViewModel = WeeklyViewModel()) {
         self.viewModel = viewModel
     }
     
+    private var goalHabits: some View {
+        Card {
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.state.amountHabits) { habit in
+                    let record = viewModel.state.habitRecords.first { $0.habitDefinition.id == habit.id }
+                    
+                    var amount: Float {
+                        switch record?.data {
+                        case .Amount(let data): data.value
+                        default: 0.0
+                        }
+                    }
+                    
+                    GoalHabitRow(
+                        habit: habit,
+                        currentAmount: amount
+                    ) { addValue in
+                        viewModel.addToWeeklyAmountHabit(habit: habit, addedAmount: addValue)
+                        performMainTabViewRefresh()
+                    }
+                }
+            }
+            .padding()
+        }
+        .padding()
+    }
+    
     var body: some View {
         VStack{
             ScrollView {
-                Text("Week Timeline")
-                    .padding(.horizontal, 32)
-                    .padding([.top], 16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.title3).bold()
-                if !viewModel.state.habits.filter({ $0.type != .Amount }).isEmpty {
+                Subtitle("Week table")
+                if !viewModel.state.habits.filter({ $0.data.type != .Amount }).isEmpty {
                     
-                    WeekTable(viewModel: viewModel)
+                    WeekTable(viewModel: $viewModel)
                         .padding()
                 }  else {
                     Text("No weekly habits!").italic().foregroundColor(.gray)
                         .padding(.vertical,32)
                 }
                 
-                Text("Goals")
-                    .padding(.horizontal, 32)
-                    .padding([.top], 16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.title3).bold()
+                Subtitle("Goals")
                 if !viewModel.state.amountHabits.isEmpty {
-                    Card {
-                        LazyVStack(spacing: 0) {
-                            ForEach(viewModel.state.amountHabits) { habit in
-                                WeeklyGoalProgressBar(
-                                    viewModel: $viewModel, habit: habit
-                                )
-                                .padding(8)
-                            }
-                            Spacer(minLength: 0)
-                        }
-                        .padding()
-                    }
-                    .frame(minHeight: 100)
-                    .padding()
+                    goalHabits
                 }  else {
                     Text("No goal habits for this week!")
                         .italic().foregroundColor(Color.gray).padding(.vertical,32)
@@ -68,12 +74,12 @@ struct WeeklyView: View {
             print("🔄 reloading data from Watch update...")
             viewModel.getWeekHabits()
         }
-        .onChange(of: viewModel.state.habits) { oldHabits, newHabits in
-            if !newHabits.isEmpty {
-                print("📤 Habits loaded. Syncing to Watch...")
-//                sessionManager.syncAllHabitsToWatch()
-            }
-        }
         .background(Colors.BackgroundPrimary)
     }
+}
+
+#Preview {
+    WeeklyView()
+        .preferredColorScheme(.dark)
+        .foregroundStyle(.textPrimary)
 }
