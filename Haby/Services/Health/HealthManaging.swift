@@ -13,14 +13,18 @@ protocol HealthManaging {
     func requestPermission(type: HKQuantityType) async
     
     //observing
-    func startObserver(type: HKQuantityType, fetcher: @escaping () async -> Double, onChange: @escaping (Double) -> Void)
+    func startObserver(type: HKQuantityType, onUpdate: @escaping () -> Void)
     
+    func startObservingSteps(onUpdate: @escaping () -> Void)
+    func startObservingCalories(onUpdate: @escaping () -> Void)
+    func startObservingDistance(onUpdate: @escaping () -> Void)
+    /*
     func startObservingSteps(onChange: @escaping (Double) -> Void)
     
     func startObservingDistance(onChange: @escaping (Double) -> Void)
     
     func startObservingCalories(onChange: @escaping (Double) -> Void)
-    
+    */
     //fetching
     func fetchStatistics(type: HKQuantityType, unit: HKUnit, startDate: Date, endDate: Date) async -> Double
     

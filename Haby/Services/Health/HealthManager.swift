@@ -45,14 +45,14 @@ class HealthManager: HealthManaging {
         }
     }
     
-    internal func startObserver(type: HKQuantityType, fetcher: @escaping () async -> Double, onChange: @escaping (Double) -> Void) {
-        healthStore.enableBackgroundDelivery(for: type, frequency: .immediate) { success, error in
-            if let error = error {
-                print("⚠️ Failed to enable background delivery for \(type): \(error.localizedDescription)")
-            } else {
-                print("✅ Background delivery enabled for \(type)")
-            }
-        }
+    internal func startObserver(type: HKQuantityType, onUpdate: @escaping () -> Void) {
+//        healthStore.enableBackgroundDelivery(for: type, frequency: .immediate) { success, error in
+//            if let error = error {
+//                print("⚠️ Failed to enable background delivery for \(type): \(error.localizedDescription)")
+//            } else {
+//                print("✅ Background delivery enabled for \(type)")
+//            }
+//        }
         
         let observerQuery = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] query, completion, error in
             guard self != nil else { return }
@@ -65,15 +65,17 @@ class HealthManager: HealthManaging {
             
             Task {
                 try? await Task.sleep(for: .seconds(0.5))
-                let newTotal = await fetcher()
+                //let newTotal = await fetcher()
                 await MainActor.run {
-                    onChange(newTotal)
+                    //onChange(newTotal)
+                    onUpdate()
                 }
                 completion()
             }
         }
         
         healthStore.execute(observerQuery)
+        healthStore.enableBackgroundDelivery(for: type, frequency: .immediate) { _, _ in }
         activeQueries.append(observerQuery)
     }
     
@@ -84,6 +86,18 @@ class HealthManager: HealthManaging {
         activeQueries.removeAll()
     }
     
+    func startObservingSteps(onUpdate: @escaping () -> Void) {
+        startObserver(type: stepType, onUpdate: onUpdate)
+    }
+
+    func startObservingCalories(onUpdate: @escaping () -> Void) {
+        startObserver(type: activeEnergyType, onUpdate: onUpdate)
+    }
+    
+    func startObservingDistance(onUpdate: @escaping () -> Void) {
+        startObserver(type: distanceType, onUpdate: onUpdate)
+    }
+    /*
     func startObservingSteps(onChange: @escaping (Double) -> Void) {
         startObserver(type: stepType) { [weak self] in
             guard let self = self else { return 0.0 }
@@ -110,7 +124,7 @@ class HealthManager: HealthManaging {
             onChange(val)
         }
     }
-    
+    */
 
     // returns single value for time range (day, week, month)
     func fetchStatistics(

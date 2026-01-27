@@ -63,6 +63,20 @@ struct WeeklyView: View {
         }
         .onAppear {
             viewModel.refreshData()
+            Task {
+                //print("🔐 Requesting HealthKit access...")
+                await viewModel.requestMissingPermissions()
+                
+                //print("👂 Starting HealthKit listeners...")
+                viewModel.startListeningToHealthKit()
+                
+               // print("📥 performing initial data load...")
+                await viewModel.loadHealthDataForThisWeek()
+                await MainActor.run {
+                    viewModel.syncHealthDataToHabits()
+                }
+                
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {

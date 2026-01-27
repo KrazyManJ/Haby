@@ -6,20 +6,149 @@ class WeeklyViewModel: ObservableObject {
     var state: WeeklyViewState = WeeklyViewState()
     
     @ObservationIgnored @Injected var dataManaging: DataManaging
-    @ObservationIgnored @Injected var healthKitManager: HealthManaging
+    @ObservationIgnored @Injected var healthManager: HealthManaging
     
-    var stepsThisWeek: Int = 0
-    var isLoadingSteps: Bool = false
-    var showHealthKitError: Bool = false
+    var healthData: [AmountUnit: Double] = [:]
+//    var stepsThisWeek: Int = 0
+//    var isLoadingSteps: Bool = false
+//    var showHealthKitError: Bool = false
     
-    func loadStepData() async {
-        await fetchStepsThisWeek()
-    }
+//    func loadStepData() async {
+//        await fetchStepsThisWeek()
+//    }
+//    
+//    private func fetchStepsThisWeek() async {
+//        stepsThisWeek = await Int(healthKitManager.fetchWeekSteps())
+//    }
     
-    private func fetchStepsThisWeek() async {
-        stepsThisWeek = await Int(healthKitManager.fetchWeekSteps())
+    func startListeningToHealthKit() {
+        healthManager.stopListening()
+        let requiredUnits = Set(state.amountHabits
+            .filter { $0.isUsingHealthData }
+            .compactMap { $0.targetValueUnit }
+        )
+            
+        if requiredUnits.contains(.Steps) {
+            healthManager.startObservingSteps { [weak self] in
+                Task {
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchWeekSteps()
+                    self.healthData[.Steps] = steps
+                    self.syncHealthDataToHabits()
+                }
+            }
+        }
+        if requiredUnits.contains(.Calories) {
+            healthManager.startObservingCalories { [weak self] in
+                Task {
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchWeekCalories()
+                    self.healthData[.Calories] = steps
+                    self.syncHealthDataToHabits()
+                }
+            }
+        }
+        if requiredUnits.contains(.Kilometers) {
+            healthManager.startObservingDistance { [weak self] in
+                Task { @MainActor in
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchWeekDistance()
+                    self.healthData[.Kilometers] = steps
+                    self.syncHealthDataToHabits()
+                }
+            }
+        }
     }
 
+    func requestMissingPermissions() async {
+        let requiredUnits = Set(state.amountHabits
+            .filter { $0.isUsingHealthData }
+            .compactMap { $0.targetValueUnit }
+        )
+        
+        for unit in requiredUnits {
+            if healthManager.needsAuthorization(for: unit) {
+//                print("🆕 Requesting permission for \(unit)...")
+                await healthManager.requestAuthorization(for: unit)
+            }
+        }
+    }
+
+
+    func loadHealthDataForThisWeek() async {
+        let requiredUnits = Set(state.amountHabits
+            .filter { $0.isUsingHealthData }
+            .compactMap { $0.targetValueUnit }
+        )
+        
+        if requiredUnits.contains(.Steps) {
+            let steps = await healthManager.fetchWeekSteps()
+            healthData[.Steps] = steps
+//            print("🫀 DEBUG: Fetched Steps: \(steps)")
+        }
+        
+        if requiredUnits.contains(.Calories) {
+            let calories = await healthManager.fetchWeekCalories()
+            healthData[.Calories] = calories
+//            print("🫀 DEBUG: Fetched calories: \(calories)")
+        }
+        
+        if requiredUnits.contains(.Kilometers) {
+            let dist = await healthManager.fetchWeekDistance()
+            healthData[.Kilometers] = dist
+//            print("🫀 DEBUG: Fetched distance: \(dist)")
+
+        }
+        let queryDate = Date().onlyDate
+//            print("🗓️ DEBUG: Querying Database for Date: \(queryDate)")
+        let records = dataManaging.getWeekRecords()
+        //    print("🗄️ DEBUG: Database returned \(records.count) records")
+            for r in records {
+          //      print("   -> Found Record: \(r.value) for \(r.habitDefinition.name) at \(r.date)")
+            }
+    }
+    
+    func syncHealthDataToHabits() {
+        var hasChanges = false
+        
+        for habit in state.amountHabits {
+            guard habit.isUsingHealthData,
+                  let unit = habit.targetValueUnit,
+                  let healthValue = healthData[unit] else { continue }
+            
+            let newValue = Float(healthValue)
+            
+            if let index = state.habitRecords.firstIndex(where: { $0.habitDefinition.id == habit.id }) {
+                if state.habitRecords[index].value != newValue {
+               //     print("🔄 Syncing \(habit.name): \(state.habitRecords[index].value ?? 0) -> \(newValue)")
+                    state.habitRecords[index].value = newValue
+                    state.habitRecords[index].data = .Amount(data: .init(date: Date().onlyDate, value: newValue))
+                    
+                    dataManaging.upsert(model: state.habitRecords[index])
+                    hasChanges = true
+                }
+            } else {
+                let newRecord = HabitRecord(
+                    id: UUID(),
+                    date: Date().onlyDate,
+                    value: newValue,
+                    habitDefinition: habit,
+                    data: .Amount(data: .init(date: Date().onlyDate, value: newValue))
+                )
+                state.habitRecords.append(newRecord)
+                dataManaging.upsert(model: newRecord)
+               // print("⚡️ Live Create (UI): \(habit.name) -> \(newValue)")
+                hasChanges = true
+            }
+        }
+        if hasChanges {
+            let temp = state.habitRecords
+            state.habitRecords = temp
+        }
+        state.habitRecords = dataManaging.getWeekRecords()
+    }
+    
+    /*
     func syncHealthDataToHabits() {
         for habit in state.amountHabits {
             guard habit.isUsingHealthData,
@@ -44,7 +173,7 @@ class WeeklyViewModel: ObservableObject {
         }
         state.habitRecords = dataManaging.getWeekRecords()
     }
-    
+    */
     func getWeekHabits() {
         state.amountHabits = dataManaging.getAmountHabitsForWeek()
         state.habitRecords = dataManaging.getWeekRecords()
@@ -116,9 +245,9 @@ class WeeklyViewModel: ObservableObject {
     }
     
     func totalWeeklyAmount(for habit: HabitDefinition, weekOf date: Date = Date()) -> Float {
-        if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
-                return Float(stepsThisWeek)
-            }
+//        if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
+//                return Float(stepsThisWeek)
+//            }
 
         let calendar = Calendar.currentWithMondayAsSWeekStartDay
 
@@ -133,7 +262,7 @@ class WeeklyViewModel: ObservableObject {
     func refreshData() {
         getWeekHabits()
         Task {
-            await loadStepData()
+//            await loadStepData()
             syncHealthDataToHabits()
         }
     }

@@ -116,13 +116,13 @@ struct DailyView: View {
                     viewModel.updateMood(mood: .Neutral)
                 }
                 Task {
-                    print("🔐 Requesting HealthKit access...")
+                    //print("🔐 Requesting HealthKit access...")
                     await viewModel.requestMissingPermissions()
                     
-                    print("👂 Starting HealthKit listeners...")
+                   // print("👂 Starting HealthKit listeners...")
                     viewModel.startListeningToHealthKit()
                     
-                    print("📥 performing initial data load...")
+                  //  print("📥 performing initial data load...")
                     await viewModel.loadHealthDataForToday()
                     await MainActor.run {
                         viewModel.syncHealthDataToHabits()

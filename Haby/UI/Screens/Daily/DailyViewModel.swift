@@ -16,7 +16,6 @@ class DailyViewModel {
     
     var healthData: [AmountUnit: Double] = [:]
     
-    
     func startListeningToHealthKit() {
         healthManager.stopListening()
         let requiredUnits = Set(state.amountHabits
@@ -25,29 +24,32 @@ class DailyViewModel {
         )
             
         if requiredUnits.contains(.Steps) {
-            healthManager.startObservingSteps { [weak self] val in
-                Task { @MainActor in
-                    print("live update: steps changed to \(val)")
-                    self?.healthData[.Steps] = val
-                    self?.syncHealthDataToHabits()
+            healthManager.startObservingSteps { [weak self] in
+                Task {
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchTodaySteps()
+                    self.healthData[.Steps] = steps
+                    self.syncHealthDataToHabits()
                 }
             }
         }
         if requiredUnits.contains(.Calories) {
-            healthManager.startObservingCalories { [weak self] val in
-                Task { @MainActor in
-                    print("live update: calories changed to \(val)")
-                    self?.healthData[.Calories] = val
-                    self?.syncHealthDataToHabits()
+            healthManager.startObservingCalories { [weak self] in
+                Task {
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchTodayCalories()
+                    self.healthData[.Calories] = steps
+                    self.syncHealthDataToHabits()
                 }
             }
         }
         if requiredUnits.contains(.Kilometers) {
-            healthManager.startObservingDistance { [weak self] val in
+            healthManager.startObservingDistance { [weak self] in
                 Task { @MainActor in
-                    print("live update: km changed to \(val)")
-                    self?.healthData[.Kilometers] = val
-                    self?.syncHealthDataToHabits()
+                    guard let self else { return }
+                    let steps = await self.healthManager.fetchTodayDistance()
+                    self.healthData[.Kilometers] = steps
+                    self.syncHealthDataToHabits()
                 }
             }
         }
@@ -61,7 +63,7 @@ class DailyViewModel {
         
         for unit in requiredUnits {
             if healthManager.needsAuthorization(for: unit) {
-                print("🆕 Requesting permission for \(unit)...")
+//                print("🆕 Requesting permission for \(unit)...")
                 await healthManager.requestAuthorization(for: unit)
             }
         }
@@ -78,27 +80,27 @@ class DailyViewModel {
         if requiredUnits.contains(.Steps) {
             let steps = await healthManager.fetchTodaySteps()
             healthData[.Steps] = steps
-            print("🫀 DEBUG: Fetched Steps: \(steps)")
+//            print("🫀 DEBUG: Fetched Steps: \(steps)")
         }
         
         if requiredUnits.contains(.Calories) {
             let calories = await healthManager.fetchTodayCalories()
             healthData[.Calories] = calories
-            print("🫀 DEBUG: Fetched calories: \(calories)")
+//            print("🫀 DEBUG: Fetched calories: \(calories)")
         }
         
         if requiredUnits.contains(.Kilometers) {
             let dist = await healthManager.fetchTodayDistance()
             healthData[.Kilometers] = dist
-            print("🫀 DEBUG: Fetched distance: \(dist)")
+//            print("🫀 DEBUG: Fetched distance: \(dist)")
 
         }
         let queryDate = Date().onlyDate
-            print("🗓️ DEBUG: Querying Database for Date: \(queryDate)")
+//            print("🗓️ DEBUG: Querying Database for Date: \(queryDate)")
         let records = dataManaging.getTodayRecords()
-            print("🗄️ DEBUG: Database returned \(records.count) records")
+//            print("🗄️ DEBUG: Database returned \(records.count) records")
             for r in records {
-                print("   -> Found Record: \(r.value) for \(r.habitDefinition.name) at \(r.date)")
+//                print("   -> Found Record: \(r.value) for \(r.habitDefinition.name) at \(r.date)")
             }
     }
     
@@ -118,7 +120,7 @@ class DailyViewModel {
             
             if let index = state.habitRecords.firstIndex(where: { $0.habitDefinition.id == habit.id }) {
                 if state.habitRecords[index].value != newValue {
-                    print("🔄 Syncing \(habit.name): \(state.habitRecords[index].value ?? 0) -> \(newValue)")
+//                    print("🔄 Syncing \(habit.name): \(state.habitRecords[index].value ?? 0) -> \(newValue)")
                     state.habitRecords[index].value = newValue
                     state.habitRecords[index].data = .Amount(data: .init(date: Date().onlyDate, value: newValue))
                     
@@ -135,7 +137,7 @@ class DailyViewModel {
                 )
                 state.habitRecords.append(newRecord)
                 dataManaging.upsert(model: newRecord)
-                print("⚡️ Live Create (UI): \(habit.name) -> \(newValue)")
+//                print("⚡️ Live Create (UI): \(habit.name) -> \(newValue)")
                 hasChanges = true
             }
         }
