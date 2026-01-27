@@ -24,6 +24,7 @@ fileprivate extension Date {
 }
 
 
+
 struct OverviewDetailSheet: View {
     
     @Environment(\.dismiss) private var dismiss
@@ -38,6 +39,34 @@ struct OverviewDetailSheet: View {
                 return record?.isSatisfied ?? false
             }
             .count
+    }
+    
+    var habitsNonEmptyList: some View {
+        ForEach(selectedDateData.habitsForDate) { habit in
+            Card(cornerRadius: 8) {
+                HStack {
+                    Image(systemName: habit.icon)
+                    VStack(alignment: .leading) {
+                        Text(habit.name)
+                            .bold()
+                        Text(habit.data.type.name)
+                            .font(.caption)
+                            .foregroundStyle(.textSecondary)
+                    }
+                    Spacer()
+                    
+                    let record = selectedDateData.habitRecords.first { $0.habitDefinition.id == habit.id }
+                    let isSatisfied = record?.isSatisfied ?? false
+                    
+                    Text(isSatisfied ? "Completed" : "Incompleted")
+                        .if(isSatisfied) { $0.foregroundStyle(.brandSecondary) }
+                        .if(!isSatisfied) { $0.foregroundStyle(.destructive) }
+                }
+                .padding(8)
+                .padding([.horizontal], 8)
+                .frame(maxWidth: .infinity)
+            }
+        }
     }
     
     var body: some View {
@@ -58,37 +87,24 @@ struct OverviewDetailSheet: View {
                     }
                     Text(selectedDateData.mood?.id ?? "Non-specified")
                         .bold()
-                    Text("\(completedHabits)/\(habitsCount) Completed")
-                        .foregroundStyle(.textSecondary)
-                        .font(.footnote)
+                    if !selectedDateData.habitsForDate.isEmpty {
+                        Text("\(completedHabits)/\(habitsCount) Completed")
+                            .foregroundStyle(.textSecondary)
+                            .font(.footnote)
+                    }
                 }
                 .padding([.vertical], 32)
                 LazyVStack {
-                    ForEach(selectedDateData.habitsForDate) { habit in
-                        Card(cornerRadius: 8) {
-                            HStack {
-                                Image(systemName: habit.icon)
-                                VStack(alignment: .leading) {
-                                    Text(habit.name)
-                                        .bold()
-                                    Text(habit.data.type.name)
-                                        .font(.caption)
-                                        .foregroundStyle(.textSecondary)
-                                }
-                                Spacer()
-                                
-                                let record = selectedDateData.habitRecords.first { $0.habitDefinition.id == habit.id }
-                                let isSatisfied = record?.isSatisfied ?? false
-                                
-                                Text(isSatisfied ? "Completed" : "Incompleted")
-                                    .if(isSatisfied) { $0.foregroundStyle(.brandSecondary) }
-                                    .if(!isSatisfied) { $0.foregroundStyle(.destructive) }
-                            }
-                            .padding(8)
-                            .padding([.horizontal], 8)
-                            .frame(maxWidth: .infinity)
-                        }
+                    if selectedDateData.habitsForDate.isEmpty {
+                        Spacer()
+                        Text("No habits for this day to complete")
+                            .foregroundStyle(.textSecondary)
+                            .bold()
+                            .padding(.top, 64)
+                    } else {
+                        habitsNonEmptyList
                     }
+                    
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -112,7 +128,6 @@ struct OverviewDetailSheet: View {
         }
         .presentationDetents([.medium])
         .presentationBackground(.backgroundPrimary)
-        
     }
 }
 
@@ -127,8 +142,8 @@ struct OverviewDetailSheet: View {
             OverviewDetailSheet(
                 selectedDateData: SelectedDateData(
                     date: date,
-//                    mood: dataManager.getMoodRecordByDate(date: date)?.toModel().mood,
-                    mood: nil,
+                    mood: dataManager.getMoodRecordByDate(date: date)?.toModel().mood,
+//                    mood: nil,
                     habitRecords: dataManager.getRecordsByDate(date: date),
                     habitsForDate: dataManager.getHabitsForDate(date: date).filter { date.nextDay > $0.creationDate }
                 )

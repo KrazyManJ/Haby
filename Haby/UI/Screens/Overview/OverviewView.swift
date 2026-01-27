@@ -37,9 +37,6 @@ struct OverviewView: View {
                 }
                 .frame(height: 300)
                 .padding()
-                Text("Steps Today: \(Int(viewModel.state.stepsToday))")
-                    .font(.title)
-                StepsChart(data: viewModel.state.monthlySteps)
             }
         }.toolbar(.hidden, for: .tabBar)
         .background(Colors.BackgroundPrimary.ignoresSafeArea())
