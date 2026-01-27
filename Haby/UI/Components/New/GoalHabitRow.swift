@@ -76,6 +76,7 @@ struct GoalHabitRow: View {
             name: "Walking",
             icon: "figure.walk",
             creationDate: Date(),
+            category: "Wellbeing",
             type: .Amount,
             frequency: .Daily,
             data: .Amount(data: .init(frequency: .Daily, amount: 1000, unit: .Steps))

@@ -7,6 +7,9 @@
     "...at the top right corner." : {
 
     },
+    "%@" : {
+
+    },
     "%@ / %@ %@" : {
       "localizations" : {
         "en" : {
@@ -78,6 +81,9 @@
 
     },
     "Cancel" : {
+
+    },
+    "Category" : {
 
     },
     "Check Habit" : {
@@ -170,6 +176,9 @@
     "No weekly habits!" : {
 
     },
+    "Or create new..." : {
+
+    },
     "Progress:" : {
 
     },
@@ -177,6 +186,9 @@
 
     },
     "Save Habit" : {
+
+    },
+    "Select..." : {
 
     },
     "Steps" : {

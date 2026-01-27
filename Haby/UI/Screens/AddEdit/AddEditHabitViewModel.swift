@@ -9,6 +9,9 @@ class AddEditHabitViewModel: ObservableObject {
     @ObservationIgnored @Injected private var healthManager: HealthManaging
     @ObservationIgnored @Injected private var dataManager: DataManaging
     @ObservationIgnored @Injected private var phoneSessionManager: PhoneSessionManaging
+    @ObservationIgnored @Injected private var categoryManager: CategoryManaging
+    
+    var availableCategories: [String] = []
     
     init(habit: HabitDefinition? = nil) {
         if let habit = habit {
@@ -38,6 +41,7 @@ class AddEditHabitViewModel: ObservableObject {
             
             state.isEdit = true
         }
+        self.availableCategories = categoryManager.fetchCategories()
     }
     
     func checkHealthAuthForSelection() {
@@ -62,6 +66,11 @@ class AddEditHabitViewModel: ObservableObject {
 
 
     func addOrUpdateHabit() {
+        let categoryToSave = state.selectedCategory.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !categoryToSave.isEmpty {
+             categoryManager.addCategory(categoryToSave)
+        }
+        state.selectedCategory = categoryToSave
         let habit = state.finalHabit
         print("add",habit.id)
         dataManager.upsert(model: habit)

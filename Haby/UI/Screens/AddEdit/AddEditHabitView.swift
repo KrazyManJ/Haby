@@ -39,6 +39,10 @@ struct AddEditHabitView: View {
                 )
             }
                 .formFieldCustomStyles()
+            CategoryPicker(
+                habitCategories: $viewModel.availableCategories,
+                selection: $viewModel.state.selectedCategory
+            )
         } header: {
             Text("Habit description")
                 .foregroundStyle(.textSecondary)
@@ -180,6 +184,13 @@ struct AddEditHabitView: View {
                 Image(systemName: "xmark.circle")
             }
             .background(.backgroundPrimary)
+        }
+        .onAppear {
+            let current = viewModel.state.habit.category
+            if !current.isEmpty && !viewModel.availableCategories.contains(current) {
+                viewModel.availableCategories.append(current)
+            }
+            viewModel.state.selectedCategory = viewModel.state.habit.category
         }
     }
 }

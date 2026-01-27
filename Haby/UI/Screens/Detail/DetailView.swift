@@ -103,8 +103,8 @@ struct DetailView: View {
                     .padding()
                     Spacer()
                     CheckHabitButton(
-//                        isChecked: viewModel.state.status.isCompleted
                         isChecked: viewModel.state.record != nil,
+                        isValid: viewModel.state.record?.isSatisfied ?? true,
                         onToggle: {
                             viewModel.checkHabit(habit: viewModel.state.habit)
                             viewModel.getHabitRecord()

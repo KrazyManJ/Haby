@@ -5,6 +5,7 @@ struct HabitDefinition: Identifiable, Equatable, Codable {
     var name: String
     var icon: String
     var creationDate: Date = Date().onlyDate
+    var category: String
     
     @available(*, deprecated, message: "Use `data: HabyData` instead") var type: HabitType
     @available(*, deprecated, message: "Use `data: HabyData` instead") var frequency: HabitFrequency

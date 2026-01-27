@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CheckHabitButton: View {
     let isChecked: Bool
+    let isValid: Bool
     let onToggle: () -> Void
     
     private let holdDuration: TimeInterval = 3.0
@@ -21,14 +22,12 @@ struct CheckHabitButton: View {
                     Spacer()
                     if isChecked {
                         Text("Completed")
-                            .foregroundStyle(isChecked ? .brandPrimary : .textPrimary)
+                            .foregroundStyle(isValid ? .brandPrimary : .destructive)
                             .font(.headline)
-                            //.transition(.opacity)
                     } else {
                         Text("Check Habit")
                             .foregroundStyle(.textPrimary)
                             .font(.headline)
-                            //.transition(.opacity)
                     }
                     Spacer()
                 }

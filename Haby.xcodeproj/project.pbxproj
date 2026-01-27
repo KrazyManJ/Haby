@@ -105,6 +105,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Model/Enum/AmountUnit.swift,
+				Model/Enum/HabitCategory.swift,
 				Model/Enum/HabitFrequency.swift,
 				Model/Enum/Mood.swift,
 				Model/Enum/WeekDay.swift,
@@ -117,6 +118,8 @@
 				Model/Haby.xcdatamodeld,
 				Model/HealthDataPoint.swift,
 				Model/MoodRecord.swift,
+				Services/Category/CategoryManager.swift,
+				Services/Category/CategoryManaging.swift,
 				Services/Connector/PhoneSessionManager.swift,
 				Services/Connector/PhoneSessionManaging.swift,
 				Services/Data/Conversion/HabitDefinitionConversion.swift,
@@ -175,6 +178,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Model/Enum/AmountUnit.swift,
+				Model/Enum/HabitCategory.swift,
 				Model/Enum/HabitFrequency.swift,
 				Model/Enum/InternalHabitCategory.swift,
 				Model/Enum/Mood.swift,
@@ -188,6 +192,8 @@
 				Model/Haby.xcdatamodeld,
 				Model/HealthDataPoint.swift,
 				Model/MoodRecord.swift,
+				Services/Category/CategoryManager.swift,
+				Services/Category/CategoryManaging.swift,
 				Services/Data/Conversion/HabitDefinitionConversion.swift,
 				Services/Data/Conversion/HabitRecordConversion.swift,
 				Services/Data/Conversion/MoodRecordConversion.swift,

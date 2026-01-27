@@ -10,6 +10,7 @@ final class AddEditHabitViewState: ObservableObject {
     var habit: HabitDefinition = HabitDefinition(
         name: "",
         icon: "star.fill",
+        category: "",
         type: .OnTime,
         frequency: .Daily,
         data: .Amount(data: .init(frequency: .Daily, amount: 0, unit: .None)),
@@ -23,6 +24,7 @@ final class AddEditHabitViewState: ObservableObject {
     var selectedTime = Date()
     var selectedAmountType: AmountUnit = .None
     var healthData = false
+    var selectedCategory: String = ""
     
     var isValid: Bool {
         if habit.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -55,12 +57,15 @@ final class AddEditHabitViewState: ObservableObject {
                 return .Amount(data: .init(frequency: selectedFrequency, amount: amountInput, unit: selectedAmountType))
             }
         }
+        
+        let finalCategory = selectedCategory.trimmingCharacters(in: .whitespacesAndNewlines)
 
         let newHabit = HabitDefinition(
             id: habit.id,
             name: habit.name,
             icon: habit.icon,
             creationDate: habit.creationDate,
+            category: finalCategory,
             type: selectedHabitType,
             frequency: selectedFrequency,
             targetTimestamp: timestamp,

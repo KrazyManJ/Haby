@@ -100,6 +100,7 @@ struct TimerHabitRow : View {
     let habit = HabitDefinition(
         name: "Take shower with someone you really love",
         icon: "shower",
+        category: "Wellbeing",
         type: .Deadline,
         frequency: .Daily,
         data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: 60*12))

@@ -13,6 +13,9 @@ internal extension DIContainer {
         register(HabitManaging.self) {
             HabitManager()
         }
+        register(CategoryManaging.self) {
+            CategoryManager()
+        }
         #if os(iOS)
         register(PhoneSessionManaging.self) {
             PhoneSessionManager()

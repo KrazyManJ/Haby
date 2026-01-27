@@ -20,37 +20,34 @@ struct HabitManagementView: View {
             if !viewModel.state.habits.isEmpty {
                 NavigationStack {
                     List {
-                        ForEach(viewModel.state.habits) { habit in
-//                            NavigationLink(value: habit) {
-                                HabitRow(
-                                    habit: habit
-                                )
-//                            }
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Colors.BackgroundSecondary)
-                            .onTapGesture {
-                                habitToOpen = habit
-                                showDetail = true
-                            }
-                            .swipeActions {
-                                Button() {
-                                    habitToDelete = habit
-                                    showAlert = true
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
+                    ForEach(viewModel.groupedHabits, id: \.category) { group in
+                            Section(header:
+                                Text(group.category)
+                                    .font(.headline)
+                                    .foregroundStyle(Colors.TextPrimary)
+                                    .textCase(nil)
+                            ) {
+                                ForEach(group.habits) { habit in
+                                    HabitRow(habit: habit)
+                                        .listRowSeparator(.hidden)
+                                        .listRowBackground(Colors.BackgroundSecondary)
+                                        .onTapGesture {
+                                            habitToOpen = habit
+                                            showDetail = true
+                                        }
+                                        .swipeActions {
+                                            Button() {
+                                                habitToDelete = habit
+                                                showAlert = true
+                                            } label: {
+                                                Label("Delete", systemImage: "trash")
+                                            }
+                                        }
                                 }
                             }
                         }
                     }
                     .scrollContentBackground(.hidden)
-//                    .navigationDestination(for: HabitDefinition.self) { habit in
-//                        DetailView(habit: habit, /*record: nil*/)
-//                    }
-//                    .navigationDestination(isPresented: $isIconPickerPresented) {
-//                        DetailView(
-//                            habit: habit,
-//                        )
-//                    }
                     .navigationDestination(isPresented: $showDetail) {
                         if let habit = habitToOpen {
                             DetailView(viewModel: DetailViewModel(habit: habit))

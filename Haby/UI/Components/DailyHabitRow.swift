@@ -87,6 +87,7 @@ struct DailyHabitRow: View {
             name: "Lol",
             icon: "star",
             creationDate: Date(),
+            category: "Wellbeing",
             type: .Deadline,
             frequency: .Daily,
             data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: 1000))
