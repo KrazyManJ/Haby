@@ -15,7 +15,7 @@ class DetailViewModel {
     }
     
     func getHabitRecord(){
-        let records = dataManaging.getTodayRecords()
+        let records = dataManaging.getTodayRecords() + dataManaging.getWeekRecords()
         state.record = records.first { $0.habitDefinition.id == state.habit.id }
     }
     

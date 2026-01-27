@@ -19,15 +19,6 @@ struct DetailView: View {
     
     var habitDetailTop: some View {
         VStack{
-            //Spacer()
-            ZStack {
-                RadialGradient(
-                    gradient: Gradient(colors: [.brandPrimary.opacity(0.15), .clear]),
-                    center: .center,
-                    startRadius: 5,
-                    endRadius: 200
-                )
-                .ignoresSafeArea()
                 VStack(alignment: .center, spacing: 20){
                     Image(systemName: habit.icon)
                         .foregroundStyle(.textPrimary)
@@ -35,17 +26,29 @@ struct DetailView: View {
                     Text(habit.name)
                         .foregroundStyle(.textPrimary)
                         .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.8)
+                        .padding(.horizontal)
                     Text("\(habit.data.type.name) • \(habit.data.details.frequency.name)")
                         .foregroundStyle(.textSecondary)
                 }
-                .padding(.top, 150)
-            }
+                .background(
+                    RadialGradient(
+                        gradient: Gradient(colors: [.brandPrimary.opacity(0.15), .clear]),
+                        center: .center,
+                        startRadius: 5,
+                        endRadius: 200
+                    )
+                    .frame(width: 600, height: 600)
+                )
         }
+        .padding(.top, 150)
     }
     
     var body: some View {
         VStack{
             habitDetailTop
+                .padding(.bottom, 16)
             if (habit.data.type == .Amount){
                 VStack(alignment: .center, spacing: 20){
                     if(habit.data.type == .Amount){
@@ -110,7 +113,11 @@ struct DetailView: View {
                             viewModel.getHabitRecord()
                         }
                     )
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    Text("Hold button to check habit")
+                        .foregroundStyle(.textSecondary)
+                        .font(.caption)
                 }
             }
         }
@@ -150,6 +157,19 @@ struct DetailView: View {
             viewModel.refreshHabit()
         }
     }
+}
+
+#Preview {
+    let habit = HabitDefinition(
+        name: "Take shower with someone you really love",
+        icon: "shower",
+        category: "Wellbeing",
+        type: .Deadline,
+        frequency: .Daily,
+        data: .Deadline(data: .init(frequency: .Daily, minutesOfCompletionInFrequency: 60*12))
+    )
+    DetailView(viewModel: DetailViewModel(habit: habit))
+        .preferredColorScheme(.dark)
 }
 
 

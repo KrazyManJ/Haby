@@ -91,7 +91,7 @@ extension CoreDataManager {
         
         let weeklyTest = HabitDefinition(
             name: "Cleaning",
-            icon: "brush",
+            icon: "spigot",
             creationDate: createdAt,
             category: "Household",
             type: .Amount,
