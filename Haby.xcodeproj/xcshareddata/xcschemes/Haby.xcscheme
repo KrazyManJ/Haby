@@ -41,6 +41,17 @@
                ReferencedContainer = "container:Haby.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5CDFA1522F293E9900BBAB0E"
+               BuildableName = "Haby Unit Tests.xctest"
+               BlueprintName = "Haby Unit Tests"
+               ReferencedContainer = "container:Haby.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

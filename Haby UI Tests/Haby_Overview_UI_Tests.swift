@@ -8,7 +8,7 @@ final class Haby_Overview_UI_Tests: XCTestCase {
 
     override func tearDownWithError() throws {}
     
-    func testOverviewDisplay() throws {
+    func test_overview_display() throws {
         let app = XCUIApplication()
         app.launch()
         
