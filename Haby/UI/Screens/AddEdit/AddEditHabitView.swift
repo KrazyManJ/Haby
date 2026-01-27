@@ -39,6 +39,7 @@ struct AddEditHabitView: View {
                     text: $viewModel.state.habit.name,
                     prompt: Text("Enter a habit name...").foregroundStyle(.textSecondary.opacity(0.5))
                 )
+                    .accessibilityIdentifier(.AddEditHabitView_NameInput)
             }
                 .formFieldCustomStyles()
             CategoryPicker(
@@ -172,9 +173,10 @@ struct AddEditHabitView: View {
             } label: {
                 Text("Save Habit")
             }
-            .buttonStyle(PrimaryButtonStyle())
-            .padding(16)
-            .disabled(!viewModel.state.isValid)
+                .buttonStyle(PrimaryButtonStyle())
+                .padding(16)
+                .disabled(!viewModel.state.isValid)
+                .accessibilityIdentifier(.AddEditHabitView_SaveButton)
         }
         .background(Colors.BackgroundPrimary)
         .navigationDestination(isPresented: $isIconPickerPresented) {

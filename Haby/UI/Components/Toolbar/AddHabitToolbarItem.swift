@@ -13,6 +13,7 @@ struct AddHabitToolbarItem : ToolbarContent {
                 Label("New Habit", systemImage: "plus.circle")
                     .labelStyle(.iconOnly)
             }
+            .accessibilityIdentifier(.MainTabView_AddHabitToolbarItem)
         }
     }
 }

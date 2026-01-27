@@ -172,6 +172,8 @@ struct FSCalendarView: UIViewRepresentable {
                 cell.rangePosition = .none
             }
             
+            cell.accessibilityIdentifier = VariableAccessibilityTag.FSCalendarView_Cell(date: date).rawValue
+            cell.isAccessibilityElement = true
             return cell
         }
             
