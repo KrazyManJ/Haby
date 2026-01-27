@@ -32,37 +32,31 @@ final class CoreDataManager: DataManaging {
     */
     
     init() {
-        
         guard let groupID = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String else {
-               fatalError("❌ key 'AppGroupId' not found in Info.plist")
-           }
-        // 1. Get the URL for the shared App Group container
-        // IMPORTANT: Replace "group.com.katapl.haby" with your EXACT App Group ID from Xcode
+            fatalError("❌ key 'AppGroupId' not found in Info.plist")
+        }
+        
         if let sharedURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) {
             
-            // 2. append the database file name (must match your .xcdatamodeld name usually)
             let storeURL = sharedURL.appendingPathComponent("Haby.xcdatamodeld")
             
-            // 3. Create a description that points to this new shared URL
             let description = NSPersistentStoreDescription(url: storeURL)
-            
-            // 4. Tell the container to use this description
+                        
             container.persistentStoreDescriptions = [description]
+            
         } else {
             print("❌ ERROR: Could not find App Group. Check your entitlements!")
         }
         
-        // 5. NOW load the stores (Standard code follows)
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Cannot create persistent store: \(error.localizedDescription)")
             } else {
-                // Optional: Print the location to verify it is correct
                 print("✅ Database loaded at: \(description.url?.absoluteString ?? "unknown")")
             }
+            self.reCreate(description: description)
         }
         
-        // Ensure the context updates automatically if the Widget changes data
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
