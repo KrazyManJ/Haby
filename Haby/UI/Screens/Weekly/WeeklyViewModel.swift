@@ -9,17 +9,6 @@ class WeeklyViewModel: ObservableObject {
     @ObservationIgnored @Injected var healthManager: HealthManaging
     
     var healthData: [AmountUnit: Double] = [:]
-//    var stepsThisWeek: Int = 0
-//    var isLoadingSteps: Bool = false
-//    var showHealthKitError: Bool = false
-    
-//    func loadStepData() async {
-//        await fetchStepsThisWeek()
-//    }
-//    
-//    private func fetchStepsThisWeek() async {
-//        stepsThisWeek = await Int(healthKitManager.fetchWeekSteps())
-//    }
     
     func startListeningToHealthKit() {
         healthManager.stopListening()
@@ -148,32 +137,6 @@ class WeeklyViewModel: ObservableObject {
         state.habitRecords = dataManaging.getWeekRecords()
     }
     
-    /*
-    func syncHealthDataToHabits() {
-        for habit in state.amountHabits {
-            guard habit.isUsingHealthData,
-                  habit.targetValueUnit == .Steps else { continue }
-
-            let currentSteps = Float(stepsThisWeek)
-
-            if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
-                var updatedRecord = existing
-                updatedRecord.value = currentSteps
-                dataManaging.upsert(model: updatedRecord)
-            } else {
-                let newRecord = HabitRecord(
-                    id: UUID(),
-                    date: Date().onlyDate,
-                    value: currentSteps,
-                    habitDefinition: habit,
-                    data: .Amount(data: .init(date: Date().onlyDate, value: currentSteps))
-                )
-                dataManaging.upsert(model: newRecord)
-            }
-        }
-        state.habitRecords = dataManaging.getWeekRecords()
-    }
-    */
     func getWeekHabits() {
         state.amountHabits = dataManaging.getAmountHabitsForWeek()
         state.habitRecords = dataManaging.getWeekRecords()
@@ -245,9 +208,6 @@ class WeeklyViewModel: ObservableObject {
     }
     
     func totalWeeklyAmount(for habit: HabitDefinition, weekOf date: Date = Date()) -> Float {
-//        if habit.isUsingHealthData && habit.targetValueUnit == .Steps {
-//                return Float(stepsThisWeek)
-//            }
 
         let calendar = Calendar.currentWithMondayAsSWeekStartDay
 
@@ -262,7 +222,6 @@ class WeeklyViewModel: ObservableObject {
     func refreshData() {
         getWeekHabits()
         Task {
-//            await loadStepData()
             syncHealthDataToHabits()
         }
     }

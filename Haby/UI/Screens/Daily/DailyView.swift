@@ -78,7 +78,7 @@ struct DailyView: View {
                     .offset(y: animateContent ? 0 : -50)
                     .opacity(animateContent ? 1 : 0)
                     .animation(
-                        .easeOut(duration: 0.2).delay(0.2 + (Double(index) * 0.05)), // Starts 0.3s later
+                        .bouncy(duration: 0.2).delay(0.2 + (Double(index) * 0.05)), // Starts 0.3s later
                         value: animateContent
                     )
                 }

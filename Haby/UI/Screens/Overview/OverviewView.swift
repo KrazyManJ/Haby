@@ -4,6 +4,7 @@ import SwiftUI
 
 struct OverviewView: View {
     @State var viewModel = OverviewViewModel()
+    @State private var isSwinging = false
     
     var body: some View {
         ScrollView {
@@ -20,6 +21,18 @@ struct OverviewView: View {
                             .font(.system(size: 80))
                             .foregroundColor(.accent)
                             .padding([.top],32)
+                            .rotationEffect(
+                                .degrees(isSwinging ? 10 : -10),
+                                anchor: .bottom
+                            )
+                            .onAppear {
+                                withAnimation(
+                                    .easeInOut(duration: 1.5)
+                                    .repeatForever(autoreverses: true)
+                                ) {
+                                    isSwinging = true
+                                }
+                            }
                         Text("Your streak is...")
                             .foregroundStyle(.textSecondary)
                         Text("\(viewModel.state.streak) day\(viewModel.state.streak > 1 ? "s" : "")")
