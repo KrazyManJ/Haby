@@ -5,7 +5,9 @@ extension CoreDataManager {
         
         let createdAt = Date().onlyDate.daysAgo(50)
         print("Data created at", createdAt)
-        let notificationManager: Injected<NotificationManaging> = .init()
+        @Injected var notificationManager: NotificationManaging
+        notificationManager.removeAllReminders()
+        
         
         let yoga = HabitDefinition(
             name: "Yoga",
@@ -84,7 +86,7 @@ extension CoreDataManager {
         let habits = [yoga,yoga2,pill,walk,journaling]
         
         for habit in habits {
-            notificationManager.wrappedValue.scheduleNotificationForHabit(habit: habit)
+            notificationManager.scheduleNotificationForHabit(habit: habit)
         }
         
         _ = habits.map { $0.toEntity()}
@@ -111,7 +113,8 @@ extension CoreDataManager {
         var records = [HabitRecord]()
         let today = Date().onlyDate
 
-        let validDaysOffsets = (0...48)+[50]
+        // Excluding today include 48
+        let validDaysOffsets = []+(1...8)+(12...16)+[18]+(22...48)+[50]
         
 
         for habit in habits {

@@ -8,7 +8,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity, minHeight: 48)
             .bold()
             .padding(.horizontal)
-            .background(isEnabled ? .accent : .textSecondary)
+            .background(isEnabled ? .brandPrimary : .textSecondary)
             .foregroundColor(.textOnPrimary)
             .cornerRadius(16)
             .opacity(configuration.isPressed ? 0.7 : 1.0)
