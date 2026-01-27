@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "haby_icon.png",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"

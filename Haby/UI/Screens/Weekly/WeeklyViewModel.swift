@@ -4,10 +4,9 @@ import SwiftUI
 @Observable
 class WeeklyViewModel: ObservableObject {
     var state: WeeklyViewState = WeeklyViewState()
-    var dataManaging: Injected<DataManaging> = .init()
-    var selectedDates: [UUID: Date] = [:]
     
-    var healthKitManager: Injected<HealthManaging> = .init()
+    @ObservationIgnored @Injected var dataManaging: DataManaging
+    @ObservationIgnored @Injected var healthKitManager: HealthManaging
     
     var stepsThisWeek: Int = 0
     var isLoadingSteps: Bool = false
@@ -18,7 +17,7 @@ class WeeklyViewModel: ObservableObject {
     }
     
     private func fetchStepsThisWeek() async {
-        stepsThisWeek = await Int(healthKitManager.wrappedValue.fetchWeekSteps())
+        stepsThisWeek = await Int(healthKitManager.fetchWeekSteps())
     }
 
     func syncHealthDataToHabits() {
@@ -31,7 +30,7 @@ class WeeklyViewModel: ObservableObject {
             if let existing = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
                 var updatedRecord = existing
                 updatedRecord.value = currentSteps
-                dataManaging.wrappedValue.upsert(model: updatedRecord)
+                dataManaging.upsert(model: updatedRecord)
             } else {
                 let newRecord = HabitRecord(
                     id: UUID(),
@@ -40,16 +39,16 @@ class WeeklyViewModel: ObservableObject {
                     habitDefinition: habit,
                     data: .Amount(data: .init(date: Date().onlyDate, value: currentSteps))
                 )
-                dataManaging.wrappedValue.upsert(model: newRecord)
+                dataManaging.upsert(model: newRecord)
             }
         }
-        state.habitRecords = dataManaging.wrappedValue.getTodayRecords()
+        state.habitRecords = dataManaging.getWeekRecords()
     }
     
     func getWeekHabits() {
-        state.amountHabits = dataManaging.wrappedValue.getAmountHabitsForWeek()
-        state.habitRecords = dataManaging.wrappedValue.getWeekRecords()
-        state.habits = dataManaging.wrappedValue.getTimeHabitsForWeek()
+        state.amountHabits = dataManaging.getAmountHabitsForWeek()
+        state.habitRecords = dataManaging.getWeekRecords()
+        state.habits = dataManaging.getTimeHabitsForWeek()
     }
     
     func addToWeeklyAmountHabit(habit: HabitDefinition, addedAmount: Float) {
@@ -58,10 +57,10 @@ class WeeklyViewModel: ObservableObject {
         
         if var record = state.habitRecords.first(where: {
             return $0.habitDefinition.id == habit.id &&
-            calendar.isDate($0.date.onlyDate, inSameWeekAs: today)
+            calendar.isDate($0.data.details.date.onlyDate, inSameWeekAs: today)
         }) {
             record.value = (record.value ?? 0) + addedAmount
-            dataManaging.wrappedValue.upsert(model: record)
+            dataManaging.upsert(model: record)
         } else {
             let newRecord = HabitRecord(
                 id: UUID(),
@@ -70,41 +69,45 @@ class WeeklyViewModel: ObservableObject {
                 habitDefinition: habit,
                 data: .Amount(data: .init(date: today, value: addedAmount))
             )
-            dataManaging.wrappedValue.upsert(model: newRecord)
+            dataManaging.upsert(model: newRecord)
         }
         self.getWeekHabits()
     }
 
     func isHabitChecked(habit: HabitDefinition, on date: Date) -> Bool {
-//        state.habitRecords.contains {
-//            $0.habitDefinition.id == habit.id && Calendar.current.isDate($0.date, inSameDayAs: date)
-//        }
         return state.habitRecords.contains { record in
-                record.habitDefinition.id == habit.id && // <--- YOU LIKELY MISSED THIS
-                Calendar.current.isDate(record.date, inSameDayAs: date)
-            }
+            record.habitDefinition.id == habit.id &&
+            Calendar.currentWithMondayAsSWeekStartDay.isDate(record.data.details.date, inSameDayAs: date)
+        }
     }
 
     func setHabit(_ habit: HabitDefinition, checked: Bool, on date: Date) {
         if checked {
+            var data: HabitRecordData {
+                return switch habit.data.type {
+                case .OnTime: .OnTime(data: .init(date: date, minutesOfCompletionInFrequency: date.minutesFromStartOfWeek()))
+                case .Deadline: .Deadline(data: .init(date: date, minutesOfCompletionInFrequency: date.minutesFromStartOfWeek()))
+                case .Amount: fatalError("Method called on amount habit")
+                }
+            }
+            
             if !isHabitChecked(habit: habit, on: date) {
                 let record = HabitRecord(
-                    id: UUID(),
                     date: date.onlyDate,
                     value: 1,
                     habitDefinition: habit,
-                    data: .Amount(data: .init(date: date.onlyDate, value: 1))
+                    data: data
                 )
-                dataManaging.wrappedValue.upsert(model: record)
+                dataManaging.upsert(model: record)
             }
         } else {
             if let record = state.habitRecords.first(where: {
                 $0.habitDefinition.id == habit.id &&
-                Calendar.current.isDate($0.date, inSameDayAs: date)
+                Calendar.currentWithMondayAsSWeekStartDay.isDate($0.data.details.date, inSameDayAs: date)
             }) {
-                if let entity: HabitRecordEntity = dataManaging.wrappedValue.fetchOneById(id: record.id) {
+                if let entity: HabitRecordEntity = dataManaging.fetchOneById(id: record.id) {
                     
-                    dataManaging.wrappedValue.delete(entity: entity)
+                    dataManaging.delete(entity: entity)
                 }
             }
         }
@@ -117,12 +120,12 @@ class WeeklyViewModel: ObservableObject {
                 return Float(stepsThisWeek)
             }
 
-        let calendar = Calendar.current
+        let calendar = Calendar.currentWithMondayAsSWeekStartDay
 
         return state.habitRecords
             .filter {
                 $0.habitDefinition.id == habit.id &&
-                calendar.isDate($0.date, inSameWeekAs: date)
+                calendar.isDate($0.data.details.date, inSameWeekAs: date)
             }
             .reduce(0.0) { $0 + ($1.value ?? 0) }
     }
@@ -131,16 +134,7 @@ class WeeklyViewModel: ObservableObject {
         getWeekHabits()
         Task {
             await loadStepData()
-            // Optional: If you want to persist the new step count to your local DB immediately:
             syncHealthDataToHabits()
-        }
-        self.selectedDates = [:]
-        for habit in self.state.habits where habit.data.details.frequency == .Weekly {
-            // Find if there is ANY record for this habit in the current week
-            if let record = state.habitRecords.first(where: { $0.habitDefinition.id == habit.id }) {
-                // Restore the state so the UI knows this day is the "chosen" one
-                self.selectedDates[habit.id] = record.date
-            }
         }
     }
 }

@@ -40,7 +40,11 @@ struct GoalHabitRow: View {
                     .font(.callout)
                     .bold()
                 Spacer()
-                Text("\(currentAmount.cleanString) / \(goalAmount.cleanString) \(goalUnit)")
+                HStack(spacing: 0) {
+                    AnimatedCount(value: currentAmount)
+                        .animation(.easeIn, value: currentAmount)
+                    Text(" / \(goalAmount.cleanString) \(goalUnit)")
+                }
                     .font(.caption2)
                     .foregroundStyle(.textSecondary)
                 if (!habit.isUsingHealthData){
@@ -60,6 +64,7 @@ struct GoalHabitRow: View {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(.accent.opacity(progressBarOpacity))
                         .frame(width: geometry.size.width * percentageOfCompletion, height: 6)
+                        .animation(.default, value: currentAmount)
                 }
             }
         }

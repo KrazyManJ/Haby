@@ -73,7 +73,7 @@ struct MainTabView : View {
     }
     
     var body : some View {
-        NavigationStack(path: $viewModel.state.navigationPath) {
+        NavigationStack {
             TabView(selection: $selectedTab){
                 ForEach(TAB_INFO) { tabInfo in
                     tabInfo.content()
@@ -102,12 +102,8 @@ struct MainTabView : View {
                     )
                 }
             }
-            .navigationDestination(for: UUID.self) { habitId in
-                // Replace this with your actual Habit Detail View
-                VStack {
-                    Text("Habit Detail Screen")
-                    Text("ID: \(habitId.uuidString)")
-                }
+            .navigationDestination(item: $viewModel.state.habitToShowOnNavigation) { habit in
+                DetailView(viewModel: DetailViewModel(habit: habit))
             }
         }
         .onAppear {

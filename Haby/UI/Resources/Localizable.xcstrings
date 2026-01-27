@@ -4,6 +4,16 @@
     "" : {
 
     },
+    " / %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : " / %1$@ %2$@"
+          }
+        }
+      }
+    },
     "...at the top right corner." : {
 
     },
@@ -49,6 +59,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$lld day%2$@"
+          }
+        }
+      }
+    },
+    "%lld/%lld Completed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld Completed"
           }
         }
       }
@@ -134,13 +154,7 @@
     "goal %@" : {
 
     },
-    "Goals" : {
-
-    },
     "Habit description" : {
-
-    },
-    "Habit Detail Screen" : {
 
     },
     "habit name" : {
@@ -152,7 +166,7 @@
     "Habit type" : {
 
     },
-    "ID: %@" : {
+    "Incompleted" : {
 
     },
     "Increase" : {
@@ -171,6 +185,9 @@
 
     },
     "No goal habits for this week!" : {
+
+    },
+    "No habits for this day to complete" : {
 
     },
     "No weekly habits!" : {
@@ -194,16 +211,10 @@
     "Steps" : {
 
     },
-    "Steps Today: %lld" : {
-
-    },
     "Uncheck" : {
 
     },
     "Use Health Data" : {
-
-    },
-    "Week Timeline" : {
 
     },
     "Weekly Time" : {

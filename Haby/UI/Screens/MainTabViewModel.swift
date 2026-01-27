@@ -11,6 +11,7 @@ class MainTabViewModel {
     
     @ObservationIgnored @Injected private var habitManager: HabitManaging
     @ObservationIgnored @Injected private var notificationManager: NotificationManaging
+    @ObservationIgnored @Injected private var dataManager: DataManaging
     
     init() {
         setupNotificationSubscription()
@@ -23,9 +24,7 @@ class MainTabViewModel {
                 guard let self = self,
                       let idString = habitIdString,
                       let uuid = UUID(uuidString: idString) else { return }
-                self.state.navigationPath = NavigationPath()
-                
-                self.state.navigationPath.append(uuid)
+                self.state.habitToShowOnNavigation = dataManager.fetchOneById(id: uuid)
                 
                 self.notificationManager.selectedHabitId.send(nil)
             }

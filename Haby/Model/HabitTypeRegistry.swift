@@ -23,7 +23,7 @@ enum HabitType: Int16, CaseIterable, Identifiable, Codable {
     }
 }
 
-enum HabitDefinitionData: Equatable, Codable {
+enum HabitDefinitionData: Equatable, Codable, Hashable {
     case OnTime(data: OnTimeHabitDefinitionData)
     case Deadline(data: DeadlineHabitDefinitionData)
     case Amount(data: AmountHabitDefinitionData)

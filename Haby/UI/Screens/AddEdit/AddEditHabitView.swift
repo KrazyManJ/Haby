@@ -7,6 +7,7 @@ fileprivate extension View {
     func formFieldCustomStyles() -> some View {
         self
             .listRowBackground(Colors.BackgroundSecondary)
+            .listRowSeparator(.hidden)
             .foregroundStyle(Colors.TextPrimary)
     }
 }
@@ -32,6 +33,7 @@ struct AddEditHabitView: View {
                             .font(.caption)
                     }
                 }
+                .buttonStyle(.borderless)
                 TextField(
                     "",
                     text: $viewModel.state.habit.name,
@@ -48,12 +50,12 @@ struct AddEditHabitView: View {
                 .foregroundStyle(.textSecondary)
                 .textCase(nil)
         }
+        .scrollContentBackground(.hidden)
     }
     
     @ViewBuilder var habitSpecificSettings: some View {
         if viewModel.state.selectedHabitType == .Amount {
             HStack {
-                Text(String(viewModel.state.amountInput))
                 TextField("Enter decimal", value: $viewModel.state.amountInput, format: .number)
                     .keyboardType(.decimalPad)
                 Picker("Amount type", selection: $viewModel.state.selectedAmountType) {
@@ -142,6 +144,7 @@ struct AddEditHabitView: View {
                 .foregroundStyle(.textSecondary)
                 .textCase(nil)
         }
+        .scrollContentBackground(.hidden)
     }
     
     var body: some View {

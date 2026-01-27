@@ -5,7 +5,9 @@ extension CoreDataManager {
         
         let createdAt = Date().onlyDate.daysAgo(50)
         print("Data created at", createdAt)
-        let notificationManager: Injected<NotificationManaging> = .init()
+        @Injected var notificationManager: NotificationManaging
+        notificationManager.removeAllReminders()
+        
         
         let yoga = HabitDefinition(
             name: "Yoga",
@@ -86,16 +88,27 @@ extension CoreDataManager {
             targetValueUnit: .Hours,
             data: .Amount(data: .init(frequency: .Weekly, amount: 10, unit: .Hours))
         )
+        
+        let weeklyTest = HabitDefinition(
+            name: "Cleaning",
+            icon: "brush",
+            creationDate: createdAt,
+            type: .Amount,
+            frequency: .Weekly,
+            targetTimestamp: 60 * 15 + 60 * 24 * 5,
+            data: .Deadline(data: .init(frequency: .Weekly, minutesOfCompletionInFrequency: 60 * 15 + 60 * 24 * 5))
+        )
                 
         let habits = [yoga,yoga2,pill,walk,journaling]
         
         for habit in habits {
-            notificationManager.wrappedValue.scheduleNotificationForHabit(habit: habit)
+            notificationManager.scheduleNotificationForHabit(habit: habit)
         }
         
         _ = habits.map { $0.toEntity()}
         _ = createMockHabitRecords(for: habits).map { $0.toEntity()}
         _ = test.toEntity()
+        _ = weeklyTest.toEntity()
         _ = createMockMoodRecords().map({ $0.toEntity() })
         
 //         Habit that will break streak if not correct coded :]
@@ -118,7 +131,7 @@ extension CoreDataManager {
         var records = [HabitRecord]()
         let today = Date().onlyDate
 
-        let validDaysOffsets = (0...48)+[50]
+        let validDaysOffsets = []+(1...8)+(12...16)+[18]+(22...48)+[50]
         
 
         for habit in habits {
