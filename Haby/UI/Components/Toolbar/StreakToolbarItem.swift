@@ -15,8 +15,10 @@ struct StreakToolbarItem: ToolbarContent {
                     Text(String(streak))
                         .font(.subheadline)
                         .fontWeight(.bold)
+                        .accessibilityIdentifier(.StreakToolbarItem_StreakText)
                 }
             }
+                .accessibilityIdentifier(.MainTabView_StreakToolbarItem)
         }
     }
 }

@@ -15,6 +15,7 @@ fileprivate struct TabInfo : Identifiable {
     let tabItemImage: String
     @Localizable var navigationTitle: String
     let leadingIcon: TabLeadingAction
+    let accessibilityIdentifier: AccessibilityTag
     let content: () -> AnyView
 }
 
@@ -25,6 +26,7 @@ fileprivate let TAB_INFO: [TabInfo] = [
         tabItemImage: "sun.min",
         navigationTitle: "Daily Habits",
         leadingIcon: .Streak,
+        accessibilityIdentifier: .MainTabView_DailyTabButton,
         content: { AnyView(DailyView()) }
     ),
     TabInfo(
@@ -33,6 +35,7 @@ fileprivate let TAB_INFO: [TabInfo] = [
         tabItemImage: "calendar",
         navigationTitle: "Weekly Habits",
         leadingIcon: .Streak,
+        accessibilityIdentifier: .MainTabView_WeeklyTabButton,
         content: { AnyView(WeeklyView()) }
     ),
     TabInfo(
@@ -41,6 +44,7 @@ fileprivate let TAB_INFO: [TabInfo] = [
         tabItemImage: "book",
         navigationTitle: "Habits",
         leadingIcon: .AddHabit,
+        accessibilityIdentifier: .MainTabView_HabitsTabButton,
         content: { AnyView(HabitManagementView()) }
     )
 ]
@@ -81,6 +85,7 @@ struct MainTabView : View {
                         .tabItem {
                             Label(tabInfo.tabItemLabel, systemImage: tabInfo.tabItemImage)
                                 .environment(\.symbolVariants, .none)
+                                .accessibilityIdentifier(tabInfo.accessibilityIdentifier)
                         }
                         .tag(tabInfo.tag)
                 }

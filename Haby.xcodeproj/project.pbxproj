@@ -16,6 +16,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5CDFA1362F29208E00BBAB0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 44B063E72DDDC4D000252D85;
+			remoteInfo = Haby;
+		};
+		5CDFA1572F293E9900BBAB0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 44B063E72DDDC4D000252D85;
+			remoteInfo = Haby;
+		};
 		BB03A99D2F277BA1004BD874 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44B063E02DDDC4D000252D85 /* Project object */;
@@ -60,6 +74,8 @@
 /* Begin PBXFileReference section */
 		44B063E82DDDC4D000252D85 /* Haby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Haby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C79B44A2F1F1B9300CA4B0C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		5CDFA1302F29208E00BBAB0E /* Haby UI Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Haby UI Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CDFA1532F293E9900BBAB0E /* Haby Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Haby Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Haby WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB03A9912F277B9E004BD874 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		BB03A9932F277B9E004BD874 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -77,6 +93,12 @@
 				"Targets/App/App-Base.xcconfig",
 				"Targets/App/App-Debug.xcconfig",
 				"Targets/App/App-Release.xcconfig",
+				"Targets/UI Tests/UI-Tests-Base.xcconfig",
+				"Targets/UI Tests/UI-Tests-Debug.xcconfig",
+				"Targets/UI Tests/UI-Tests-Release.xcconfig",
+				"Targets/Unit Tests/Unit-Tests-Base.xcconfig",
+				"Targets/Unit Tests/Unit-Tests-Debug.xcconfig",
+				"Targets/Unit Tests/Unit-Tests-Release.xcconfig",
 				"Targets/Watch/Watch-Base.xcconfig",
 				"Targets/Watch/Watch-Debug.xcconfig",
 				"Targets/Watch/Watch-Release.xcconfig",
@@ -93,6 +115,22 @@
 				HabitStatusHelper.swift,
 			);
 			target = 44B063E72DDDC4D000252D85 /* Haby */;
+		};
+		5CDFA1422F29245900BBAB0E /* Exceptions for "Haby" folder in "Haby UI Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				UI/AccessibilityTag.swift,
+			);
+			target = 5CDFA12F2F29208E00BBAB0E /* Haby UI Tests */;
+		};
+		5CDFA14C2F29339800BBAB0E /* Exceptions for "Shared" folder in "Haby UI Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extensions/CalendarExtension.swift,
+				Extensions/DateExtension.swift,
+				Model/Enum/WeekDay.swift,
+			);
+			target = 5CDFA12F2F29208E00BBAB0E /* Haby UI Tests */;
 		};
 		5CF1FE6B2F28D9D800CFDD83 /* Exceptions for "Haby Companion Watch App" folder in "Haby WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -241,6 +279,7 @@
 				A00867632E040B58006C961F /* Exceptions for "Haby" folder in "Haby" target */,
 				BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */,
 				BB03A9AD2F277D5B004BD874 /* Exceptions for "Haby" folder in "Haby WidgetExtension" target */,
+				5CDFA1422F29245900BBAB0E /* Exceptions for "Haby" folder in "Haby UI Tests" target */,
 			);
 			path = Haby;
 			sourceTree = "<group>";
@@ -258,8 +297,19 @@
 			exceptions = (
 				BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */,
 				BB03A9B42F277DBB004BD874 /* Exceptions for "Shared" folder in "Haby WidgetExtension" target */,
+				5CDFA14C2F29339800BBAB0E /* Exceptions for "Shared" folder in "Haby UI Tests" target */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		5CDFA1312F29208E00BBAB0E /* Haby UI Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Haby UI Tests";
+			sourceTree = "<group>";
+		};
+		5CDFA1542F293E9900BBAB0E /* Haby Unit Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Haby Unit Tests";
 			sourceTree = "<group>";
 		};
 		BB03A9952F277B9E004BD874 /* Haby Widget */ = {
@@ -288,6 +338,20 @@
 			files = (
 				A003D6202DFAE65400A5B0C0 /* SFSymbolsPicker in Frameworks */,
 				44D51C472E04471400309324 /* FSCalendar in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CDFA12D2F29208E00BBAB0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CDFA1502F293E9900BBAB0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +384,8 @@
 				44B063EA2DDDC4D000252D85 /* Haby */,
 				BB2C2B6E2F20D5110030CF44 /* Haby Companion Watch App */,
 				BB03A9952F277B9E004BD874 /* Haby Widget */,
+				5CDFA1312F29208E00BBAB0E /* Haby UI Tests */,
+				5CDFA1542F293E9900BBAB0E /* Haby Unit Tests */,
 				BB03A9902F277B9E004BD874 /* Frameworks */,
 				44B063E92DDDC4D000252D85 /* Products */,
 			);
@@ -331,6 +397,8 @@
 				44B063E82DDDC4D000252D85 /* Haby.app */,
 				BB2C2B6D2F20D5110030CF44 /* Haby Companion Watch App.app */,
 				BB03A98F2F277B9E004BD874 /* Haby WidgetExtension.appex */,
+				5CDFA1302F29208E00BBAB0E /* Haby UI Tests.xctest */,
+				5CDFA1532F293E9900BBAB0E /* Haby Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -376,6 +444,52 @@
 			productName = Haby;
 			productReference = 44B063E82DDDC4D000252D85 /* Haby.app */;
 			productType = "com.apple.product-type.application";
+		};
+		5CDFA12F2F29208E00BBAB0E /* Haby UI Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5CDFA1382F29208E00BBAB0E /* Build configuration list for PBXNativeTarget "Haby UI Tests" */;
+			buildPhases = (
+				5CDFA12C2F29208E00BBAB0E /* Sources */,
+				5CDFA12D2F29208E00BBAB0E /* Frameworks */,
+				5CDFA12E2F29208E00BBAB0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5CDFA1372F29208E00BBAB0E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5CDFA1312F29208E00BBAB0E /* Haby UI Tests */,
+			);
+			name = "Haby UI Tests";
+			packageProductDependencies = (
+			);
+			productName = "Haby UI Tests";
+			productReference = 5CDFA1302F29208E00BBAB0E /* Haby UI Tests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5CDFA1592F293E9900BBAB0E /* Build configuration list for PBXNativeTarget "Haby Unit Tests" */;
+			buildPhases = (
+				5CDFA14F2F293E9900BBAB0E /* Sources */,
+				5CDFA1502F293E9900BBAB0E /* Frameworks */,
+				5CDFA1512F293E9900BBAB0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5CDFA1582F293E9900BBAB0E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5CDFA1542F293E9900BBAB0E /* Haby Unit Tests */,
+			);
+			name = "Haby Unit Tests";
+			packageProductDependencies = (
+			);
+			productName = "Haby Unit Tests";
+			productReference = 5CDFA1532F293E9900BBAB0E /* Haby Unit Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */ = {
 			isa = PBXNativeTarget;
@@ -434,6 +548,14 @@
 					44B063E72DDDC4D000252D85 = {
 						CreatedOnToolsVersion = 16.2;
 					};
+					5CDFA12F2F29208E00BBAB0E = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 44B063E72DDDC4D000252D85;
+					};
+					5CDFA1522F293E9900BBAB0E = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 44B063E72DDDC4D000252D85;
+					};
 					BB03A98E2F277B9E004BD874 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -464,12 +586,28 @@
 				44B063E72DDDC4D000252D85 /* Haby */,
 				BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */,
 				BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */,
+				5CDFA12F2F29208E00BBAB0E /* Haby UI Tests */,
+				5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		44B063E62DDDC4D000252D85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CDFA12E2F29208E00BBAB0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CDFA1512F293E9900BBAB0E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -500,6 +638,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5CDFA12C2F29208E00BBAB0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5CDFA14F2F293E9900BBAB0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB03A98B2F277B9E004BD874 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -517,6 +669,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5CDFA1372F29208E00BBAB0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+			targetProxy = 5CDFA1362F29208E00BBAB0E /* PBXContainerItemProxy */;
+		};
+		5CDFA1582F293E9900BBAB0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 44B063E72DDDC4D000252D85 /* Haby */;
+			targetProxy = 5CDFA1572F293E9900BBAB0E /* PBXContainerItemProxy */;
+		};
 		BB03A99E2F277BA1004BD874 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
@@ -537,6 +699,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -605,6 +768,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -724,6 +888,92 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5CDFA1392F29208E00BBAB0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/UI Tests/UI-Tests-Debug.xcconfig";
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Haby;
+			};
+			name = Debug;
+		};
+		5CDFA13A2F29208E00BBAB0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/UI Tests/UI-Tests-Release.xcconfig";
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Haby;
+			};
+			name = Release;
+		};
+		5CDFA15A2F293E9900BBAB0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Unit Tests/Unit-Tests-Debug.xcconfig";
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Haby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Haby";
+			};
+			name = Debug;
+		};
+		5CDFA15B2F293E9900BBAB0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 5C79B45A2F1F203400CA4B0C /* Config */;
+			baseConfigurationReferenceRelativePath = "Targets/Unit Tests/Unit-Tests-Release.xcconfig";
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Haby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Haby";
 			};
 			name = Release;
 		};
@@ -876,6 +1126,24 @@
 			buildConfigurations = (
 				44B063F72DDDC4D100252D85 /* Debug */,
 				44B063F82DDDC4D100252D85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5CDFA1382F29208E00BBAB0E /* Build configuration list for PBXNativeTarget "Haby UI Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5CDFA1392F29208E00BBAB0E /* Debug */,
+				5CDFA13A2F29208E00BBAB0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5CDFA1592F293E9900BBAB0E /* Build configuration list for PBXNativeTarget "Haby Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5CDFA15A2F293E9900BBAB0E /* Debug */,
+				5CDFA15B2F293E9900BBAB0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

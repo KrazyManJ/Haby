@@ -29,6 +29,7 @@ struct HabitDefinitionRow: View {
                 HStack{
                     Image(systemName: habit.icon)
                     Text(habit.name)
+                        .accessibilityIdentifier(.HabitDefinitionRow_Name)
                 }
                 Text("\(habit.type.name) • \(habit.frequency.name) • \(requirementString)")
                     .font(.subheadline)
@@ -37,6 +38,7 @@ struct HabitDefinitionRow: View {
             Spacer()
         }
         .contentShape(Rectangle())
+        .accessibilityIdentifier(.HabitDefinitionRow_Element)
     }
 }
 
