@@ -1,3 +1,4 @@
+import SwiftUI
 
 enum HabitFrequency: Int16, CaseIterable, Identifiable, Codable {
     var id: Self { self }
@@ -6,6 +7,11 @@ enum HabitFrequency: Int16, CaseIterable, Identifiable, Codable {
     case Weekly = 2
     
     var name: String {
-        String(describing: self)
+        switch self {
+        case .Daily:
+            return NSLocalizedString("frequency_daily", value: "Daily", comment: "")
+        case .Weekly:
+            return NSLocalizedString("frequency_weekly", value: "Weekly", comment: "")
+        }
     }
 }

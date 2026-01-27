@@ -16,7 +16,22 @@ enum WeekDay: Int, CaseIterable, Identifiable {
     case Sunday = 7
     
     var name: String {
-        String(describing: self)
+        switch self {
+        case .Monday:
+            return NSLocalizedString("weekday_monday", value: "Monday", comment: "")
+        case .Tuesday:
+            return NSLocalizedString("weekday_tuesday", value: "Tuesday", comment: "")
+        case .Wednesday:
+            return NSLocalizedString("weekday_wednesday", value: "Wednesday", comment: "")
+        case .Thursday:
+            return NSLocalizedString("weekday_thursday", value: "Thursday", comment: "")
+        case .Friday:
+            return NSLocalizedString("weekday_friday", value: "Friday", comment: "")
+        case .Saturday:
+            return NSLocalizedString("weekday_saturday", value: "Saturday", comment: "")
+        case .Sunday:
+            return NSLocalizedString("weekday_sunday", value: "Sunday", comment: "")
+        }
     }
     
     var toTimestamp: Int {

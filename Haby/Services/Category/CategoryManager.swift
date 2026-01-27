@@ -4,6 +4,8 @@ final class CategoryManager: CategoryManaging {
     private let storageKey = "UserHabitCategories"
     
     func fetchCategories() -> [String] {
+        var allCategories = UserDefaults.standard.stringArray(forKey: storageKey) ?? []
+        let defaultCategories = HabitCategory.allCases.map { $0.name }
         if let saved = UserDefaults.standard.stringArray(forKey: storageKey) {
             return saved
         }

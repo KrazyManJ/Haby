@@ -11,9 +11,9 @@ fileprivate struct TabInfo : Identifiable {
     var id: Int { tag }
     
     let tag: Int
-    let tabItemLabel: String
+    @Localizable var tabItemLabel: String
     let tabItemImage: String
-    let navigationTitle: String
+    @Localizable var navigationTitle: String
     let leadingIcon: TabLeadingAction
     let content: () -> AnyView
 }

@@ -8,7 +8,14 @@ enum HabitType: Int16, CaseIterable, Identifiable, Codable {
     case Amount = 3
     
     var name: String {
-        String(describing: self)
+        switch self {
+        case .OnTime:
+            return NSLocalizedString("type_on_time", value: "OnTime", comment: "")
+        case .Deadline:
+            return NSLocalizedString("type_deadline", value: "Deadline", comment: "")
+        case .Amount:
+            return NSLocalizedString("type_amount", value: "Amount", comment: "")
+        }
     }
     
     var description: String {

@@ -3,10 +3,10 @@ import SwiftUI
 
 struct Subtitle: View {
     
-    let title: String
+    @Localizable var title: String
     
     init(_ title: String) {
-        self.title = title
+        self._title = Localizable(wrappedValue: title)
     }
     
     var body: some View {

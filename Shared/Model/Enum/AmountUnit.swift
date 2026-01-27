@@ -12,10 +12,30 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
     case Minutes = 6
     case Calories = 7
     
-    var name: String {
-        String(describing: self)
-    }
+//    var name: String {
+//        String(describing: self)
+//    }
     
+    // localized name
+    var name: String {
+        switch self {
+        case .Steps:
+            return NSLocalizedString("unit_steps", value: "Steps", comment: "Unit: Steps")
+        case .Kilometers:
+            return NSLocalizedString("unit_kilometers", value: "Kilometers", comment: "Unit: Kilometers")
+        case .Litres:
+            return NSLocalizedString("unit_litres", value: "Litres", comment: "Unit: Litres")
+        case .Hours:
+            return NSLocalizedString("unit_hours", value: "Hours", comment: "Unit: Hours")
+        case .Minutes:
+            return NSLocalizedString("unit_minutes", value: "Minutes", comment: "Unit: Minutes")
+        case .Calories:
+            return NSLocalizedString("unit_calories", value: "Calories", comment: "Unit: Calories")
+        case .None:
+            return ""
+        }
+    }
+    /*
     var abbreviation: String {
         switch self {
         case .Steps:
@@ -30,6 +50,26 @@ enum AmountUnit: Int16, CaseIterable, Identifiable, Codable {
             return "min"
         case .Calories:
             return "kcal"
+        case .None:
+            return ""
+        }
+    }
+    */
+    
+    var abbreviation: String {
+        switch self {
+        case .Steps:
+            return NSLocalizedString("abbr_steps", value: "steps", comment: "")
+        case .Kilometers:
+            return NSLocalizedString("abbr_km", value: "km", comment: "")
+        case .Litres:
+            return NSLocalizedString("abbr_l", value: "l", comment: "")
+        case .Hours:
+            return NSLocalizedString("abbr_h", value: "h", comment: "")
+        case .Minutes:
+            return NSLocalizedString("abbr_min", value: "min", comment: "")
+        case .Calories:
+            return NSLocalizedString("abbr_kcal", value: "kcal", comment: "")
         case .None:
             return ""
         }

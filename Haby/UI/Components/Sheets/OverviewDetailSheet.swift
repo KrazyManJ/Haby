@@ -88,7 +88,8 @@ struct OverviewDetailSheet: View {
                     Text(selectedDateData.mood?.id ?? "Non-specified")
                         .bold()
                     if !selectedDateData.habitsForDate.isEmpty {
-                        Text("\(completedHabits)/\(habitsCount) Completed")
+                        //Text("\(completedHabits)/\(habitsCount) Completed")
+                        Text(String(format: NSLocalizedString("progress_completed_format", value: "%1$lld/%2$lld Completed", comment: "Example: 5/10 Completed"), completedHabits, habitsCount))
                             .foregroundStyle(.textSecondary)
                             .font(.footnote)
                     }
