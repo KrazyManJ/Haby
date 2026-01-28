@@ -9,8 +9,8 @@ struct Provider: TimelineProvider {
         HabyEntry(
             date: Date(),
             habits: [
-                //                HabitDefinition(name: "Morning Yoga", icon: "figure.yoga", data: ...),
-                //                HabitDefinition(name: "Drink Water", icon: "drop.fill", data: ...)
+//                HabitDefinition(name: "Morning Yoga", icon: "figure.yoga", data: ...),
+//                HabitDefinition(name: "Drink Water", icon: "drop.fill", data: ...)
             ],
             streak: 5,
             next: nil
@@ -23,14 +23,12 @@ struct Provider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<HabyEntry>) -> ()) {
-        // 1. Gather Dependencies
         let currentDate = Date()
         let streak = habitManager.calculateCurrentStreak()
         let timeHabits = dataManager.getTimeHabitsForToday()
         let amountHabits = dataManager.getAmountHabitsForToday()
         let records = dataManager.getTodayRecords()
         
-        // 2. Call the Testable Logic
         let entries = TimelineLogic.calculateEntries(
             currentDate: currentDate,
             calendar: Calendar.current,
@@ -40,7 +38,6 @@ struct Provider: TimelineProvider {
             records: records
         )
         
-        // 3. Return to WidgetKit
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
