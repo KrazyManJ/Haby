@@ -2,11 +2,16 @@ import Foundation
 
 final class CategoryManager: CategoryManaging {
     private let storageKey = "UserHabitCategories"
+    private let defaults: UserDefaults // Store the reference
+        
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+    }
     
     func fetchCategories() -> [String] {
-        var allCategories = UserDefaults.standard.stringArray(forKey: storageKey) ?? []
+        var allCategories = defaults.stringArray(forKey: storageKey) ?? []
         let defaultCategories = HabitCategory.allCases.map { $0.name }
-        if let saved = UserDefaults.standard.stringArray(forKey: storageKey) {
+        if let saved = defaults.stringArray(forKey: storageKey) {
             return saved
         }
         
@@ -23,6 +28,6 @@ final class CategoryManager: CategoryManaging {
         current.append(trimmed)
         current.sort()
         
-        UserDefaults.standard.set(current, forKey: storageKey)
+        defaults.set(current, forKey: storageKey)
     }
 }

@@ -309,9 +309,6 @@
 		};
 		5CDFA1542F293E9900BBAB0E /* Haby Unit Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				BB9087962F2A043100F2D445 /* Exceptions for "Haby Unit Tests" folder in "Haby Unit Tests" target */,
-			);
 			path = "Haby Unit Tests";
 			sourceTree = "<group>";
 		};
