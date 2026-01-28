@@ -10,6 +10,7 @@ final class Haby_Overview_UI_Tests: XCTestCase {
     
     func test_overview_display() throws {
         let app = XCUIApplication()
+        app.launchArguments.append("-isUITesting")
         app.launch()
         
         let streakButton = app.navigationBars.buttons[.MainTabView_StreakToolbarItem]

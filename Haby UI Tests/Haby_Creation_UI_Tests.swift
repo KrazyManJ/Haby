@@ -14,6 +14,7 @@ final class Haby_Creation_UI_Tests: XCTestCase {
         let newHabitName = "My New Awesome Habit"
         
         let app = XCUIApplication()
+        app.launchArguments.append("-isUITesting")
         app.launch()
         
         let habitTabButton = app.tabBars.buttons[.MainTabView_HabitsTabButton]

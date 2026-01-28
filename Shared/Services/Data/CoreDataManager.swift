@@ -65,7 +65,7 @@ final class CoreDataManager: DataManaging {
                 print("✅ Database loaded at: \(description.url?.absoluteString ?? "unknown")")
             }
             
-            self.reCreate(description: description)
+//            self.reCreate(description: description)
         }
         
         container.viewContext.automaticallyMergesChangesFromParent = true
