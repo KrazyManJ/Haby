@@ -17,11 +17,11 @@ class HabitListViewModel {
     func fetchHabits() {
         switch state.filterType {
         case .Numeric:
-            state.habits = dataManager.getAmountHabitsForToday()
+            state.habits = dataManager.getAmountHabitsForToday() + dataManager.getAmountHabitsForWeek()
         case .Timer:
-            state.habits = dataManager.getTimeHabitsForToday()
+            state.habits = dataManager.getTimeHabitsForToday() + dataManager.getTimeHabitsForWeek()
         }
-        state.records = dataManager.getTodayRecords()
+        state.records = dataManager.getTodayRecords()+dataManager.getWeekRecords()
     }
     
     func checkHabit(habit: HabitDefinition) {
@@ -87,5 +87,9 @@ class HabitListViewModel {
             watchSessionManager.sendRecordData(record: newRecord)
         }
         fetchHabits()
+    }
+    
+    func requestSyncWithMobile() {
+        watchSessionManager.requestSyncWithMobile()
     }
 }

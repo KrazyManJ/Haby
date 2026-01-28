@@ -21,32 +21,32 @@ class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging {
     func sessionDidDeactivate(_ session: WCSession) { session.activate() }
     
     func syncAllHabitsToWatch() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self else { return }
-            
-            let allHabits = dataManager.getAllHabits()
-            
-            let todayRecords = dataManager.getTodayRecords()
-            let weekRecords = dataManager.getWeekRecords()
-            
-            let allRecords = todayRecords + weekRecords
-            
-            let encoder = JSONEncoder()
-            
-            let message: [String: Any] = [
-                "action": "sync",
-                "habits": try! encoder.encode(allHabits),
-                "records": try! encoder.encode(allRecords)
-            ]
-            
-            
-            print("Syncing to Watch: \(allHabits.count) habits, \(allRecords.count) records")
-            
-            do {
-                try session.updateApplicationContext(message)
-            } catch {
-                print("Sync error: \(error.localizedDescription)")
-            }
+        
+        guard session.isReachable else {
+            return print("Session not reachable")
+        }
+        
+        let allHabits = dataManager.getAllHabits()
+        
+        let todayRecords = dataManager.getTodayRecords()
+        let weekRecords = dataManager.getWeekRecords()
+        
+        let allRecords = todayRecords + weekRecords
+        
+        let encoder = JSONEncoder()
+        
+        let message: [String: Any] = [
+            "action": "sync",
+            "habits": try! encoder.encode(allHabits),
+            "records": try! encoder.encode(allRecords)
+        ]
+        
+        print("Syncing to Watch: \(allHabits.count) habits, \(allRecords.count) records")
+        
+        do {
+            try session.updateApplicationContext(message)
+        } catch {
+            print("Sync error: \(error.localizedDescription)")
         }
     }
     
@@ -57,7 +57,10 @@ class PhoneSessionManager: NSObject, WCSessionDelegate, PhoneSessionManaging {
         
         let decoder = JSONDecoder()
         
-        if action == "recordUpdate" {
+        if action == "sync" {
+            syncAllHabitsToWatch()
+        }
+        else if action == "recordUpdate" {
             guard
                 let recordData = message["record"] as? Data,
                 let record = try? decoder.decode(HabitRecord.self, from: recordData)

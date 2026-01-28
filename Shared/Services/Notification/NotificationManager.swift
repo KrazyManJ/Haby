@@ -82,7 +82,7 @@ class NotificationManager : NSObject, NotificationManaging, UNUserNotificationCe
     }
     
     func removeAllReminders() {
-        center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
     }
 }
 

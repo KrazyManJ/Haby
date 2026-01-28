@@ -21,7 +21,7 @@ struct HabitProgressBar: View {
                     Capsule()
                         .fill(color)
                         .frame(width: geometry.size.width * CGFloat(progress), height: 6)
-                        .animation(.spring(), value: progress)
+                        .animation(.bouncy, value: progress)
                 }
             }
             .frame(height: 6)

@@ -24,14 +24,18 @@ struct HabitListView: View {
             let isExpired = switch habit.data {
             case .Deadline(let data): todayMinutes >= data.minutesOfCompletionInFrequency
             case .OnTime(let data): todayMinutes >= data.minutesOfCompletionInFrequency
-            default: true
+            default: false
+            }
+            
+            if habit.data.type == .Amount && habit.isUsingHealthData {
+                return false
             }
             
             let record = viewModel.state.records.first { $0.habitDefinition.id == habit.id }
+            
             if let record = record {
                 return !record.isSatisfied && !isExpired
             }
-            
             else {
                 return !isExpired
             }
@@ -85,6 +89,7 @@ struct HabitListView: View {
         .background(.backgroundPrimary)
         .onAppear {
             viewModel.fetchHabits()
+            viewModel.requestSyncWithMobile()
         }
         .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in
             print("🔄 reloading data from Watch update...")

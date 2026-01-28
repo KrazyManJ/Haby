@@ -22,6 +22,10 @@ struct TimerHabitRow : View {
         return Calendar.current.date(byAdding: .minute, value: minutes, to: Date().onlyDate)!
     }
     
+    var isOver: Bool {
+        Date().hourAndMinutesToMinutesTimestamp > dateOfCompletion.hourAndMinutesToMinutesTimestamp
+    }
+    
     var body: some View {
         HStack(spacing: 0) {
             Timeline()
@@ -48,7 +52,7 @@ struct TimerHabitRow : View {
                     }
                     Spacer()
                     Text(dateOfCompletion, format: .relative(presentation: .named))
-                        .foregroundStyle(.textSecondary)
+                        .foregroundStyle(isOver && !isChecked ? .destructive : .textSecondary)
                         .font(.footnote)
                     CheckBox(isOn: .constant(isChecked), isInvalid: !isValid)
                 }

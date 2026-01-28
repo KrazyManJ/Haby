@@ -144,6 +144,7 @@ class DailyViewModel {
         if hasChanges {
             let temp = state.habitRecords
             state.habitRecords = temp
+            syncWithWatch()
         }
         state.habitRecords = dataManaging.getTodayRecords()
     }
@@ -202,7 +203,7 @@ class DailyViewModel {
                 data: recordData
             ))
         }
-        phoneSessionManager.syncAllHabitsToWatch()
+        syncWithWatch()
         getTodayHabits()
     }
     
@@ -229,10 +230,13 @@ class DailyViewModel {
             )
             dataManaging.upsert(model: newRecord)
             
-            phoneSessionManager.syncAllHabitsToWatch()
+            syncWithWatch()
         }
 
         getTodayHabits()
     }
-
+    
+    func syncWithWatch() {
+        phoneSessionManager.syncAllHabitsToWatch()
+    }
 }

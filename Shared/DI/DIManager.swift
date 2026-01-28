@@ -47,4 +47,9 @@ final class DIContainer {
 
         return service
     }
+    
+    func reset() {
+        dependencies.removeAll()
+        cache.removeAll()
+    }
 }

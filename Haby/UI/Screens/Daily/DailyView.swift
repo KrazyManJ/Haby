@@ -129,11 +129,13 @@ struct DailyView: View {
                     }
                     
                 }
+                viewModel.syncWithWatch()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
                     print("App returned to foreground. Refreshing data...")
                     refreshData()
+                    viewModel.syncWithWatch()
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .reloadHabits)) { _ in

@@ -31,22 +31,32 @@ final class CoreDataManager: DataManaging {
     }
     */
     
-    init() {
-        guard let groupID = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String else {
-            fatalError("❌ key 'AppGroupId' not found in Info.plist")
+    init(inMemory: Bool = false) {
+        #if os(iOS)
+        
+        let isTesting = ProcessInfo.processInfo.arguments.contains("-isUITesting") || inMemory
+        
+        let description: NSPersistentStoreDescription
+        if isTesting {
+            description = NSPersistentStoreDescription()
+            description.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            guard let groupID = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String else {
+                fatalError("❌ key 'AppGroupId' not found in Info.plist")
+            }
+            print(groupID)
+            if let sharedURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) {
+                
+                let storeURL = sharedURL.appendingPathComponent("Haby.xcdatamodeld")
+                
+                description = NSPersistentStoreDescription(url: storeURL)
+            } else {
+                fatalError("❌ ERROR: Could not find App Group. Check your entitlements!")
+            }
         }
         
-        if let sharedURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) {
-            
-            let storeURL = sharedURL.appendingPathComponent("Haby.xcdatamodeld")
-            
-            let description = NSPersistentStoreDescription(url: storeURL)
-                        
-            container.persistentStoreDescriptions = [description]
-            
-        } else {
-            print("❌ ERROR: Could not find App Group. Check your entitlements!")
-        }
+        container.persistentStoreDescriptions = [description]
+        
         
         container.loadPersistentStores { description, error in
             if let error = error {
@@ -55,12 +65,18 @@ final class CoreDataManager: DataManaging {
                 print("✅ Database loaded at: \(description.url?.absoluteString ?? "unknown")")
             }
             
-            #if os(iOS)
-            self.reCreate(description: description)
-            #endif
+//            self.reCreate(description: description)
         }
         
         container.viewContext.automaticallyMergesChangesFromParent = true
+        #endif
+        #if os(watchOS)
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                print("Cannot create persistent store: \(error.localizedDescription)")
+            }
+        }
+        #endif
     }
     
     private func reCreate(description: NSPersistentStoreDescription) {
