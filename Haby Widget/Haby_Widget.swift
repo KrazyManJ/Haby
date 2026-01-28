@@ -120,7 +120,7 @@ struct Provider: TimelineProvider {
      }
      */
 }
-
+/*
 struct TimelineLogic {
     static func calculateEntries(
         currentDate: Date,
@@ -183,11 +183,11 @@ struct TimelineLogic {
     }
 }
 
-
 struct HabyEntry: TimelineEntry {
     let date: Date
     let habits: [HabitDefinition]
     let streak: Int
     let next: HabitDefinition?
 }
+ */
 

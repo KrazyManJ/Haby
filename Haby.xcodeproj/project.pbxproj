@@ -206,6 +206,7 @@
 				Services/Habit/HabitManaging.swift,
 				Services/Notification/NotificationManager.swift,
 				Services/Notification/NotificationManaging.swift,
+				TimelineLogic.swift,
 				"UI/Resources/Global Assets.xcassets",
 			);
 			target = BB03A98E2F277B9E004BD874 /* Haby WidgetExtension */;
