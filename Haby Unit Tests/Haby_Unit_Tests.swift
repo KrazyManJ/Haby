@@ -19,8 +19,6 @@ final class HabitManagerTests: XCTestCase {
         
         // 3. Resolve the Service under test
         habitManager = HabitManager()
-        
-        print("Count from start",dataManager.getAllHabits().count)
     }
 
     override func tearDown() {

@@ -42,6 +42,7 @@ struct HabitManagementView: View {
                                             } label: {
                                                 Label("Delete", systemImage: "trash")
                                             }
+                                            .tint(.destructive)
                                         }
                                 }
                             }

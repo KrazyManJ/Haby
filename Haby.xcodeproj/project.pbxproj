@@ -270,76 +270,6 @@
 			);
 			target = BB2C2B6C2F20D5110030CF44 /* Haby Companion Watch App */;
 		};
-		BB2FF6652F29645600BD446B /* Exceptions for "Shared" folder in "Haby Unit Tests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				DI/DIManager.swift,
-				DI/DIRegister.swift,
-				DI/Injected.swift,
-				Extensions/CalendarExtension.swift,
-				Extensions/DateExtension.swift,
-				Extensions/HabitDefinitionExtension.swift,
-				Extensions/IntExtension.swift,
-				Extensions/NotificationExtension.swift,
-				Model/Enum/AmountUnit.swift,
-				Model/Enum/HabitCategory.swift,
-				Model/Enum/HabitFrequency.swift,
-				Model/Enum/InternalHabitCategory.swift,
-				Model/Enum/Mood.swift,
-				Model/Enum/WeekDay.swift,
-				Model/HabitDefinition.swift,
-				Model/HabitRecord.swift,
-				Model/HabitTypeRegistry.swift,
-				Model/HabitTypes/AmountHabit.swift,
-				Model/HabitTypes/DeadlineHabit.swift,
-				Model/HabitTypes/OnTimeHabit.swift,
-				Model/Haby.xcdatamodeld,
-				Model/HealthDataPoint.swift,
-				Model/MoodRecord.swift,
-				Services/Data/Conversion/HabitDefinitionConversion.swift,
-				Services/Data/Conversion/HabitRecordConversion.swift,
-				Services/Data/Conversion/MoodRecordConversion.swift,
-				Services/Data/Conversion/Protocols/EntityConverting.swift,
-				Services/Data/Conversion/Protocols/ModelConverting.swift,
-				Services/Data/CoreDataManager.swift,
-				Services/Data/DataManaging.swift,
-				Services/Data/HabitDefinitionDataManager.swift,
-				Services/Data/HabitRecordDataManager.swift,
-				Services/Data/MockupDataManager.swift,
-				Services/Data/MoodDataManager.swift,
-				Services/Habit/HabitManager.swift,
-				Services/Habit/HabitManaging.swift,
-				Services/Notification/NotificationManager.swift,
-				Services/Notification/NotificationManaging.swift,
-			);
-			target = 5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */;
-		};
-		BB2FF6692F2964A300BD446B /* Exceptions for "Haby Widget" folder in "Haby Unit Tests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Haby_Widget.swift,
-			);
-			target = 5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */;
-		};
-		BB2FF6832F2968DD00BD446B /* Exceptions for "Haby" folder in "Haby Unit Tests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Services/Category/CategoryManager.swift,
-				Services/Category/CategoryManaging.swift,
-				Services/Connector/PhoneSessionManager.swift,
-				Services/Connector/PhoneSessionManaging.swift,
-				Services/Health/HealthManager.swift,
-				Services/Health/HealthManaging.swift,
-			);
-			target = 5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */;
-		};
-		BB2FF6972F2972A000BD446B /* Exceptions for "Haby Companion Watch App" folder in "Haby Unit Tests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				HabitStatusHelper.swift,
-			);
-			target = 5CDFA1522F293E9900BBAB0E /* Haby Unit Tests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -350,7 +280,6 @@
 				BB2C2B9D2F20EA840030CF44 /* Exceptions for "Haby" folder in "Haby Companion Watch App" target */,
 				BB03A9AD2F277D5B004BD874 /* Exceptions for "Haby" folder in "Haby WidgetExtension" target */,
 				5CDFA1422F29245900BBAB0E /* Exceptions for "Haby" folder in "Haby UI Tests" target */,
-				BB2FF6832F2968DD00BD446B /* Exceptions for "Haby" folder in "Haby Unit Tests" target */,
 			);
 			path = Haby;
 			sourceTree = "<group>";
@@ -369,7 +298,6 @@
 				BB2C2B882F20E2C10030CF44 /* Exceptions for "Shared" folder in "Haby Companion Watch App" target */,
 				BB03A9B42F277DBB004BD874 /* Exceptions for "Shared" folder in "Haby WidgetExtension" target */,
 				5CDFA14C2F29339800BBAB0E /* Exceptions for "Shared" folder in "Haby UI Tests" target */,
-				BB2FF6652F29645600BD446B /* Exceptions for "Shared" folder in "Haby Unit Tests" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -388,7 +316,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				BB03A9A42F277BA1004BD874 /* Exceptions for "Haby Widget" folder in "Haby WidgetExtension" target */,
-				BB2FF6692F2964A300BD446B /* Exceptions for "Haby Widget" folder in "Haby Unit Tests" target */,
 			);
 			path = "Haby Widget";
 			sourceTree = "<group>";
@@ -398,7 +325,6 @@
 			exceptions = (
 				5C83E3E32F2914130040CF9A /* Exceptions for "Haby Companion Watch App" folder in "Haby" target */,
 				5CF1FE6B2F28D9D800CFDD83 /* Exceptions for "Haby Companion Watch App" folder in "Haby WidgetExtension" target */,
-				BB2FF6972F2972A000BD446B /* Exceptions for "Haby Companion Watch App" folder in "Haby Unit Tests" target */,
 			);
 			path = "Haby Companion Watch App";
 			sourceTree = "<group>";

@@ -704,6 +704,16 @@
         }
       }
     },
+    "To check the habit please tap and hold the habit row until green background fills entire row." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro odškrtnutí návyku stačí podržet daný návyk prstem, než se naplní celý zeleným pozadím."
+          }
+        }
+      }
+    },
     "type_amount" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

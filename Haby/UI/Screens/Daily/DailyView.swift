@@ -93,6 +93,11 @@ struct DailyView: View {
         VStack {
             ScrollView {
                 Subtitle("Daily timeline")
+                Text("To check the habit please tap and hold the habit row until green background fills entire row.")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                    .padding(8)
+                    .padding(.horizontal, 8)
                 timerHabits
                 Subtitle("Goals")
                 goalHabits
