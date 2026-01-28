@@ -57,8 +57,19 @@ class NotificationManager : NSObject, NotificationManaging, UNUserNotificationCe
         let dateComponents = habit.getNotificationDateComponents()
         
         let content = UNMutableNotificationContent()
-        content.title = "Do not forget on \(habit.name)!"
-        content.body = "Body"
+        switch habit.data {
+        case .Amount:
+            content.title = "Track your \(habit.name)"
+            content.body = "Don't forget to log your progress today!"
+            
+        case .Deadline:
+            content.title = "Deadline: \(habit.name)"
+            content.body = "Make sure to complete this before your deadline."
+            
+        case .OnTime:
+            content.title = "It's time for \(habit.name)"
+            content.body = "This is your scheduled time to start."
+        }
         content.sound = .default
         
         content.userInfo = ["habitId": habit.id.uuidString]
