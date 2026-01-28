@@ -16,7 +16,7 @@ final class Haby_Overview_UI_Tests: XCTestCase {
         
         let streakText = streakButton.staticTexts[.StreakToolbarItem_StreakText]
         XCTAssertTrue(streakText.exists)
-        XCTAssertEqual(streakText.label, "2")
+        XCTAssertEqual(streakText.label, "3")
         
         streakButton.tap()
         

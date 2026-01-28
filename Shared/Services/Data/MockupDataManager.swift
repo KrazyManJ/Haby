@@ -94,7 +94,7 @@ extension CoreDataManager {
             icon: "spigot",
             creationDate: createdAt,
             category: "Household",
-            type: .Amount,
+            type: .Deadline,
             frequency: .Weekly,
             targetTimestamp: 60 * 15 + 60 * 24 * 5,
             data: .Deadline(data: .init(frequency: .Weekly, minutesOfCompletionInFrequency: 60 * 15 + 60 * 24 * 5))

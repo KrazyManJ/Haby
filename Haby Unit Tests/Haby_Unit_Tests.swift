@@ -4,6 +4,7 @@ import XCTest
 final class Haby_Unit_Tests: XCTestCase {
 
     override func setUpWithError() throws {
+        DIContainer.shared.registerDependencies()
     }
 
     override func tearDownWithError() throws {
