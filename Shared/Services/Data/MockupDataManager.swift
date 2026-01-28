@@ -24,10 +24,10 @@ extension CoreDataManager {
         
         // for testing grace period on watch
         let yoga2 = HabitDefinition(
-            name: "Yoga",
-            icon: "figure.yoga",
+            name: "Work",
+            icon: "book",
             creationDate: createdAt,
-            category: "Wellbeing",
+            category: "Work",
             type: .Deadline,
             frequency: .Daily,
             targetTimestamp: 60 * 23,
